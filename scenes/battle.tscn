@@ -3,13 +3,15 @@
 [ext_resource type="AudioStream" uid="uid://bmyubypm543pd" path="res://audio/song.mp3" id="1_th188"]
 [ext_resource type="Script" uid="uid://drjqoqevkyadl" path="res://battle.gd" id="2_p1qf1"]
 [ext_resource type="AudioStream" uid="uid://qjbwpmsfoouc" path="res://audio/snd_squeak.wav" id="3_6vh42"]
-[ext_resource type="Texture2D" uid="uid://hcykpao8pbah" path="res://sprites/20260301133125_1.jpg" id="3_lpir7"]
 [ext_resource type="Texture2D" uid="uid://bv3m4o5ij5hlb" path="res://sprites/battle.png" id="3_p1qf1"]
+[ext_resource type="AudioStream" uid="uid://bmgnpm5puewpo" path="res://audio/snd_select.wav" id="4_66ngm"]
 [ext_resource type="AudioStream" uid="uid://utr2xn051h7k" path="res://audio/SND_TXT2.wav" id="4_v7i3o"]
 [ext_resource type="Texture2D" uid="uid://dngdiqmt2xmjt" path="res://sprites/red_soul_normal.png" id="5_6vh42"]
 [ext_resource type="Texture2D" uid="uid://clycnxqh12qsn" path="res://sprites/undyne.png" id="7_4k1nj"]
 [ext_resource type="FontVariation" uid="uid://cnsgsqotxvbxc" path="res://dio.tres" id="7_66ngm"]
 [ext_resource type="Script" uid="uid://bubt6lgqhjh16" path="res://scenes/undyne-ani.gd" id="7_f4pi3"]
+[ext_resource type="LabelSettings" uid="uid://c06m4ae3gy7q5" path="res://dio_label.tres" id="8_03edq"]
+[ext_resource type="Texture2D" uid="uid://c0uwiru0bv3dq" path="res://sprites/hint.png" id="9_v7i3o"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_6vh42"]
 font_size = 24
@@ -30,9 +32,6 @@ border_width_top = 5
 border_width_right = 5
 border_width_bottom = 5
 border_color = Color(1, 1, 1, 1)
-
-[sub_resource type="LabelSettings" id="LabelSettings_03edq"]
-font_size = 32
 
 [sub_resource type="Animation" id="Animation_f4pi3"]
 length = 0.001
@@ -360,7 +359,7 @@ stream = ExtResource("1_th188")
 stream = ExtResource("3_6vh42")
 
 [node name="MenuSelect" type="AudioStreamPlayer" parent="." unique_id=1314629993]
-stream = ExtResource("4_v7i3o")
+stream = ExtResource("4_66ngm")
 
 [node name="TextSnd" type="AudioStreamPlayer" parent="." unique_id=1508845270]
 stream = ExtResource("4_v7i3o")
@@ -392,10 +391,6 @@ scale = Vector2(1, 1.0000005)
 texture = ExtResource("3_p1qf1")
 region_enabled = true
 region_rect = Rect2(8, 313, 110, 42)
-
-[node name="Soul" type="Sprite2D" parent="." unique_id=450798543]
-position = Vector2(201, 453)
-texture = ExtResource("5_6vh42")
 
 [node name="InfoBar" type="Node" parent="." unique_id=2092922539]
 
@@ -449,21 +444,57 @@ offset_right = 607.0
 offset_bottom = 390.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_66ngm")
 
-[node name="Label" type="Label" parent="Box" unique_id=1688906120]
+[node name="MainText" type="Label" parent="Box" unique_id=1688906120]
+visible = false
 layout_mode = 0
 offset_left = 20.0
 offset_top = 20.0
 offset_right = 347.0
 offset_bottom = 54.0
 theme_override_fonts/font = ExtResource("7_66ngm")
-text = "*   The    wind    is    howling..."
-label_settings = SubResource("LabelSettings_03edq")
+text = "* The wind is howling..."
+label_settings = ExtResource("8_03edq")
 
-[node name="Hint" type="Sprite2D" parent="." unique_id=1872088016]
+[node name="Options" type="Node" parent="Box" unique_id=1876007917]
+
+[node name="0" type="Label" parent="Box/Options" unique_id=157318341]
+offset_left = 100.0
+offset_top = 270.0
+offset_right = 140.0
+offset_bottom = 302.0
+theme_override_fonts/font = ExtResource("7_66ngm")
+text = "* MnstrCndy"
+label_settings = ExtResource("8_03edq")
+
+[node name="1" type="Label" parent="Box/Options" unique_id=920951879]
 visible = false
-modulate = Color(1, 1, 1, 0.14901961)
-position = Vector2(320, 240)
-texture = ExtResource("3_lpir7")
+offset_left = 340.0
+offset_top = 270.0
+offset_right = 380.0
+offset_bottom = 302.0
+theme_override_fonts/font = ExtResource("7_66ngm")
+text = "*"
+label_settings = ExtResource("8_03edq")
+
+[node name="2" type="Label" parent="Box/Options" unique_id=837192352]
+visible = false
+offset_left = 100.0
+offset_top = 302.0
+offset_right = 140.0
+offset_bottom = 334.0
+theme_override_fonts/font = ExtResource("7_66ngm")
+text = "*"
+label_settings = ExtResource("8_03edq")
+
+[node name="3" type="Label" parent="Box/Options" unique_id=1729185092]
+visible = false
+offset_left = 340.0
+offset_top = 302.0
+offset_right = 380.0
+offset_bottom = 334.0
+theme_override_fonts/font = ExtResource("7_66ngm")
+text = "*   Mns"
+label_settings = ExtResource("8_03edq")
 
 [node name="Undyne" type="Node" parent="." unique_id=1060237284]
 script = ExtResource("7_f4pi3")
@@ -547,3 +578,12 @@ libraries/ = SubResource("AnimationLibrary_v7i3o")
 
 [node name="EyeGlintAnimation" type="AnimationPlayer" parent="Undyne" unique_id=1951979680]
 libraries/ = SubResource("AnimationLibrary_03edq")
+
+[node name="Hint" type="Sprite2D" parent="." unique_id=1872088016]
+modulate = Color(1, 1, 1, 0.14901961)
+position = Vector2(320, 240)
+texture = ExtResource("9_v7i3o")
+
+[node name="Soul" type="Sprite2D" parent="." unique_id=450798543]
+position = Vector2(348, 318)
+texture = ExtResource("5_6vh42")
