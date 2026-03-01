@@ -1,14 +1,12 @@
 extends Node
 
-var Legs
-var LArm
-var RArm
-var Hair
-var Body
-var Torso
-var Head
-
-var tween
+var Legs: Sprite2D
+var LArm: Sprite2D
+var RArm: Sprite2D
+var Hair: Sprite2D
+var Body: Sprite2D
+var Torso: Sprite2D
+var Head: Sprite2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -19,10 +17,7 @@ func _ready() -> void:
 	Body = get_node("Body")
 	Torso = get_node("Torso")
 	Head = get_node("Head")
-	
-	tween = get_tree().get_twe
-
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	Tween.new()
+	pass

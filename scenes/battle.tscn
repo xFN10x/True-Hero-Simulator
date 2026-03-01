@@ -5,13 +5,14 @@
 [ext_resource type="AudioStream" uid="uid://qjbwpmsfoouc" path="res://audio/snd_squeak.wav" id="3_6vh42"]
 [ext_resource type="Texture2D" uid="uid://hcykpao8pbah" path="res://sprites/20260301133125_1.jpg" id="3_lpir7"]
 [ext_resource type="Texture2D" uid="uid://bv3m4o5ij5hlb" path="res://sprites/battle.png" id="3_p1qf1"]
+[ext_resource type="AudioStream" uid="uid://utr2xn051h7k" path="res://audio/SND_TXT2.wav" id="4_v7i3o"]
 [ext_resource type="Texture2D" uid="uid://dngdiqmt2xmjt" path="res://sprites/red_soul_normal.png" id="5_6vh42"]
 [ext_resource type="Texture2D" uid="uid://clycnxqh12qsn" path="res://sprites/undyne.png" id="7_4k1nj"]
+[ext_resource type="FontVariation" uid="uid://cnsgsqotxvbxc" path="res://dio.tres" id="7_66ngm"]
 [ext_resource type="Script" uid="uid://bubt6lgqhjh16" path="res://scenes/undyne-ani.gd" id="7_f4pi3"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_6vh42"]
 font_size = 24
-font_color = Color(0, 1, 1, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f4pi3"]
 bg_color = Color(0.95686275, 0, 0.007843138, 1)
@@ -21,7 +22,6 @@ bg_color = Color(1, 0.99607843, 0.003921569, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_v7i3o"]
 font_size = 24
-font_color = Color(0, 1, 1, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_66ngm"]
 bg_color = Color(0, 0, 0, 1)
@@ -31,6 +31,325 @@ border_width_right = 5
 border_width_bottom = 5
 border_color = Color(1, 1, 1, 1)
 
+[sub_resource type="LabelSettings" id="LabelSettings_03edq"]
+font_size = 32
+
+[sub_resource type="Animation" id="Animation_f4pi3"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Torso:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(334.00003, 144)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Torso:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.017771654]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Body:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.057551812]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Body:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(254, 89)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Head:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(310, 49)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Hair:rotation")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-1.1700137]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Hair:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(285, 26)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("LArm:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(358, 137)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("RArm:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(261, 168)]
+}
+
+[sub_resource type="Animation" id="Animation_yahae"]
+resource_name = "undyne"
+length = 0.5
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Torso:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.00010000169, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(334.00003, 144), Vector2(334.00003, 144), Vector2(334, 140)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Torso:rotation")
+tracks/1/interp = 4
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-0.047500066, 0.017771654]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Body:rotation")
+tracks/2/interp = 4
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.057551812, -0.08083786]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Body:position")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(254, 89), Vector2(254, 89)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Head:position")
+tracks/4/interp = 2
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(310, 49), Vector2(310, 46)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Hair:rotation")
+tracks/5/interp = 4
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-0.95826566, -1.6311517]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Hair:position")
+tracks/6/interp = 2
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(285, 26), Vector2(285, 28.999998)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("LArm:position")
+tracks/7/interp = 2
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 0.1667, 0.3, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(358, 137), Vector2(361, 129), Vector2(353.255, 126), Vector2(358.235, 120)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("RArm:position")
+tracks/8/interp = 2
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(261, 168), Vector2(250, 158)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_v7i3o"]
+_data = {
+&"RESET": SubResource("Animation_f4pi3"),
+&"undyne": SubResource("Animation_yahae")
+}
+
+[sub_resource type="Animation" id="Animation_v7i3o"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("EyeGlint:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-0.30267492]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("EyeGlint:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(7.10159, 1.3080454)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("EyeGlint:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0.7529412)]
+}
+
+[sub_resource type="Animation" id="Animation_66ngm"]
+resource_name = "eye"
+length = 2.2333333
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("EyeGlint:rotation")
+tracks/0/interp = 4
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.19999993, 0.29999992, 1.3, 1.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [-0.40606812, -0.30267492, 0.59412146, 0.66773796]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("EyeGlint:scale")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.19999993, 0.4666666, 0.79999995, 1.1, 1.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(2.934, 1.308), Vector2(7.102, 1.308), Vector2(10.009777, 1.308), Vector2(2.934, 1.308), Vector2(7.102, 1.308)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("EyeGlint:modulate")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.16666667, 0.5, 1.1093491, 1.2760158, 1.6, 2.2333333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0.8509804), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 0.8509804), Color(1, 1, 1, 0), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_03edq"]
+_data = {
+&"RESET": SubResource("Animation_v7i3o"),
+&"eye": SubResource("Animation_66ngm")
+}
+
 [node name="Battle" type="Node2D" unique_id=2070806762]
 script = ExtResource("2_p1qf1")
 
@@ -39,6 +358,12 @@ stream = ExtResource("1_th188")
 
 [node name="MenuMove" type="AudioStreamPlayer" parent="." unique_id=1881623941]
 stream = ExtResource("3_6vh42")
+
+[node name="MenuSelect" type="AudioStreamPlayer" parent="." unique_id=1314629993]
+stream = ExtResource("4_v7i3o")
+
+[node name="TextSnd" type="AudioStreamPlayer" parent="." unique_id=1508845270]
+stream = ExtResource("4_v7i3o")
 
 [node name="Fight" type="Sprite2D" parent="." unique_id=742261727]
 position = Vector2(87, 453)
@@ -87,7 +412,7 @@ offset_left = 30.0
 offset_top = 400.0
 offset_right = 138.0
 offset_bottom = 424.0
-text = "WWWWWW"
+text = "Chara"
 label_settings = SubResource("LabelSettings_6vh42")
 
 [node name="HP" type="Sprite2D" parent="InfoBar" unique_id=2132920446]
@@ -109,7 +434,7 @@ step = 1.0
 value = 44.0
 show_percentage = false
 
-[node name="Label" type="Label" parent="InfoBar" unique_id=2139947506]
+[node name="HPText" type="Label" parent="InfoBar" unique_id=2139947506]
 offset_left = 357.0
 offset_top = 400.0
 offset_right = 450.0
@@ -123,6 +448,16 @@ offset_top = 250.0
 offset_right = 607.0
 offset_bottom = 390.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_66ngm")
+
+[node name="Label" type="Label" parent="Box" unique_id=1688906120]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 347.0
+offset_bottom = 54.0
+theme_override_fonts/font = ExtResource("7_66ngm")
+text = "*   The    wind    is    howling..."
+label_settings = SubResource("LabelSettings_03edq")
 
 [node name="Hint" type="Sprite2D" parent="." unique_id=1872088016]
 visible = false
@@ -150,29 +485,31 @@ region_enabled = true
 region_rect = Rect2(337, 1840, 40, 42)
 
 [node name="LArm" type="Sprite2D" parent="Undyne" unique_id=31958946]
-position = Vector2(356, 129)
+position = Vector2(358, 137)
 scale = Vector2(2.000001, 2.000001)
 texture = ExtResource("7_4k1nj")
 region_enabled = true
 region_rect = Rect2(267, 1840, 19, 44)
 
 [node name="RArm" type="Sprite2D" parent="Undyne" unique_id=566646253]
-position = Vector2(254, 163)
+position = Vector2(261, 168)
 scale = Vector2(2.000001, 2.000001)
 texture = ExtResource("7_4k1nj")
 region_enabled = true
 region_rect = Rect2(132, 1840, 46, 76)
 
 [node name="Hair" type="Sprite2D" parent="Undyne" unique_id=154714321]
-position = Vector2(270, 24.999992)
-rotation = -1.2846249
+position = Vector2(285, 26)
+rotation = -1.1700137
 scale = Vector2(2.000001, 2.000001)
 texture = ExtResource("7_4k1nj")
+offset = Vector2(-1.845, -8.93)
 region_enabled = true
 region_rect = Rect2(105, 1840, 22, 34)
 
 [node name="Body" type="Sprite2D" parent="Undyne" unique_id=1000541810]
 position = Vector2(254, 89)
+rotation = 0.057551812
 scale = Vector2(2.000001, 2.000001)
 texture = ExtResource("7_4k1nj")
 offset = Vector2(28, 4)
@@ -180,7 +517,8 @@ region_enabled = true
 region_rect = Rect2(183, 1840, 79, 58)
 
 [node name="Torso" type="Sprite2D" parent="Undyne" unique_id=315037308]
-position = Vector2(334, 143)
+position = Vector2(334.00003, 144)
+rotation = 0.017771654
 scale = Vector2(2.000001, 2.000001)
 texture = ExtResource("7_4k1nj")
 offset = Vector2(-12, 13)
@@ -188,8 +526,24 @@ region_enabled = true
 region_rect = Rect2(291, 1840, 41, 28)
 
 [node name="Head" type="Sprite2D" parent="Undyne" unique_id=258279776]
-position = Vector2(310, 47)
+position = Vector2(310, 49)
 scale = Vector2(2.000001, 2.000001)
 texture = ExtResource("7_4k1nj")
 region_enabled = true
 region_rect = Rect2(5, 2052, 40, 34)
+
+[node name="EyeGlint" type="Sprite2D" parent="Undyne" unique_id=333903358]
+modulate = Color(1, 1, 1, 0.7529412)
+position = Vector2(318.00003, 48.00001)
+rotation = -0.30267492
+scale = Vector2(7.10159, 1.3080454)
+texture = ExtResource("7_4k1nj")
+offset = Vector2(75, -2)
+region_enabled = true
+region_rect = Rect2(5, 2006, 151, 23)
+
+[node name="BodyAnimation" type="AnimationPlayer" parent="Undyne" unique_id=901950637]
+libraries/ = SubResource("AnimationLibrary_v7i3o")
+
+[node name="EyeGlintAnimation" type="AnimationPlayer" parent="Undyne" unique_id=1951979680]
+libraries/ = SubResource("AnimationLibrary_03edq")
