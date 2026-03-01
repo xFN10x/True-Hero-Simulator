@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://drg0i4fi152u7"]
 
 [ext_resource type="AudioStream" uid="uid://bmyubypm543pd" path="res://audio/song.mp3" id="1_th188"]
-[ext_resource type="Script" uid="uid://drjqoqevkyadl" path="res://new_script.gd" id="2_p1qf1"]
+[ext_resource type="Script" uid="uid://drjqoqevkyadl" path="res://battle.gd" id="2_p1qf1"]
 [ext_resource type="AudioStream" uid="uid://qjbwpmsfoouc" path="res://audio/snd_squeak.wav" id="3_6vh42"]
 [ext_resource type="Texture2D" uid="uid://hcykpao8pbah" path="res://sprites/20260301133125_1.jpg" id="3_lpir7"]
 [ext_resource type="Texture2D" uid="uid://bv3m4o5ij5hlb" path="res://sprites/76661.png" id="3_p1qf1"]
@@ -25,7 +25,7 @@ position = Vector2(87, 453)
 scale = Vector2(1.0000001, 1.0000005)
 texture = ExtResource("3_p1qf1")
 region_enabled = true
-region_rect = Rect2(8, 158, 110, 42)
+region_rect = Rect2(8, 111, 110, 42)
 
 [node name="Act" type="Sprite2D" parent="." unique_id=118758762]
 position = Vector2(240.00002, 453)

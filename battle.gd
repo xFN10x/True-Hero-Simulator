@@ -30,7 +30,10 @@ func _ready() -> void:
 	menuMoveNode = get_node("MenuMove")
 	soulNode = get_node("Soul")
 	
-	
+	fightNode = get_node("Fight")
+	actNode = get_node("Act")
+	itemNode = get_node("Item")
+	mercyNode = get_node("Mercy")
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -47,14 +50,29 @@ func _process(delta: float) -> void:
 		0:
 			# FIGHT
 			soulNode.global_position = Vector2(fightXSoul, soulY)
-			
+			fightNode.region_rect = Rect2(8, fightVOffset + selectedVOffset, 110, 42)
+			actNode.region_rect = Rect2(8, actVOffset, 110, 42)
+			itemNode.region_rect = Rect2(8, itemVOffset, 110, 42)
+			mercyNode.region_rect = Rect2(8, mercyVOffset, 110, 42)
 		1:
 			# ACT
 			soulNode.global_position = Vector2(actXSoul, soulY)
+			fightNode.region_rect = Rect2(8, fightVOffset, 110, 42)
+			actNode.region_rect = Rect2(8, actVOffset + selectedVOffset, 110, 42)
+			itemNode.region_rect = Rect2(8, itemVOffset, 110, 42)
+			mercyNode.region_rect = Rect2(8, mercyVOffset, 110, 42)
 		2:
 			# ITEM
 			soulNode.global_position = Vector2(itemXSoul, soulY)
+			fightNode.region_rect = Rect2(8, fightVOffset, 110, 42)
+			actNode.region_rect = Rect2(8, actVOffset, 110, 42)
+			itemNode.region_rect = Rect2(8, itemVOffset + selectedVOffset, 110, 42)
+			mercyNode.region_rect = Rect2(8, mercyVOffset, 110, 42)
 		3:
 			# MERCY
 			soulNode.global_position = Vector2(mercyXSoul, soulY)
+			fightNode.region_rect = Rect2(8, fightVOffset, 110, 42)
+			actNode.region_rect = Rect2(8, actVOffset, 110, 42)
+			itemNode.region_rect = Rect2(8, itemVOffset, 110, 42)
+			mercyNode.region_rect = Rect2(8, mercyVOffset + selectedVOffset, 110, 42)
 	
