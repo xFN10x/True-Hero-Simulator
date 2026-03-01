@@ -22,6 +22,8 @@ var selectedButton = 0;
 var soulNode: Sprite2D
 var musicNode: AudioStreamPlayer
 var menuMoveNode: AudioStreamPlayer
+
+var playerName = "chara"
 	
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -34,6 +36,8 @@ func _ready() -> void:
 	actNode = get_node("Act")
 	itemNode = get_node("Item")
 	mercyNode = get_node("Mercy")
+	
+	get_node("InfoBar/Name").text = playerName
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
