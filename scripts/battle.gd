@@ -16,6 +16,7 @@ var optionPoses = [
 	Vector2(72.0, 286.0), Vector2(312, 286.0),
 	Vector2(72.0, 318.0), Vector2(312, 318.0)
 ]
+var lastOption = 0
 
 var fightNode: Sprite2D
 var actNode: Sprite2D
@@ -116,13 +117,21 @@ func setBoxPosInsta(trans: Vector4) -> void:
 	boxNode.size = Vector2(trans.z, trans.w)
 
 func setBoxPos(trans: Vector4) -> Signal:
-	var tweenMove = get_tree().create_tween()
-	tweenMove.tween_property(boxNode, "position", Vector2(trans.x, trans.y), 0.5).set_trans(Tween.TRANS_LINEAR)
-	var tweenSize = get_tree().create_tween()
-	tweenSize.tween_property(boxNode, "size", Vector2(trans.z, trans.w), 0.5).set_trans(Tween.TRANS_LINEAR)
-	tweenSize.play()
-	tweenMove.play()
-	return get_tree().create_timer(0.5).timeout
+	var tweenMoveX = get_tree().create_tween()
+	tweenMoveX.tween_property(boxNode, "position", Vector2(trans.x, boxNode.position.y), 0.1).set_trans(Tween.TRANS_LINEAR)
+	var tweenSizeX = get_tree().create_tween()
+	tweenSizeX.tween_property(boxNode, "size", Vector2(trans.z, boxNode.size.y), 0.2).set_trans(Tween.TRANS_LINEAR)
+	tweenSizeX.play()
+	tweenMoveX.play()
+	await get_tree().create_timer(0.2).timeout
+	
+	var tweenMoveY = get_tree().create_tween()
+	tweenMoveY.tween_property(boxNode, "position", Vector2(boxNode.position.x, trans.y), 0.1).set_trans(Tween.TRANS_LINEAR)
+	var tweenSizeY = get_tree().create_tween()
+	tweenSizeY.tween_property(boxNode, "size", Vector2(boxNode.size.x, trans.w), 0.2).set_trans(Tween.TRANS_LINEAR)
+	tweenSizeY.play()
+	tweenMoveY.play()
+	return get_tree().create_timer(0.2).timeout
 	
 func canNavTo(optionArray: Array, selected: int) -> bool:
 	return selected >= 0 && selected < optionArray.size()
@@ -182,20 +191,22 @@ func endAttack() -> void:
 	await setBoxPos(defaultPos)
 	showText(defaultText)
 
-
-func enemyAttack(id) -> void:
+func attackNoProceed(id) -> void:
+	menuMode = MenuMode.ENEMY_TURN
 	var dur = 0.3
 
-	menuMode = MenuMode.ENEMY_TURN
-	soulNode.position = greenSoulPos
+	currentAttack = id
 	match currentAttack:
 		0:
-			setBoxPos(spearAtkPos)
+			await setBoxPos(spearAtkPos)
 			soulMode = SoulMode.GREEN
+			soulNode.position = greenSoulPos
+			soulNode.visible = true
 			await get_tree().create_timer(2).timeout
 			endAttack()
 			
 func _process(delta: float) -> void:
+	#print(menuMode)
 	greenSoulShield.rotation = lerp_angle(greenSoulShield.rotation, greenSoulRotate, 0.8)
 	match soulMode:
 		SoulMode.RED:
@@ -221,7 +232,6 @@ func _process(delta: float) -> void:
 			option2Node.visible = false
 			option3Node.visible = false
 			textNode.visible = false;
-			soulNode.visible = true;
 			if (soulMode == SoulMode.GREEN):
 				greenSoulPartsNode.visible = true;
 				var dur = 0.1
@@ -241,10 +251,9 @@ func _process(delta: float) -> void:
 			option3Node.visible = false
 			textNode.visible = true;
 			soulNode.visible = false;
-
+			
 			if currentTextI >= currentText.length() && Input.is_action_just_pressed("ui_select") :
-				print("help")
-				enemyAttack(0)
+				attackNoProceed(0)
 		MenuMode.OPTION_MODE:
 			greenSoulPartsNode.visible = false;
 			option0Node.visible = false
@@ -263,6 +272,7 @@ func _process(delta: float) -> void:
 				
 			if Input.is_action_just_pressed("ui_select") :
 				menuSelectNode.play()
+				lastOption = selectedButton
 				match selectedButton:
 					0:
 						pass
@@ -280,8 +290,13 @@ func _process(delta: float) -> void:
 						]
 						menuMode = MenuMode.ITEM
 					3:
-						pass
+						menuOptions = [
+							"Spare"
+						]
+						menuMode = MenuMode.ITEM
 				selectedButton = 0
+				soulNode.position = Vector2(999,999)
+				return
 					
 			match selectedButton:
 				0:
@@ -354,16 +369,19 @@ func _process(delta: float) -> void:
 				menuMoveNode.play()
 				
 			if Input.is_action_just_pressed("ui_cancel") :
-				selectedButton = 2
 				menuMode = MenuMode.OPTION_MODE
+				selectedButton = lastOption
 				currentTextI = 0
 			if Input.is_action_just_pressed("ui_select") :
 				menuSelectNode.play()
 				menuMode = MenuMode.NO_MODE
+				soulNode.visible = false
 				if menuOptions[selectedButton] == "Check":
 					showText(checkText)
+				elif menuOptions[selectedButton] == "Spare":
+					attackNoProceed(0)
 				else:
 					showText("* Consumed the " + menuOptions[selectedButton])
 			soulNode.position = optionPoses[selectedButton]
-			pass
+			return
 				

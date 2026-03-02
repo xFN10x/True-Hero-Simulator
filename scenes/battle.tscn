@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://drg0i4fi152u7"]
 
 [ext_resource type="AudioStream" uid="uid://bmyubypm543pd" path="res://audio/song.mp3" id="1_th188"]
-[ext_resource type="Script" uid="uid://drjqoqevkyadl" path="res://battle.gd" id="2_p1qf1"]
+[ext_resource type="Script" uid="uid://drjqoqevkyadl" path="res://scripts/battle.gd" id="2_p1qf1"]
 [ext_resource type="AudioStream" uid="uid://qjbwpmsfoouc" path="res://audio/snd_squeak.wav" id="3_6vh42"]
 [ext_resource type="Texture2D" uid="uid://bv3m4o5ij5hlb" path="res://sprites/battle.png" id="3_p1qf1"]
 [ext_resource type="AudioStream" uid="uid://bmgnpm5puewpo" path="res://audio/snd_select.wav" id="4_66ngm"]
@@ -11,7 +11,7 @@
 [ext_resource type="LabelSettings" uid="uid://c06m4ae3gy7q5" path="res://dio_label.tres" id="8_03edq"]
 [ext_resource type="Texture2D" uid="uid://y7legvbgkniv" path="res://sprites/20260301133139_1.jpg" id="9_03edq"]
 [ext_resource type="Texture2D" uid="uid://cvqtotlwc7b0i" path="res://sprites/green_soul_normal.png" id="12_03edq"]
-[ext_resource type="Script" uid="uid://bnrvcdj0nfocy" path="res://scripts/shield.gd" id="12_22uqi"]
+[ext_resource type="Script" uid="uid://bnrvcdj0nfocy" path="res://scripts/global.gd" id="12_22uqi"]
 
 [sub_resource type="GDScript" id="GDScript_66ngm"]
 script/source = "extends Node
@@ -387,6 +387,7 @@ corner_radius_top_right = 32
 corner_radius_bottom_right = 32
 corner_radius_bottom_left = 32
 corner_detail = 20
+anti_aliasing = false
 
 [node name="Battle" type="Node2D" unique_id=2070806762]
 script = ExtResource("2_p1qf1")
@@ -642,7 +643,13 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_03edq")
 points = PackedVector2Array(-18.92, 10.995, -30.985, -28.63, -30.985, 30.685)
 width = 3.0
 default_color = Color(0.29579774, 0.26513606, 0.77028996, 1)
-script = ExtResource("12_22uqi")
+sharp_limit = 1.0
 
 [node name="GlobalScript" type="Node" parent="." unique_id=1708905942]
 script = ExtResource("12_22uqi")
+
+[node name="FPSCounter" type="Label" parent="GlobalScript" unique_id=188658825]
+visible = false
+offset_right = 40.0
+offset_bottom = 16.0
+text = "60"
