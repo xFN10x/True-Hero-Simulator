@@ -8,10 +8,36 @@
 [ext_resource type="AudioStream" uid="uid://utr2xn051h7k" path="res://audio/SND_TXT2.wav" id="4_v7i3o"]
 [ext_resource type="Texture2D" uid="uid://clycnxqh12qsn" path="res://sprites/undyne.png" id="7_4k1nj"]
 [ext_resource type="FontVariation" uid="uid://cnsgsqotxvbxc" path="res://dio.tres" id="7_66ngm"]
-[ext_resource type="Script" uid="uid://bubt6lgqhjh16" path="res://scenes/undyne-ani.gd" id="7_f4pi3"]
 [ext_resource type="LabelSettings" uid="uid://c06m4ae3gy7q5" path="res://dio_label.tres" id="8_03edq"]
 [ext_resource type="Texture2D" uid="uid://y7legvbgkniv" path="res://sprites/20260301133139_1.jpg" id="9_03edq"]
 [ext_resource type="Texture2D" uid="uid://cvqtotlwc7b0i" path="res://sprites/green_soul_normal.png" id="12_03edq"]
+[ext_resource type="Script" uid="uid://bnrvcdj0nfocy" path="res://scripts/shield.gd" id="12_22uqi"]
+
+[sub_resource type="GDScript" id="GDScript_66ngm"]
+script/source = "extends Node
+
+var Legs: Sprite2D
+var LArm: Sprite2D
+var RArm: Sprite2D
+var Hair: Sprite2D
+var Body: Sprite2D
+var Torso: Sprite2D
+var Head: Sprite2D
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	Legs = get_node(\"Legs\")
+	LArm = get_node(\"LArm\")
+	RArm = get_node(\"RArm\")
+	Hair = get_node(\"Hair\")
+	Body = get_node(\"Body\")
+	Torso = get_node(\"Torso\")
+	Head = get_node(\"Head\")
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+"
 
 [sub_resource type="Animation" id="Animation_f4pi3"]
 length = 0.001
@@ -349,6 +375,19 @@ border_width_right = 5
 border_width_bottom = 5
 border_color = Color(1, 1, 1, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_03edq"]
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0.9647059, 0, 1)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+corner_detail = 20
+
 [node name="Battle" type="Node2D" unique_id=2070806762]
 script = ExtResource("2_p1qf1")
 
@@ -365,18 +404,10 @@ stream = ExtResource("4_66ngm")
 stream = ExtResource("4_v7i3o")
 
 [node name="Undyne" type="Node" parent="." unique_id=1060237284]
-script = ExtResource("7_f4pi3")
-
-[node name="Hint" type="Sprite2D" parent="Undyne" unique_id=521467041]
-visible = false
-modulate = Color(1, 1, 1, 0.28235295)
-position = Vector2(296, 103)
-scale = Vector2(2.000001, 2.000001)
-texture = ExtResource("7_4k1nj")
-region_enabled = true
-region_rect = Rect2(5, 1840, 95, 143)
+script = SubResource("GDScript_66ngm")
 
 [node name="Legs" type="Sprite2D" parent="Undyne" unique_id=659566407]
+z_index = -1
 position = Vector2(310, 206)
 scale = Vector2(2.000001, 2.000001)
 texture = ExtResource("7_4k1nj")
@@ -384,6 +415,7 @@ region_enabled = true
 region_rect = Rect2(337, 1840, 40, 42)
 
 [node name="LArm" type="Sprite2D" parent="Undyne" unique_id=31958946]
+z_index = -1
 position = Vector2(358, 137)
 scale = Vector2(2.000001, 2.000001)
 texture = ExtResource("7_4k1nj")
@@ -391,6 +423,7 @@ region_enabled = true
 region_rect = Rect2(267, 1840, 19, 44)
 
 [node name="RArm" type="Sprite2D" parent="Undyne" unique_id=566646253]
+z_index = -1
 position = Vector2(261, 168)
 scale = Vector2(2.000001, 2.000001)
 texture = ExtResource("7_4k1nj")
@@ -398,6 +431,7 @@ region_enabled = true
 region_rect = Rect2(132, 1840, 46, 76)
 
 [node name="Hair" type="Sprite2D" parent="Undyne" unique_id=154714321]
+z_index = -1
 position = Vector2(285, 26)
 rotation = -1.1700137
 scale = Vector2(2.000001, 2.000001)
@@ -407,6 +441,7 @@ region_enabled = true
 region_rect = Rect2(105, 1840, 22, 34)
 
 [node name="Body" type="Sprite2D" parent="Undyne" unique_id=1000541810]
+z_index = -1
 position = Vector2(254, 89)
 rotation = 0.057551812
 scale = Vector2(2.000001, 2.000001)
@@ -416,6 +451,7 @@ region_enabled = true
 region_rect = Rect2(183, 1840, 79, 58)
 
 [node name="Torso" type="Sprite2D" parent="Undyne" unique_id=315037308]
+z_index = -1
 position = Vector2(334.00003, 144)
 rotation = 0.017771654
 scale = Vector2(2.000001, 2.000001)
@@ -425,6 +461,7 @@ region_enabled = true
 region_rect = Rect2(291, 1840, 41, 28)
 
 [node name="Head" type="Sprite2D" parent="Undyne" unique_id=258279776]
+z_index = -1
 position = Vector2(310, 49)
 scale = Vector2(2.000001, 2.000001)
 texture = ExtResource("7_4k1nj")
@@ -433,6 +470,7 @@ region_rect = Rect2(5, 2052, 40, 34)
 
 [node name="EyeGlint" type="Sprite2D" parent="Undyne" unique_id=333903358]
 modulate = Color(1, 1, 1, 0.7529412)
+z_index = -1
 position = Vector2(318.00003, 48.00001)
 rotation = -0.30267492
 scale = Vector2(7.10159, 1.3080454)
@@ -474,11 +512,6 @@ scale = Vector2(1, 1.0000005)
 texture = ExtResource("3_p1qf1")
 region_enabled = true
 region_rect = Rect2(8, 313, 110, 42)
-
-[node name="Hint" type="Sprite2D" parent="." unique_id=1872088016]
-modulate = Color(1, 1, 1, 0.14901961)
-position = Vector2(320, 240)
-texture = ExtResource("9_03edq")
 
 [node name="InfoBar" type="Node" parent="." unique_id=2092922539]
 
@@ -522,7 +555,7 @@ offset_left = 357.0
 offset_top = 400.0
 offset_right = 450.0
 offset_bottom = 424.0
-text = "44 / 56"
+text = "56 / 56"
 label_settings = SubResource("LabelSettings_v7i3o")
 
 [node name="Box" type="Panel" parent="." unique_id=770708501]
@@ -533,19 +566,20 @@ offset_bottom = 285.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_66ngm")
 
 [node name="MainText" type="Label" parent="Box" unique_id=1688906120]
-visible = false
 layout_mode = 0
 offset_left = 20.0
 offset_top = 20.0
 offset_right = 347.0
 offset_bottom = 54.0
 theme_override_fonts/font = ExtResource("7_66ngm")
-text = "* The wind is howling..."
+text = "* Undyne the Undying - ATK 99 DEF 99
+* Heroine reformed by her own DETERMINATION to save Earth."
 label_settings = ExtResource("8_03edq")
 
 [node name="Options" type="Node" parent="Box" unique_id=1876007917]
 
 [node name="0" type="Label" parent="Box/Options" unique_id=157318341]
+visible = false
 offset_left = 100.0
 offset_top = 270.0
 offset_right = 140.0
@@ -584,12 +618,31 @@ theme_override_fonts/font = ExtResource("7_66ngm")
 text = "*   Mns"
 label_settings = ExtResource("8_03edq")
 
+[node name="Hint" type="Sprite2D" parent="." unique_id=1872088016]
+visible = false
+modulate = Color(1, 1, 1, 0.5647059)
+position = Vector2(320, 240)
+texture = ExtResource("9_03edq")
+
 [node name="Soul" type="Sprite2D" parent="." unique_id=450798543]
-position = Vector2(348, 318)
+position = Vector2(320, 242)
 texture = ExtResource("12_03edq")
 
-[node name="Panel" type="Panel" parent="Soul" unique_id=940488201]
-offset_left = 1.0
-offset_right = 41.0
-offset_bottom = 40.0
-pivot_offset = Vector2(153, 44)
+[node name="GreenSoul" type="Node2D" parent="Soul" unique_id=1970917391]
+
+[node name="ShieldCircle" type="Panel" parent="Soul/GreenSoul" unique_id=940488201]
+offset_left = -29.0
+offset_top = -29.0
+offset_right = 29.0
+offset_bottom = 29.0
+pivot_offset = Vector2(29, 29)
+theme_override_styles/panel = SubResource("StyleBoxFlat_03edq")
+
+[node name="Shield" type="Line2D" parent="Soul/GreenSoul" unique_id=534361229]
+points = PackedVector2Array(-18.92, 10.995, -30.985, -28.63, -30.985, 30.685)
+width = 3.0
+default_color = Color(0.29579774, 0.26513606, 0.77028996, 1)
+script = ExtResource("12_22uqi")
+
+[node name="GlobalScript" type="Node" parent="." unique_id=1708905942]
+script = ExtResource("12_22uqi")

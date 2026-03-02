@@ -42,7 +42,7 @@ var hpTextNode: Label
 var boxNode: Panel
 # Box Positions Vec4(x,y, width, height)
 var defaultPos = Vector4(32, 250, 575, 140)
-var spearAtkPos = Vector4(85, 81, 280, 204)
+var spearAtkPos = Vector4(280, 204,85, 81)
 
 enum MenuMode {
 	OPTION_MODE,
@@ -53,9 +53,29 @@ enum MenuMode {
 	FIGHT,
 	ENEMY_TURN,
 }
-var menuOptions = [
-	"test", "test",
-	"big test"
+var menuOptions = []
+
+class Item :
+	var Health: int
+	var Name: String
+	var SName: String
+	
+	func _init(Health, Name, ShortName) -> void:
+		self.Health = Health
+		self.Name = Name
+		self.SName = ShortName
+	
+var food = [
+	Item.new(22, "Cinnamon Bunny",  "C. Bun"),
+	Item.new(22, "Cinnamon Bunny",  "C. Bun"),
+	Item.new(22, "Cinnamon Bunny",  "C. Bun"),
+	Item.new(22, "Cinnamon Bunny",  "C. Bun"),
+	
+	Item.new(999, "Butterscotch Pie",  "Pie"),
+	
+	Item.new(45, "Snowman Piece",  "SnowPiece"),
+	Item.new(45, "Snowman Piece",  "SnowPiece"),
+	Item.new(45, "Snowman Piece",  "SnowPiece"),
 ]
 var menuMode = MenuMode.OPTION_MODE
 var textNode: Label
@@ -64,7 +84,8 @@ var option1Node: Label
 var option2Node: Label
 var option3Node: Label
 
-var currentText = "* The wind is howling..."
+var defaultText = "* The wind is howling..."
+var currentText = defaultText
 var currentTextI = 0
 
 var currentAttack = 0
@@ -76,18 +97,32 @@ enum SoulMode {
 var soulMode = SoulMode.RED
 var redSoulTexture = CompressedTexture2D.new()
 var greenSoulTexture = CompressedTexture2D.new()
+var greenSoulPartsNode: Node2D
+var greenSoulShield: Line2D
+var greenSoulPos = Vector2(320, 242)
+var greenSoulProtectUp: Tween
+var greenSoulProtectDown: Tween
+var greenSoulProtectLeft: Tween
+var greenSoulProtectRight: Tween
+var greenSoulRotate = deg_to_rad(90)
+
+var checkText = """* Undyne the Undying - ATK 99 DEF 99
+* Heroine reformed by her own
+  DETERMINATION to save Earth.
+"""
 
 func setBoxPosInsta(trans: Vector4) -> void:
 	boxNode.position = Vector2(trans.x, trans.y)
 	boxNode.size = Vector2(trans.z, trans.w)
 
-func setBoxPos(trans: Vector4) -> void:
+func setBoxPos(trans: Vector4) -> Signal:
 	var tweenMove = get_tree().create_tween()
-	tweenMove.tween_property(boxNode, "position", Vector2(trans.x, trans.y), 1)
+	tweenMove.tween_property(boxNode, "position", Vector2(trans.x, trans.y), 0.5).set_trans(Tween.TRANS_LINEAR)
 	var tweenSize = get_tree().create_tween()
-	tweenSize.tween_property(boxNode, "size", Vector2(trans.z, trans.w), 1)
+	tweenSize.tween_property(boxNode, "size", Vector2(trans.z, trans.w), 0.5).set_trans(Tween.TRANS_LINEAR)
 	tweenSize.play()
 	tweenMove.play()
+	return get_tree().create_timer(0.5).timeout
 	
 func canNavTo(optionArray: Array, selected: int) -> bool:
 	return selected >= 0 && selected < optionArray.size()
@@ -95,7 +130,6 @@ func canNavTo(optionArray: Array, selected: int) -> bool:
 func showText(text: String) -> void:
 	currentText = text
 	currentTextI = 0
-	optionPoses
 
 func selectOption() -> void:
 	menuMode = 0
@@ -136,10 +170,33 @@ func _ready() -> void:
 
 	boxNode = get_node("Box")
 	
+	greenSoulPartsNode = get_node("Soul/GreenSoul")
+	greenSoulShield = get_node("Soul/GreenSoul/Shield")
+	
 	setBoxPosInsta(defaultPos)
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
+func endAttack() -> void:
+	menuMode = MenuMode.OPTION_MODE;
+	currentText = ""
+	textNode.text = ""
+	await setBoxPos(defaultPos)
+	showText(defaultText)
+
+
+func enemyAttack(id) -> void:
+	var dur = 0.3
+
+	menuMode = MenuMode.ENEMY_TURN
+	soulNode.position = greenSoulPos
+	match currentAttack:
+		0:
+			setBoxPos(spearAtkPos)
+			soulMode = SoulMode.GREEN
+			await get_tree().create_timer(2).timeout
+			endAttack()
+			
 func _process(delta: float) -> void:
+	greenSoulShield.rotation = lerp_angle(greenSoulShield.rotation, greenSoulRotate, 0.8)
 	match soulMode:
 		SoulMode.RED:
 			soulNode.texture = redSoulTexture
@@ -149,7 +206,7 @@ func _process(delta: float) -> void:
 	hpTextNode.text = "%s / %s" % [hp, maxHp]
 	#print(selectedButton)
 	if currentTextI < currentText.length() && (menuMode != MenuMode.ITEM):
-		if menuMode == MenuMode.NO_MODE && Input.is_action_just_pressed("ui_select") :
+		if currentTextI != currentText.length() && menuMode == MenuMode.NO_MODE && Input.is_action_just_pressed("ui_cancel") :
 			currentTextI = currentText.length()
 				
 		currentTextI += 1
@@ -164,22 +221,32 @@ func _process(delta: float) -> void:
 			option2Node.visible = false
 			option3Node.visible = false
 			textNode.visible = false;
-			soulNode.visible = false;
-			match currentAttack:
-				0:
-					pass
-					
+			soulNode.visible = true;
+			if (soulMode == SoulMode.GREEN):
+				greenSoulPartsNode.visible = true;
+				var dur = 0.1
+				if Input.is_action_just_pressed("ui_down") :
+					greenSoulRotate = deg_to_rad(270)
+				if Input.is_action_just_pressed("ui_up") :
+					greenSoulRotate = deg_to_rad(90)
+				if Input.is_action_just_pressed("ui_left") :
+					greenSoulRotate = deg_to_rad(0)
+				if Input.is_action_just_pressed("ui_right") :
+					greenSoulRotate = deg_to_rad(180)
 		MenuMode.NO_MODE:
+			greenSoulPartsNode.visible = false;
 			option0Node.visible = false
 			option1Node.visible = false
 			option2Node.visible = false
 			option3Node.visible = false
 			textNode.visible = true;
 			soulNode.visible = false;
-			
-			if currentTextI <= currentText.length() && Input.is_action_just_pressed("ui_select") :
-				menuMode == MenuMode.ENEMY_TURN
+
+			if currentTextI >= currentText.length() && Input.is_action_just_pressed("ui_select") :
+				print("help")
+				enemyAttack(0)
 		MenuMode.OPTION_MODE:
+			greenSoulPartsNode.visible = false;
 			option0Node.visible = false
 			option1Node.visible = false
 			option2Node.visible = false
@@ -200,11 +267,21 @@ func _process(delta: float) -> void:
 					0:
 						pass
 					1:
-						pass
+						menuOptions = [
+							"Check"
+						]
+						menuMode = MenuMode.ITEM
 					2:
+						menuOptions = [
+							food[0].SName,
+							food[1].SName,
+							food[2].SName,
+							food[3].SName,
+						]
 						menuMode = MenuMode.ITEM
 					3:
 						pass
+				selectedButton = 0
 					
 			match selectedButton:
 				0:
@@ -237,6 +314,7 @@ func _process(delta: float) -> void:
 					mercyNode.region_rect = Rect2(8, mercyVOffset + selectedVOffset, 110, 42)
 			pass
 		MenuMode.ITEM:
+			greenSoulPartsNode.visible = false;
 			soulNode.visible = true;
 			option0Node.visible = true
 			if canNavTo(menuOptions, 0):
@@ -282,17 +360,10 @@ func _process(delta: float) -> void:
 			if Input.is_action_just_pressed("ui_select") :
 				menuSelectNode.play()
 				menuMode = MenuMode.NO_MODE
-				showText("* Consumed the " + menuOptions[selectedButton])
-				match selectedButton:
-					0:
-						
-						pass
-					1:
-						pass
-					2:
-						pass
-					3:
-						pass
+				if menuOptions[selectedButton] == "Check":
+					showText(checkText)
+				else:
+					showText("* Consumed the " + menuOptions[selectedButton])
 			soulNode.position = optionPoses[selectedButton]
 			pass
 				
