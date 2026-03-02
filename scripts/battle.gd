@@ -48,11 +48,9 @@ var spearAtkPos = Vector4(280, 204,85, 81)
 enum MenuMode {
 	OPTION_MODE,
 	NO_MODE,
-	ACT,
 	ITEM,
-	MERCY,
-	FIGHT,
 	ENEMY_TURN,
+	ATTACK,
 }
 var menuOptions = []
 
@@ -107,10 +105,22 @@ var greenSoulProtectLeft: Tween
 var greenSoulProtectRight: Tween
 var greenSoulRotate = deg_to_rad(90)
 
-var checkText = """* Undyne the Undying - ATK 99 DEF 99
+var checkText = """Undyne the Undying - ATK 99 DEF 99
 * Heroine reformed by her own
   DETERMINATION to save Earth.
 """
+
+var enemyMaxHealth = 23000
+var enemyHealth = enemyMaxHealth
+var enemyHealthBar: ProgressBar
+
+var attackIndicBar: AnimatedSprite2D
+var attackTargetAnimation: AnimationPlayer
+var moveIndic = true
+
+var knifeAnimationNode: AnimatedSprite2D
+var knifeSound: AudioStreamPlayer
+var enemyHitSound: AudioStreamPlayer
 
 func setBoxPosInsta(trans: Vector4) -> void:
 	boxNode.position = Vector2(trans.x, trans.y)
@@ -182,6 +192,19 @@ func _ready() -> void:
 	greenSoulPartsNode = get_node("Soul/GreenSoul")
 	greenSoulShield = get_node("Soul/GreenSoul/Shield")
 	
+	enemyHealthBar = get_node("Box/Options/0/HPBar")
+	enemyHealthBar.max_value = enemyMaxHealth
+	enemyHealthBar.value = enemyHealth
+	enemyHealthBar.visible = false
+	
+	attackIndicBar = get_node("Box/AttackIndic")
+	attackIndicBar.play()
+	attackTargetAnimation = get_node("Box/Target/TargetAnimation")
+	
+	knifeAnimationNode = get_node("Undyne/KnifeAnimation")
+	knifeSound = get_node("Attack")
+	enemyHitSound = get_node("Damage")
+	
 	setBoxPosInsta(defaultPos)
 
 func endAttack() -> void:
@@ -191,6 +214,12 @@ func endAttack() -> void:
 	await setBoxPos(defaultPos)
 	showText(defaultText)
 
+var attacksHealthRange = {
+	
+}
+func attackProceed() -> void:
+	attackNoProceed(0)
+	
 func attackNoProceed(id) -> void:
 	menuMode = MenuMode.ENEMY_TURN
 	var dur = 0.3
@@ -226,6 +255,35 @@ func _process(delta: float) -> void:
 			#print(textNode.text.substr(textNode.text.length()-1, 1))
 			textSndNode.play()
 	match menuMode:
+		MenuMode.ATTACK:
+			greenSoulPartsNode.visible = false;
+			option0Node.visible = false
+			option1Node.visible = false
+			option2Node.visible = false
+			option3Node.visible = false
+			textNode.visible = false;
+			soulNode.visible = false;
+			if moveIndic:
+				attackIndicBar.position.x += 14
+			
+			if Input.is_action_just_pressed("ui_select") && moveIndic :
+				moveIndic = false
+				knifeAnimationNode.visible = true
+				knifeAnimationNode.play()
+				knifeSound.play()
+				await get_tree().create_timer(0.9).timeout
+				knifeAnimationNode.visible = false
+				enemyHitSound.play()
+				undyneAnimationNode.play("hurt")
+				await get_tree().create_timer(1.2).timeout
+				undyneAnimationNode.play("undyne")
+				await get_tree().create_timer(1).timeout
+				attackTargetAnimation.play_backwards()
+				attackIndicBar.position.x = -99999
+				await get_tree().create_timer(0.5).timeout
+				attackProceed()
+				return
+			
 		MenuMode.ENEMY_TURN:
 			option0Node.visible = false
 			option1Node.visible = false
@@ -275,7 +333,11 @@ func _process(delta: float) -> void:
 				lastOption = selectedButton
 				match selectedButton:
 					0:
-						pass
+						enemyHealthBar.visible = true
+						menuOptions = [
+							"Undyne the Undying"
+						]
+						menuMode = MenuMode.ITEM
 					1:
 						menuOptions = [
 							"Check"
@@ -380,6 +442,11 @@ func _process(delta: float) -> void:
 					showText(checkText)
 				elif menuOptions[selectedButton] == "Spare":
 					attackNoProceed(0)
+				elif menuOptions[selectedButton] == "Undyne the Undying":
+					attackTargetAnimation.play("in")
+					moveIndic = true
+					attackIndicBar.position.x = -85.0
+					menuMode = MenuMode.ATTACK
 				else:
 					showText("* Consumed the " + menuOptions[selectedButton])
 			soulNode.position = optionPoses[selectedButton]

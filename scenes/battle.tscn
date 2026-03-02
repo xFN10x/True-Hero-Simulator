@@ -6,10 +6,13 @@
 [ext_resource type="Texture2D" uid="uid://bv3m4o5ij5hlb" path="res://sprites/battle.png" id="3_p1qf1"]
 [ext_resource type="AudioStream" uid="uid://bmgnpm5puewpo" path="res://audio/snd_select.wav" id="4_66ngm"]
 [ext_resource type="AudioStream" uid="uid://utr2xn051h7k" path="res://audio/SND_TXT2.wav" id="4_v7i3o"]
+[ext_resource type="AudioStream" uid="uid://bkgmpa4flrqos" path="res://audio/snd_laz.wav" id="6_vceff"]
 [ext_resource type="Texture2D" uid="uid://clycnxqh12qsn" path="res://sprites/undyne.png" id="7_4k1nj"]
 [ext_resource type="FontVariation" uid="uid://cnsgsqotxvbxc" path="res://dio.tres" id="7_66ngm"]
+[ext_resource type="AudioStream" uid="uid://bhpw45gka4jco" path="res://audio/snd_damage.wav" id="7_ekamt"]
 [ext_resource type="LabelSettings" uid="uid://c06m4ae3gy7q5" path="res://dio_label.tres" id="8_03edq"]
-[ext_resource type="Texture2D" uid="uid://y7legvbgkniv" path="res://sprites/20260301133139_1.jpg" id="9_03edq"]
+[ext_resource type="Texture2D" uid="uid://b8ls7tn51yqsp" path="res://sprites/battle2.png" id="10_6ni85"]
+[ext_resource type="SpriteFrames" uid="uid://bfxowpro515br" path="res://sprites/attack_indic.tres" id="11_vceff"]
 [ext_resource type="Texture2D" uid="uid://cvqtotlwc7b0i" path="res://sprites/green_soul_normal.png" id="12_03edq"]
 [ext_resource type="Script" uid="uid://bnrvcdj0nfocy" path="res://scripts/global.gd" id="12_22uqi"]
 
@@ -149,6 +152,59 @@ tracks/8/keys = {
 "update": 0,
 "values": [Vector2(261, 168)]
 }
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("Head:region_rect:position:y")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [2052.0]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath(".:position:x")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_vceff"]
+resource_name = "hurt"
+length = 0.07
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Head:region_rect:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [2239.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position:x")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.07),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [-4.0, 4.0]
+}
 
 [sub_resource type="Animation" id="Animation_yahae"]
 resource_name = "undyne"
@@ -262,10 +318,23 @@ tracks/8/keys = {
 "update": 0,
 "values": [Vector2(261, 168), Vector2(250, 158)]
 }
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("Head:region_rect:position:y")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [2052.0]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_v7i3o"]
 _data = {
 &"RESET": SubResource("Animation_f4pi3"),
+&"hurt": SubResource("Animation_vceff"),
 &"undyne": SubResource("Animation_yahae")
 }
 
@@ -355,6 +424,56 @@ _data = {
 &"eye": SubResource("Animation_66ngm")
 }
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_22uqi"]
+atlas = ExtResource("10_6ni85")
+region = Rect2(910, 235, 26, 110)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6ni85"]
+atlas = ExtResource("10_6ni85")
+region = Rect2(941, 235, 26, 110)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vceff"]
+atlas = ExtResource("10_6ni85")
+region = Rect2(972, 235, 26, 110)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ekamt"]
+atlas = ExtResource("10_6ni85")
+region = Rect2(1003, 235, 26, 110)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_djc8l"]
+atlas = ExtResource("10_6ni85")
+region = Rect2(1034, 235, 26, 110)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h4dll"]
+atlas = ExtResource("10_6ni85")
+region = Rect2(1065, 235, 26, 110)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_p0caf"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_22uqi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6ni85")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vceff")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ekamt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_djc8l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h4dll")
+}],
+"loop": false,
+"name": &"default",
+"speed": 6.0
+}]
+
 [sub_resource type="LabelSettings" id="LabelSettings_6vh42"]
 font_size = 24
 
@@ -362,7 +481,7 @@ font_size = 24
 bg_color = Color(0.95686275, 0, 0.007843138, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yahae"]
-bg_color = Color(1, 0.99607843, 0.003921569, 1)
+bg_color = Color(1, 1, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_v7i3o"]
 font_size = 24
@@ -374,6 +493,70 @@ border_width_top = 5
 border_width_right = 5
 border_width_bottom = 5
 border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_22uqi"]
+bg_color = Color(0, 1, 0, 1)
+
+[sub_resource type="Animation" id="Animation_ekamt"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0.08000243]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate:a")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1.0]
+}
+
+[sub_resource type="Animation" id="Animation_djc8l"]
+resource_name = "in"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.08000243, 1.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate:a")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_h4dll"]
+_data = {
+&"RESET": SubResource("Animation_ekamt"),
+&"in": SubResource("Animation_djc8l")
+}
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_03edq"]
 draw_center = false
@@ -404,7 +587,13 @@ stream = ExtResource("4_66ngm")
 [node name="TextSnd" type="AudioStreamPlayer" parent="." unique_id=1508845270]
 stream = ExtResource("4_v7i3o")
 
-[node name="Undyne" type="Node" parent="." unique_id=1060237284]
+[node name="Attack" type="AudioStreamPlayer" parent="." unique_id=526779786]
+stream = ExtResource("6_vceff")
+
+[node name="Damage" type="AudioStreamPlayer" parent="." unique_id=1199619940]
+stream = ExtResource("7_ekamt")
+
+[node name="Undyne" type="Node2D" parent="." unique_id=1203616874]
 script = SubResource("GDScript_66ngm")
 
 [node name="Legs" type="Sprite2D" parent="Undyne" unique_id=659566407]
@@ -486,6 +675,11 @@ libraries/ = SubResource("AnimationLibrary_v7i3o")
 [node name="EyeGlintAnimation" type="AnimationPlayer" parent="Undyne" unique_id=1951979680]
 libraries/ = SubResource("AnimationLibrary_03edq")
 
+[node name="KnifeAnimation" type="AnimatedSprite2D" parent="Undyne" unique_id=1738649954]
+visible = false
+position = Vector2(309, 99)
+sprite_frames = SubResource("SpriteFrames_p0caf")
+
 [node name="Fight" type="Sprite2D" parent="." unique_id=742261727]
 position = Vector2(87, 453)
 scale = Vector2(1.0000001, 1.0000005)
@@ -560,13 +754,20 @@ text = "56 / 56"
 label_settings = SubResource("LabelSettings_v7i3o")
 
 [node name="Box" type="Panel" parent="." unique_id=770708501]
-offset_left = 280.0
-offset_top = 204.0
-offset_right = 365.0
-offset_bottom = 285.0
+offset_left = 32.0
+offset_top = 250.0
+offset_right = 607.0
+offset_bottom = 390.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_66ngm")
 
+[node name="AttackIndic" type="AnimatedSprite2D" parent="Box" unique_id=533911298]
+z_index = 1
+position = Vector2(-85, 70)
+sprite_frames = ExtResource("11_vceff")
+frame_progress = 0.74545026
+
 [node name="MainText" type="Label" parent="Box" unique_id=1688906120]
+visible = false
 layout_mode = 0
 offset_left = 20.0
 offset_top = 20.0
@@ -580,14 +781,27 @@ label_settings = ExtResource("8_03edq")
 [node name="Options" type="Node" parent="Box" unique_id=1876007917]
 
 [node name="0" type="Label" parent="Box/Options" unique_id=157318341]
-visible = false
 offset_left = 100.0
 offset_top = 270.0
 offset_right = 140.0
 offset_bottom = 302.0
 theme_override_fonts/font = ExtResource("7_66ngm")
-text = "* MnstrCndy"
+text = "* Undyne the Undying"
 label_settings = ExtResource("8_03edq")
+
+[node name="HPBar" type="ProgressBar" parent="Box/Options/0" unique_id=1821105679]
+layout_mode = 0
+offset_left = 381.0
+offset_top = 10.0
+offset_right = 482.0
+offset_bottom = 28.0
+size_flags_stretch_ratio = 2.4
+theme_override_styles/background = SubResource("StyleBoxFlat_f4pi3")
+theme_override_styles/fill = SubResource("StyleBoxFlat_22uqi")
+max_value = 56.0
+step = 1.0
+value = 56.0
+show_percentage = false
 
 [node name="1" type="Label" parent="Box/Options" unique_id=920951879]
 visible = false
@@ -619,11 +833,15 @@ theme_override_fonts/font = ExtResource("7_66ngm")
 text = "*   Mns"
 label_settings = ExtResource("8_03edq")
 
-[node name="Hint" type="Sprite2D" parent="." unique_id=1872088016]
-visible = false
-modulate = Color(1, 1, 1, 0.5647059)
-position = Vector2(320, 240)
-texture = ExtResource("9_03edq")
+[node name="Target" type="Sprite2D" parent="Box" unique_id=1242351804]
+position = Vector2(288, 70)
+scale = Vector2(0.08000243, 1)
+texture = ExtResource("10_6ni85")
+region_enabled = true
+region_rect = Rect2(5, 23, 562, 128)
+
+[node name="TargetAnimation" type="AnimationPlayer" parent="Box/Target" unique_id=744004878]
+libraries/ = SubResource("AnimationLibrary_h4dll")
 
 [node name="Soul" type="Sprite2D" parent="." unique_id=450798543]
 position = Vector2(320, 242)

@@ -1,0 +1,25 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://bfxowpro515br"]
+
+[ext_resource type="Texture2D" uid="uid://b8ls7tn51yqsp" path="res://sprites/battle2.png" id="1_isf2d"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_turro"]
+atlas = ExtResource("1_isf2d")
+region = Rect2(1139, 23, 14, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wwhg2"]
+atlas = ExtResource("1_isf2d")
+region = Rect2(1158, 23, 14, 128)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_turro")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wwhg2")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
