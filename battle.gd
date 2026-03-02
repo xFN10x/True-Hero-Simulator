@@ -33,6 +33,17 @@ var textSndNode: AudioStreamPlayer
 
 var undyneAnimationNode: AnimationPlayer
 var undyneEyeAnimationNode: AnimationPlayer
+
+var hp = 56
+var maxHp = 56
+var hpBarNode: ProgressBar
+var hpTextNode: Label
+
+var boxNode: Panel
+# Box Positions Vec4(x,y, width, height)
+var defaultPos = Vector4(32, 250, 575, 140)
+var spearAtkPos = Vector4(85, 81, 280, 204)
+
 enum MenuMode {
 	OPTION_MODE,
 	NO_MODE,
@@ -40,6 +51,7 @@ enum MenuMode {
 	ITEM,
 	MERCY,
 	FIGHT,
+	ENEMY_TURN,
 }
 var menuOptions = [
 	"test", "test",
@@ -55,6 +67,28 @@ var option3Node: Label
 var currentText = "* The wind is howling..."
 var currentTextI = 0
 
+var currentAttack = 0
+
+enum SoulMode {
+	GREEN,
+	RED,
+}
+var soulMode = SoulMode.RED
+var redSoulTexture = CompressedTexture2D.new()
+var greenSoulTexture = CompressedTexture2D.new()
+
+func setBoxPosInsta(trans: Vector4) -> void:
+	boxNode.position = Vector2(trans.x, trans.y)
+	boxNode.size = Vector2(trans.z, trans.w)
+
+func setBoxPos(trans: Vector4) -> void:
+	var tweenMove = get_tree().create_tween()
+	tweenMove.tween_property(boxNode, "position", Vector2(trans.x, trans.y), 1)
+	var tweenSize = get_tree().create_tween()
+	tweenSize.tween_property(boxNode, "size", Vector2(trans.z, trans.w), 1)
+	tweenSize.play()
+	tweenMove.play()
+	
 func canNavTo(optionArray: Array, selected: int) -> bool:
 	return selected >= 0 && selected < optionArray.size()
 
@@ -69,6 +103,9 @@ func selectOption() -> void:
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	redSoulTexture.load_path = "res://.godot/imported/red_soul_normal.png-4f89669b8b9113871863587930ef3923.ctex"
+	greenSoulTexture.load_path = "res://.godot/imported/green_soul_normal.png-41e0ebc41d7a126f221b5f497a015d17.ctex"
+
 	musicNode = get_node("Music")
 	musicNode.play()
 	menuMoveNode = get_node("MenuMove")
@@ -93,17 +130,45 @@ func _ready() -> void:
 	option1Node = get_node("Box/Options/1")
 	option2Node = get_node("Box/Options/2")
 	option3Node = get_node("Box/Options/3")
+	
+	hpBarNode = get_node("InfoBar/HPBar")
+	hpTextNode = get_node("InfoBar/HPText")
+
+	boxNode = get_node("Box")
+	
+	setBoxPosInsta(defaultPos)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	match soulMode:
+		SoulMode.RED:
+			soulNode.texture = redSoulTexture
+		SoulMode.GREEN:
+			soulNode.texture = greenSoulTexture
+	hpBarNode.value = hp
+	hpTextNode.text = "%s / %s" % [hp, maxHp]
 	#print(selectedButton)
 	if currentTextI < currentText.length() && (menuMode != MenuMode.ITEM):
+		if menuMode == MenuMode.NO_MODE && Input.is_action_just_pressed("ui_select") :
+			currentTextI = currentText.length()
+				
 		currentTextI += 1
 		textNode.text = currentText.substr(0,currentTextI)
 		if not textNode.text.substr(textNode.text.length()-1, 1) == " ":
 			#print(textNode.text.substr(textNode.text.length()-1, 1))
 			textSndNode.play()
 	match menuMode:
+		MenuMode.ENEMY_TURN:
+			option0Node.visible = false
+			option1Node.visible = false
+			option2Node.visible = false
+			option3Node.visible = false
+			textNode.visible = false;
+			soulNode.visible = false;
+			match currentAttack:
+				0:
+					pass
+					
 		MenuMode.NO_MODE:
 			option0Node.visible = false
 			option1Node.visible = false
@@ -111,6 +176,9 @@ func _process(delta: float) -> void:
 			option3Node.visible = false
 			textNode.visible = true;
 			soulNode.visible = false;
+			
+			if currentTextI <= currentText.length() && Input.is_action_just_pressed("ui_select") :
+				menuMode == MenuMode.ENEMY_TURN
 		MenuMode.OPTION_MODE:
 			option0Node.visible = false
 			option1Node.visible = false

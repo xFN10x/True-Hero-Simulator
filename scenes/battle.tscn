@@ -6,32 +6,12 @@
 [ext_resource type="Texture2D" uid="uid://bv3m4o5ij5hlb" path="res://sprites/battle.png" id="3_p1qf1"]
 [ext_resource type="AudioStream" uid="uid://bmgnpm5puewpo" path="res://audio/snd_select.wav" id="4_66ngm"]
 [ext_resource type="AudioStream" uid="uid://utr2xn051h7k" path="res://audio/SND_TXT2.wav" id="4_v7i3o"]
-[ext_resource type="Texture2D" uid="uid://dngdiqmt2xmjt" path="res://sprites/red_soul_normal.png" id="5_6vh42"]
 [ext_resource type="Texture2D" uid="uid://clycnxqh12qsn" path="res://sprites/undyne.png" id="7_4k1nj"]
 [ext_resource type="FontVariation" uid="uid://cnsgsqotxvbxc" path="res://dio.tres" id="7_66ngm"]
 [ext_resource type="Script" uid="uid://bubt6lgqhjh16" path="res://scenes/undyne-ani.gd" id="7_f4pi3"]
 [ext_resource type="LabelSettings" uid="uid://c06m4ae3gy7q5" path="res://dio_label.tres" id="8_03edq"]
-[ext_resource type="Texture2D" uid="uid://c0uwiru0bv3dq" path="res://sprites/hint.png" id="9_v7i3o"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_6vh42"]
-font_size = 24
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f4pi3"]
-bg_color = Color(0.95686275, 0, 0.007843138, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yahae"]
-bg_color = Color(1, 0.99607843, 0.003921569, 1)
-
-[sub_resource type="LabelSettings" id="LabelSettings_v7i3o"]
-font_size = 24
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_66ngm"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 5
-border_width_top = 5
-border_width_right = 5
-border_width_bottom = 5
-border_color = Color(1, 1, 1, 1)
+[ext_resource type="Texture2D" uid="uid://y7legvbgkniv" path="res://sprites/20260301133139_1.jpg" id="9_03edq"]
+[ext_resource type="Texture2D" uid="uid://cvqtotlwc7b0i" path="res://sprites/green_soul_normal.png" id="12_03edq"]
 
 [sub_resource type="Animation" id="Animation_f4pi3"]
 length = 0.001
@@ -328,7 +308,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0.19999993, 0.4666666, 0.79999995, 1.1, 1.4),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector2(2.934, 1.308), Vector2(7.102, 1.308), Vector2(10.009777, 1.308), Vector2(2.934, 1.308), Vector2(7.102, 1.308)]
+"values": [Vector2(1.659, 1.308), Vector2(4.897, 1.308), Vector2(10.009777, 1.308), Vector2(1.049, 1.308), Vector2(2.087, 1.308)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -349,6 +329,26 @@ _data = {
 &"eye": SubResource("Animation_66ngm")
 }
 
+[sub_resource type="LabelSettings" id="LabelSettings_6vh42"]
+font_size = 24
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f4pi3"]
+bg_color = Color(0.95686275, 0, 0.007843138, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yahae"]
+bg_color = Color(1, 0.99607843, 0.003921569, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_v7i3o"]
+font_size = 24
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_66ngm"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(1, 1, 1, 1)
+
 [node name="Battle" type="Node2D" unique_id=2070806762]
 script = ExtResource("2_p1qf1")
 
@@ -363,138 +363,6 @@ stream = ExtResource("4_66ngm")
 
 [node name="TextSnd" type="AudioStreamPlayer" parent="." unique_id=1508845270]
 stream = ExtResource("4_v7i3o")
-
-[node name="Fight" type="Sprite2D" parent="." unique_id=742261727]
-position = Vector2(87, 453)
-scale = Vector2(1.0000001, 1.0000005)
-texture = ExtResource("3_p1qf1")
-region_enabled = true
-region_rect = Rect2(8, 111, 110, 42)
-
-[node name="Act" type="Sprite2D" parent="." unique_id=118758762]
-position = Vector2(240.00002, 453)
-scale = Vector2(1, 1.0000005)
-texture = ExtResource("3_p1qf1")
-region_enabled = true
-region_rect = Rect2(8, 9, 110, 42)
-
-[node name="Item" type="Sprite2D" parent="." unique_id=1510642432]
-position = Vector2(400, 453)
-scale = Vector2(1, 1.0000005)
-texture = ExtResource("3_p1qf1")
-region_enabled = true
-region_rect = Rect2(8, 212, 110, 42)
-
-[node name="Mercy" type="Sprite2D" parent="." unique_id=1079523305]
-position = Vector2(555, 453)
-scale = Vector2(1, 1.0000005)
-texture = ExtResource("3_p1qf1")
-region_enabled = true
-region_rect = Rect2(8, 313, 110, 42)
-
-[node name="InfoBar" type="Node" parent="." unique_id=2092922539]
-
-[node name="LV" type="Label" parent="InfoBar" unique_id=1319749384]
-offset_left = 147.0
-offset_top = 400.0
-offset_right = 255.0
-offset_bottom = 424.0
-text = "lv 10"
-label_settings = SubResource("LabelSettings_6vh42")
-
-[node name="Name" type="Label" parent="InfoBar" unique_id=1690202691]
-offset_left = 30.0
-offset_top = 400.0
-offset_right = 138.0
-offset_bottom = 424.0
-text = "Chara"
-label_settings = SubResource("LabelSettings_6vh42")
-
-[node name="HP" type="Sprite2D" parent="InfoBar" unique_id=2132920446]
-position = Vector2(255, 410)
-texture = ExtResource("3_p1qf1")
-region_enabled = true
-region_rect = Rect2(523, 675, 23, 10)
-
-[node name="ProgressBar" type="ProgressBar" parent="InfoBar" unique_id=490134711]
-offset_left = 275.0
-offset_top = 400.0
-offset_right = 344.0
-offset_bottom = 421.0
-size_flags_stretch_ratio = 2.4
-theme_override_styles/background = SubResource("StyleBoxFlat_f4pi3")
-theme_override_styles/fill = SubResource("StyleBoxFlat_yahae")
-max_value = 56.0
-step = 1.0
-value = 44.0
-show_percentage = false
-
-[node name="HPText" type="Label" parent="InfoBar" unique_id=2139947506]
-offset_left = 357.0
-offset_top = 400.0
-offset_right = 450.0
-offset_bottom = 424.0
-text = "44 / 56"
-label_settings = SubResource("LabelSettings_v7i3o")
-
-[node name="Box" type="Panel" parent="." unique_id=770708501]
-offset_left = 32.0
-offset_top = 250.0
-offset_right = 607.0
-offset_bottom = 390.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_66ngm")
-
-[node name="MainText" type="Label" parent="Box" unique_id=1688906120]
-visible = false
-layout_mode = 0
-offset_left = 20.0
-offset_top = 20.0
-offset_right = 347.0
-offset_bottom = 54.0
-theme_override_fonts/font = ExtResource("7_66ngm")
-text = "* The wind is howling..."
-label_settings = ExtResource("8_03edq")
-
-[node name="Options" type="Node" parent="Box" unique_id=1876007917]
-
-[node name="0" type="Label" parent="Box/Options" unique_id=157318341]
-offset_left = 100.0
-offset_top = 270.0
-offset_right = 140.0
-offset_bottom = 302.0
-theme_override_fonts/font = ExtResource("7_66ngm")
-text = "* MnstrCndy"
-label_settings = ExtResource("8_03edq")
-
-[node name="1" type="Label" parent="Box/Options" unique_id=920951879]
-visible = false
-offset_left = 340.0
-offset_top = 270.0
-offset_right = 380.0
-offset_bottom = 302.0
-theme_override_fonts/font = ExtResource("7_66ngm")
-text = "*"
-label_settings = ExtResource("8_03edq")
-
-[node name="2" type="Label" parent="Box/Options" unique_id=837192352]
-visible = false
-offset_left = 100.0
-offset_top = 302.0
-offset_right = 140.0
-offset_bottom = 334.0
-theme_override_fonts/font = ExtResource("7_66ngm")
-text = "*"
-label_settings = ExtResource("8_03edq")
-
-[node name="3" type="Label" parent="Box/Options" unique_id=1729185092]
-visible = false
-offset_left = 340.0
-offset_top = 302.0
-offset_right = 380.0
-offset_bottom = 334.0
-theme_override_fonts/font = ExtResource("7_66ngm")
-text = "*   Mns"
-label_settings = ExtResource("8_03edq")
 
 [node name="Undyne" type="Node" parent="." unique_id=1060237284]
 script = ExtResource("7_f4pi3")
@@ -579,11 +447,149 @@ libraries/ = SubResource("AnimationLibrary_v7i3o")
 [node name="EyeGlintAnimation" type="AnimationPlayer" parent="Undyne" unique_id=1951979680]
 libraries/ = SubResource("AnimationLibrary_03edq")
 
+[node name="Fight" type="Sprite2D" parent="." unique_id=742261727]
+position = Vector2(87, 453)
+scale = Vector2(1.0000001, 1.0000005)
+texture = ExtResource("3_p1qf1")
+region_enabled = true
+region_rect = Rect2(8, 111, 110, 42)
+
+[node name="Act" type="Sprite2D" parent="." unique_id=118758762]
+position = Vector2(240.00002, 453)
+scale = Vector2(1, 1.0000005)
+texture = ExtResource("3_p1qf1")
+region_enabled = true
+region_rect = Rect2(8, 9, 110, 42)
+
+[node name="Item" type="Sprite2D" parent="." unique_id=1510642432]
+position = Vector2(400, 453)
+scale = Vector2(1, 1.0000005)
+texture = ExtResource("3_p1qf1")
+region_enabled = true
+region_rect = Rect2(8, 212, 110, 42)
+
+[node name="Mercy" type="Sprite2D" parent="." unique_id=1079523305]
+position = Vector2(555, 453)
+scale = Vector2(1, 1.0000005)
+texture = ExtResource("3_p1qf1")
+region_enabled = true
+region_rect = Rect2(8, 313, 110, 42)
+
 [node name="Hint" type="Sprite2D" parent="." unique_id=1872088016]
 modulate = Color(1, 1, 1, 0.14901961)
 position = Vector2(320, 240)
-texture = ExtResource("9_v7i3o")
+texture = ExtResource("9_03edq")
+
+[node name="InfoBar" type="Node" parent="." unique_id=2092922539]
+
+[node name="LV" type="Label" parent="InfoBar" unique_id=1319749384]
+offset_left = 147.0
+offset_top = 400.0
+offset_right = 255.0
+offset_bottom = 424.0
+text = "lv 10"
+label_settings = SubResource("LabelSettings_6vh42")
+
+[node name="Name" type="Label" parent="InfoBar" unique_id=1690202691]
+offset_left = 30.0
+offset_top = 400.0
+offset_right = 138.0
+offset_bottom = 424.0
+text = "Chara"
+label_settings = SubResource("LabelSettings_6vh42")
+
+[node name="HP" type="Sprite2D" parent="InfoBar" unique_id=2132920446]
+position = Vector2(255, 410)
+texture = ExtResource("3_p1qf1")
+region_enabled = true
+region_rect = Rect2(523, 675, 23, 10)
+
+[node name="HPBar" type="ProgressBar" parent="InfoBar" unique_id=490134711]
+offset_left = 275.0
+offset_top = 400.0
+offset_right = 344.0
+offset_bottom = 421.0
+size_flags_stretch_ratio = 2.4
+theme_override_styles/background = SubResource("StyleBoxFlat_f4pi3")
+theme_override_styles/fill = SubResource("StyleBoxFlat_yahae")
+max_value = 56.0
+step = 1.0
+value = 56.0
+show_percentage = false
+
+[node name="HPText" type="Label" parent="InfoBar" unique_id=2139947506]
+offset_left = 357.0
+offset_top = 400.0
+offset_right = 450.0
+offset_bottom = 424.0
+text = "44 / 56"
+label_settings = SubResource("LabelSettings_v7i3o")
+
+[node name="Box" type="Panel" parent="." unique_id=770708501]
+offset_left = 280.0
+offset_top = 204.0
+offset_right = 365.0
+offset_bottom = 285.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_66ngm")
+
+[node name="MainText" type="Label" parent="Box" unique_id=1688906120]
+visible = false
+layout_mode = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 347.0
+offset_bottom = 54.0
+theme_override_fonts/font = ExtResource("7_66ngm")
+text = "* The wind is howling..."
+label_settings = ExtResource("8_03edq")
+
+[node name="Options" type="Node" parent="Box" unique_id=1876007917]
+
+[node name="0" type="Label" parent="Box/Options" unique_id=157318341]
+offset_left = 100.0
+offset_top = 270.0
+offset_right = 140.0
+offset_bottom = 302.0
+theme_override_fonts/font = ExtResource("7_66ngm")
+text = "* MnstrCndy"
+label_settings = ExtResource("8_03edq")
+
+[node name="1" type="Label" parent="Box/Options" unique_id=920951879]
+visible = false
+offset_left = 340.0
+offset_top = 270.0
+offset_right = 380.0
+offset_bottom = 302.0
+theme_override_fonts/font = ExtResource("7_66ngm")
+text = "*"
+label_settings = ExtResource("8_03edq")
+
+[node name="2" type="Label" parent="Box/Options" unique_id=837192352]
+visible = false
+offset_left = 100.0
+offset_top = 302.0
+offset_right = 140.0
+offset_bottom = 334.0
+theme_override_fonts/font = ExtResource("7_66ngm")
+text = "*"
+label_settings = ExtResource("8_03edq")
+
+[node name="3" type="Label" parent="Box/Options" unique_id=1729185092]
+visible = false
+offset_left = 340.0
+offset_top = 302.0
+offset_right = 380.0
+offset_bottom = 334.0
+theme_override_fonts/font = ExtResource("7_66ngm")
+text = "*   Mns"
+label_settings = ExtResource("8_03edq")
 
 [node name="Soul" type="Sprite2D" parent="." unique_id=450798543]
 position = Vector2(348, 318)
-texture = ExtResource("5_6vh42")
+texture = ExtResource("12_03edq")
+
+[node name="Panel" type="Panel" parent="Soul" unique_id=940488201]
+offset_left = 1.0
+offset_right = 41.0
+offset_bottom = 40.0
+pivot_offset = Vector2(153, 44)
