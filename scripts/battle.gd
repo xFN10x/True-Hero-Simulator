@@ -1,4 +1,7 @@
-extends Node
+extends Node2D
+class_name BattleManager
+
+var ArrowBullet = preload("res://scripts/bullets/Arrow.gd")
 
 var selectedVOffset = 47
 var fightVOffset = 111
@@ -105,6 +108,8 @@ var greenSoulProtectLeft: Tween
 var greenSoulProtectRight: Tween
 var greenSoulRotate = deg_to_rad(90)
 
+var arrowUpPos = Vector2(320, -16)
+
 var checkText = """Undyne the Undying - ATK 99 DEF 99
 * Heroine reformed by her own
   DETERMINATION to save Earth.
@@ -121,6 +126,8 @@ var moveIndic = true
 var knifeAnimationNode: AnimatedSprite2D
 var knifeSound: AudioStreamPlayer
 var enemyHitSound: AudioStreamPlayer
+
+var Bullets: Node
 
 func setBoxPosInsta(trans: Vector4) -> void:
 	boxNode.position = Vector2(trans.x, trans.y)
@@ -152,7 +159,13 @@ func showText(text: String) -> void:
 
 func selectOption() -> void:
 	menuMode = 0
-	
+
+func spawnArrow(pos, speed: int, direction):
+	var bullet: Arrow = preload("res://scripts/bullets/bullet.tscn").instantiate()
+	bullet.speed = speed
+	bullet.currentDirection = direction
+	bullet.position = pos
+	Bullets.add_child(bullet)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -205,6 +218,8 @@ func _ready() -> void:
 	knifeSound = get_node("Attack")
 	enemyHitSound = get_node("Damage")
 	
+	Bullets = get_node("Bullets")
+	
 	setBoxPosInsta(defaultPos)
 
 func endAttack() -> void:
@@ -231,7 +246,13 @@ func attackNoProceed(id) -> void:
 			soulMode = SoulMode.GREEN
 			soulNode.position = greenSoulPos
 			soulNode.visible = true
-			await get_tree().create_timer(2).timeout
+			
+			spawnArrow(arrowUpPos, 5, ArrowBullet.Direction.DOWN)
+			await get_tree().create_timer(0.5).timeout
+			spawnArrow(arrowUpPos, 5, ArrowBullet.Direction.DOWN)
+			await get_tree().create_timer(0.5).timeout
+			spawnArrow(arrowUpPos, 5, ArrowBullet.Direction.DOWN)
+			await get_tree().create_timer(7).timeout
 			endAttack()
 			
 func _process(delta: float) -> void:

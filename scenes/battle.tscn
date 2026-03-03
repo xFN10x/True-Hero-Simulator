@@ -521,7 +521,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [1.0]
+"values": [0.0]
 }
 
 [sub_resource type="Animation" id="Animation_djc8l"]
@@ -572,11 +572,20 @@ corner_radius_bottom_left = 32
 corner_detail = 20
 anti_aliasing = false
 
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_vceff"]
+a = Vector2(-31, -29)
+b = Vector2(-31, 32)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vceff"]
+radius = 6.0827627
+
 [node name="Battle" type="Node2D" unique_id=2070806762]
 script = ExtResource("2_p1qf1")
 
 [node name="Music" type="AudioStreamPlayer" parent="." unique_id=144461831]
 stream = ExtResource("1_th188")
+volume_db = -6.985
+parameters/looping = true
 
 [node name="MenuMove" type="AudioStreamPlayer" parent="." unique_id=1881623941]
 stream = ExtResource("3_6vh42")
@@ -834,6 +843,7 @@ text = "*   Mns"
 label_settings = ExtResource("8_03edq")
 
 [node name="Target" type="Sprite2D" parent="Box" unique_id=1242351804]
+modulate = Color(1, 1, 1, 0)
 position = Vector2(288, 70)
 scale = Vector2(0.08000243, 1)
 texture = ExtResource("10_6ni85")
@@ -860,8 +870,20 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_03edq")
 [node name="Shield" type="Line2D" parent="Soul/GreenSoul" unique_id=534361229]
 points = PackedVector2Array(-18.92, 10.995, -30.985, -28.63, -30.985, 30.685)
 width = 3.0
-default_color = Color(0.29579774, 0.26513606, 0.77028996, 1)
+default_color = Color(0, 0, 1, 1)
+begin_cap_mode = 1
+end_cap_mode = 1
 sharp_limit = 1.0
+
+[node name="ShieldHB" type="Area2D" parent="Soul/GreenSoul/Shield" unique_id=1400805819]
+
+[node name="Shield" type="CollisionShape2D" parent="Soul/GreenSoul/Shield/ShieldHB" unique_id=1281278612]
+shape = SubResource("SegmentShape2D_vceff")
+
+[node name="SoulHB" type="Area2D" parent="Soul" unique_id=1238037424]
+
+[node name="Soul" type="CollisionShape2D" parent="Soul/SoulHB" unique_id=873131175]
+shape = SubResource("CircleShape2D_vceff")
 
 [node name="GlobalScript" type="Node" parent="." unique_id=1708905942]
 script = ExtResource("12_22uqi")
@@ -871,3 +893,5 @@ visible = false
 offset_right = 40.0
 offset_bottom = 16.0
 text = "60"
+
+[node name="Bullets" type="Node" parent="." unique_id=837588476]
