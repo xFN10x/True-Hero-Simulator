@@ -2,6 +2,7 @@
 
 [ext_resource type="AudioStream" uid="uid://bmyubypm543pd" path="res://audio/song.mp3" id="1_th188"]
 [ext_resource type="Script" uid="uid://drjqoqevkyadl" path="res://scripts/battle.gd" id="2_p1qf1"]
+[ext_resource type="Texture2D" uid="uid://dkpt6xeow6xue" path="res://sprites/20260301133135_1.jpg" id="2_saiin"]
 [ext_resource type="AudioStream" uid="uid://qjbwpmsfoouc" path="res://audio/snd_squeak.wav" id="3_6vh42"]
 [ext_resource type="Texture2D" uid="uid://bv3m4o5ij5hlb" path="res://sprites/battle.png" id="3_p1qf1"]
 [ext_resource type="AudioStream" uid="uid://bmgnpm5puewpo" path="res://audio/snd_select.wav" id="4_66ngm"]
@@ -12,11 +13,14 @@
 [ext_resource type="AudioStream" uid="uid://bhpw45gka4jco" path="res://audio/snd_damage.wav" id="7_ekamt"]
 [ext_resource type="LabelSettings" uid="uid://c06m4ae3gy7q5" path="res://dio_label.tres" id="8_03edq"]
 [ext_resource type="AudioStream" uid="uid://bnpminwbqrfxd" path="res://audio/snd_hurt1.wav" id="8_ekamt"]
+[ext_resource type="AudioStream" uid="uid://bwhul0o0urd2m" path="res://audio/snd_break1.wav" id="9_61i1y"]
 [ext_resource type="Texture2D" uid="uid://b8ls7tn51yqsp" path="res://sprites/battle2.png" id="10_6ni85"]
+[ext_resource type="AudioStream" uid="uid://cyxotkhxuh41b" path="res://audio/snd_break2.wav" id="10_saiin"]
 [ext_resource type="SpriteFrames" uid="uid://bfxowpro515br" path="res://sprites/attack_indic.tres" id="11_vceff"]
-[ext_resource type="Texture2D" uid="uid://cvqtotlwc7b0i" path="res://sprites/green_soul_normal.png" id="12_03edq"]
 [ext_resource type="Script" uid="uid://bnrvcdj0nfocy" path="res://scripts/global.gd" id="12_22uqi"]
-[ext_resource type="PackedScene" uid="uid://bfqjilo5asbo7" path="res://scripts/bullets/bullet.tscn" id="17_djc8l"]
+[ext_resource type="FontFile" uid="uid://dn4ax5okqvoif" path="res://font/hachicro.TTF" id="14_dd63g"]
+[ext_resource type="Texture2D" uid="uid://bboo4o1o3hbbr" path="res://sprites/broken_sou;.png" id="17_dd63g"]
+[ext_resource type="Texture2D" uid="uid://db14pg1dcdwwr" path="res://sprites/parts_soul.png" id="18_fpf3k"]
 
 [sub_resource type="GDScript" id="GDScript_66ngm"]
 script/source = "extends Node
@@ -476,6 +480,12 @@ animations = [{
 "speed": 6.0
 }]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fpf3k"]
+bg_color = Color(0.21960784, 0.21960784, 0.21960784, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bi5l8"]
+bg_color = Color(0, 1, 0, 1)
+
 [sub_resource type="LabelSettings" id="LabelSettings_6vh42"]
 font_size = 24
 
@@ -525,7 +535,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_p0caf"]
 resource_name = "out"
-length = 0.2
+length = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -533,10 +543,10 @@ tracks/0/path = NodePath(".:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2),
+"times": PackedFloat32Array(0, 0.5),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(1, 1), Vector2(4, 4)]
+"values": [Vector2(1, 1), Vector2(2, 2)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -545,7 +555,7 @@ tracks/1/path = NodePath(".:modulate:a")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.1),
+"times": PackedFloat32Array(0, 0.3),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [1.0, 0.0]
@@ -560,27 +570,19 @@ _data = {
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_22uqi"]
 bg_color = Color(0, 1, 0, 1)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_p0caf"]
+atlas = ExtResource("10_6ni85")
+region = Rect2(5, 23, 562, 128)
+
 [sub_resource type="Animation" id="Animation_ekamt"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:scale:x")
+tracks/0/path = NodePath(".:modulate:a")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0.08000243]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:modulate:a")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -589,27 +591,15 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_djc8l"]
 resource_name = "in"
-length = 0.5
+length = 0.4
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:scale:x")
+tracks/0/path = NodePath(".:modulate:a")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [0.08000243, 1.0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:modulate:a")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.5),
+"times": PackedFloat32Array(0, 0.4),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [0.0, 1.0]
@@ -642,8 +632,27 @@ b = Vector2(-31, 32)
 [sub_resource type="CircleShape2D" id="CircleShape2D_vceff"]
 radius = 6.0827627
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_bi5l8"]
+particles_animation = true
+particles_anim_h_frames = 4
+particles_anim_v_frames = 1
+particles_anim_loop = true
+
+[sub_resource type="Gradient" id="Gradient_djc8l"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_h4dll"]
+gradient = SubResource("Gradient_djc8l")
+
 [node name="Battle" type="Node2D" unique_id=2070806762]
 script = ExtResource("2_p1qf1")
+
+[node name="Hint" type="Sprite2D" parent="." unique_id=1060318413]
+visible = false
+z_index = -99
+position = Vector2(321, 241)
+texture = ExtResource("2_saiin")
 
 [node name="Music" type="AudioStreamPlayer" parent="." unique_id=144461831]
 stream = ExtResource("1_th188")
@@ -667,6 +676,12 @@ stream = ExtResource("7_ekamt")
 
 [node name="SndHurt1" type="AudioStreamPlayer" parent="." unique_id=1892050443]
 stream = ExtResource("8_ekamt")
+
+[node name="SndBreak1" type="AudioStreamPlayer" parent="." unique_id=398126098]
+stream = ExtResource("9_61i1y")
+
+[node name="SndBreak2" type="AudioStreamPlayer" parent="." unique_id=539335572]
+stream = ExtResource("10_saiin")
 
 [node name="Undyne" type="Node2D" parent="." unique_id=1203616874]
 script = SubResource("GDScript_66ngm")
@@ -755,6 +770,35 @@ visible = false
 position = Vector2(309, 99)
 sprite_frames = SubResource("SpriteFrames_p0caf")
 
+[node name="HealthBar" type="Node2D" parent="Undyne" unique_id=1313075216]
+visible = false
+
+[node name="Bar" type="ProgressBar" parent="Undyne/HealthBar" unique_id=1142457642]
+offset_left = 210.0
+offset_top = 179.0
+offset_right = 411.0
+offset_bottom = 192.0
+theme_override_styles/background = SubResource("StyleBoxFlat_fpf3k")
+theme_override_styles/fill = SubResource("StyleBoxFlat_bi5l8")
+step = 1.0
+value = 79.0
+show_percentage = false
+
+[node name="DamageNumbers" type="Label" parent="Undyne/HealthBar" unique_id=24721230]
+offset_left = 210.0
+offset_top = 148.0
+offset_right = 411.0
+offset_bottom = 180.0
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_constants/shadow_outline_size = 10
+theme_override_fonts/font = ExtResource("14_dd63g")
+theme_override_font_sizes/font_size = 31
+text = "1753"
+horizontal_alignment = 1
+
 [node name="Fight" type="Sprite2D" parent="." unique_id=742261727]
 position = Vector2(87, 453)
 scale = Vector2(1.0000001, 1.0000005)
@@ -828,23 +872,27 @@ offset_bottom = 424.0
 text = "56 / 56"
 label_settings = SubResource("LabelSettings_v7i3o")
 
-[node name="Box" type="Panel" parent="." unique_id=770708501]
-offset_left = 32.0
+[node name="Box" type="MarginContainer" parent="." unique_id=1884231038]
+offset_left = 368.0
 offset_top = 250.0
-offset_right = 607.0
-offset_bottom = 390.0
+offset_right = 930.0
+offset_bottom = 378.0
+theme_override_constants/margin_bottom = 0
+
+[node name="Box" type="Panel" parent="Box" unique_id=770708501]
+layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_66ngm")
 
-[node name="AttackIndic" type="AnimatedSprite2D" parent="Box" unique_id=533911298]
+[node name="AttackIndic" type="AnimatedSprite2D" parent="Box/Box" unique_id=533911298]
 z_index = 1
 position = Vector2(-85, 70)
 sprite_frames = ExtResource("11_vceff")
 frame_progress = 0.74545026
 
-[node name="FadeOutAni" type="AnimationPlayer" parent="Box/AttackIndic" unique_id=1993858502]
+[node name="FadeOutAni" type="AnimationPlayer" parent="Box/Box/AttackIndic" unique_id=1993858502]
 libraries/ = SubResource("AnimationLibrary_61i1y")
 
-[node name="MainText" type="Label" parent="Box" unique_id=1688906120]
+[node name="MainText" type="Label" parent="Box/Box" unique_id=1688906120]
 visible = false
 layout_mode = 0
 offset_left = 20.0
@@ -856,9 +904,9 @@ text = "* Undyne the Undying - ATK 99 DEF 99
 * Heroine reformed by her own DETERMINATION to save Earth."
 label_settings = ExtResource("8_03edq")
 
-[node name="Options" type="Node" parent="Box" unique_id=1876007917]
+[node name="Options" type="Node" parent="Box/Box" unique_id=1876007917]
 
-[node name="0" type="Label" parent="Box/Options" unique_id=157318341]
+[node name="0" type="Label" parent="Box/Box/Options" unique_id=157318341]
 offset_left = 100.0
 offset_top = 270.0
 offset_right = 140.0
@@ -867,7 +915,7 @@ theme_override_fonts/font = ExtResource("7_66ngm")
 text = "* Undyne the Undying"
 label_settings = ExtResource("8_03edq")
 
-[node name="HPBar" type="ProgressBar" parent="Box/Options/0" unique_id=1821105679]
+[node name="HPBar" type="ProgressBar" parent="Box/Box/Options/0" unique_id=1821105679]
 layout_mode = 0
 offset_left = 381.0
 offset_top = 10.0
@@ -881,7 +929,7 @@ step = 1.0
 value = 56.0
 show_percentage = false
 
-[node name="1" type="Label" parent="Box/Options" unique_id=920951879]
+[node name="1" type="Label" parent="Box/Box/Options" unique_id=920951879]
 visible = false
 offset_left = 340.0
 offset_top = 270.0
@@ -891,7 +939,7 @@ theme_override_fonts/font = ExtResource("7_66ngm")
 text = "*"
 label_settings = ExtResource("8_03edq")
 
-[node name="2" type="Label" parent="Box/Options" unique_id=837192352]
+[node name="2" type="Label" parent="Box/Box/Options" unique_id=837192352]
 visible = false
 offset_left = 100.0
 offset_top = 302.0
@@ -901,7 +949,7 @@ theme_override_fonts/font = ExtResource("7_66ngm")
 text = "*"
 label_settings = ExtResource("8_03edq")
 
-[node name="3" type="Label" parent="Box/Options" unique_id=1729185092]
+[node name="3" type="Label" parent="Box/Box/Options" unique_id=1729185092]
 visible = false
 offset_left = 340.0
 offset_top = 302.0
@@ -911,20 +959,20 @@ theme_override_fonts/font = ExtResource("7_66ngm")
 text = "*   Mns"
 label_settings = ExtResource("8_03edq")
 
-[node name="Target" type="Sprite2D" parent="Box" unique_id=1242351804]
+[node name="Target" type="TextureRect" parent="Box" unique_id=2015301674]
 modulate = Color(1, 1, 1, 0)
-position = Vector2(288, 70)
-scale = Vector2(0.08000243, 1)
-texture = ExtResource("10_6ni85")
-region_enabled = true
-region_rect = Rect2(5, 23, 562, 128)
+layout_mode = 2
+texture = SubResource("AtlasTexture_p0caf")
+expand_mode = 1
 
 [node name="TargetAnimation" type="AnimationPlayer" parent="Box/Target" unique_id=744004878]
 libraries/ = SubResource("AnimationLibrary_h4dll")
 
 [node name="Soul" type="Sprite2D" parent="." unique_id=450798543]
+z_index = 99
+z_as_relative = false
 position = Vector2(320, 242)
-texture = ExtResource("12_03edq")
+texture = ExtResource("17_dd63g")
 
 [node name="GreenSoul" type="Node2D" parent="Soul" unique_id=1970917391]
 
@@ -954,6 +1002,25 @@ shape = SubResource("SegmentShape2D_vceff")
 [node name="Soul" type="CollisionShape2D" parent="Soul/SoulHB" unique_id=873131175]
 shape = SubResource("CircleShape2D_vceff")
 
+[node name="CPUParticles2D" type="CPUParticles2D" parent="Soul" unique_id=659415671]
+z_index = 100
+z_as_relative = false
+material = SubResource("CanvasItemMaterial_bi5l8")
+emitting = false
+amount = 6
+texture = ExtResource("18_fpf3k")
+lifetime = 10.0
+one_shot = true
+speed_scale = 2.39
+explosiveness = 1.0
+direction = Vector2(1, -1)
+spread = 139.29
+gravity = Vector2(0, 30)
+initial_velocity_min = 50.0
+initial_velocity_max = 50.0
+anim_speed_min = 10.0
+anim_speed_max = 10.0
+
 [node name="GlobalScript" type="Node" parent="." unique_id=1708905942]
 script = ExtResource("12_22uqi")
 
@@ -965,6 +1032,8 @@ text = "60"
 
 [node name="Bullets" type="Node" parent="." unique_id=837588476]
 
-[node name="Bullet" parent="." unique_id=2080938906 instance=ExtResource("17_djc8l")]
-position = Vector2(-20, 244)
-rotation = -1.5707964
+[node name="BlackOut" type="Sprite2D" parent="." unique_id=1631318654]
+visible = false
+z_index = 90
+scale = Vector2(9999, 9999)
+texture = SubResource("GradientTexture1D_h4dll")

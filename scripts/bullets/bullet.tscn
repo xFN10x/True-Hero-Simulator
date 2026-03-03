@@ -21,3 +21,4 @@ shape = SubResource("RectangleShape2D_0m10f")
 
 [node name="Ding" type="AudioStreamPlayer" parent="." unique_id=1492048431]
 stream = ExtResource("3_iv11i")
+volume_db = -11.254

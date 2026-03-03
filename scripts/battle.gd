@@ -43,7 +43,7 @@ var maxHp = 56
 var hpBarNode: ProgressBar
 var hpTextNode: Label
 
-var boxNode: Panel
+var boxNode: MarginContainer
 # Box Positions Vec4(x,y, width, height)
 var defaultPos = Vector4(32, 250, 575, 140)
 var spearAtkPos = Vector4(280, 204,85, 81)
@@ -98,7 +98,10 @@ enum SoulMode {
 }
 var soulMode = SoulMode.RED
 var redSoulTexture = CompressedTexture2D.new()
+var redSoulTextureHurt = CompressedTexture2D.new()
+var redSoulSplit = CompressedTexture2D.new()
 var greenSoulTexture = CompressedTexture2D.new()
+var greenSoulTextureHurt = CompressedTexture2D.new()
 var greenSoulPartsNode: Node2D
 var greenSoulShield: Line2D
 var greenSoulPos = Vector2(320, 242)
@@ -119,7 +122,7 @@ var enemyHealthBar: ProgressBar
 
 var attackIndicBar: AnimatedSprite2D
 var attackTargetAnimation: AnimationPlayer
-@onready var attackIndicAnimations = $Box/AttackIndic/FadeOutAni
+@onready var attackIndicAnimations = $Box/Box/AttackIndic/FadeOutAni
 var moveIndic = true
 
 var knifeAnimationNode: AnimatedSprite2D
@@ -133,7 +136,10 @@ var arrowLeftPos: Vector2
 var arrowRightPos: Vector2
 var arrowDownPos: Vector2
 
+var canAttack = true
 
+var maxIFrames = 2
+var iframes = 0
 
 func setBoxPosInsta(trans: Vector4) -> void:
 	boxNode.position = Vector2(trans.x, trans.y)
@@ -141,20 +147,34 @@ func setBoxPosInsta(trans: Vector4) -> void:
 
 func setBoxPos(trans: Vector4) -> Signal:
 	var tweenMoveX = get_tree().create_tween()
-	tweenMoveX.tween_property(boxNode, "position", Vector2(trans.x, boxNode.position.y), 0.1).set_trans(Tween.TRANS_LINEAR)
+	tweenMoveX.tween_property(boxNode, "position", Vector2(trans.x, boxNode.position.y), 0.5).set_trans(Tween.TRANS_LINEAR)
 	var tweenSizeX = get_tree().create_tween()
-	tweenSizeX.tween_property(boxNode, "size", Vector2(trans.z, boxNode.size.y), 0.2).set_trans(Tween.TRANS_LINEAR)
+	tweenSizeX.tween_property(boxNode, "size", Vector2(trans.z, boxNode.size.y), 0.5).set_trans(Tween.TRANS_LINEAR)
 	tweenSizeX.play()
 	tweenMoveX.play()
-	await get_tree().create_timer(0.2).timeout
+	await tweenMoveX.finished
 	
 	var tweenMoveY = get_tree().create_tween()
 	tweenMoveY.tween_property(boxNode, "position", Vector2(boxNode.position.x, trans.y), 0.1).set_trans(Tween.TRANS_LINEAR)
 	var tweenSizeY = get_tree().create_tween()
-	tweenSizeY.tween_property(boxNode, "size", Vector2(boxNode.size.x, trans.w), 0.2).set_trans(Tween.TRANS_LINEAR)
+	tweenSizeY.tween_property(boxNode, "size", Vector2(boxNode.size.x, trans.w), 0.1).set_trans(Tween.TRANS_LINEAR)
 	tweenSizeY.play()
 	tweenMoveY.play()
-	return get_tree().create_timer(0.2).timeout
+	return tweenMoveY.finished
+	
+func death() -> void:
+	paused = true
+	$Music.stop()
+	$BlackOut.visible = true
+	$Soul/GreenSoul.queue_free()
+	soulNode.texture = redSoulTexture
+	await get_tree().create_timer(0.6).timeout
+	soulNode.texture = redSoulSplit
+	$SndBreak1.play()
+	await get_tree().create_timer(1).timeout
+	soulNode.texture = null
+	$SndBreak2.play()
+	$Soul/CPUParticles2D.emitting = true
 	
 func canNavTo(optionArray: Array, selected: int) -> bool:
 	return selected >= 0 && selected < optionArray.size()
@@ -183,13 +203,24 @@ func spawnArrow(speed: int, direction):
 	Bullets.add_child(bullet)
 
 func damage(number: int) -> void:
+	if iframes > 0: return
+	iframes = maxIFrames
+	if (hp - number) <= 0:
+		iframes = 100
+		death();
+		return
 	hp -= number
 	$SndHurt1.play()
+	$Soul/GreenSoul.visible = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	redSoulTexture.load_path = "res://.godot/imported/red_soul_normal.png-4f89669b8b9113871863587930ef3923.ctex"
 	greenSoulTexture.load_path = "res://.godot/imported/green_soul_normal.png-41e0ebc41d7a126f221b5f497a015d17.ctex"
+	redSoulSplit.load_path = "res://.godot/imported/broken_sou;.png-25d08bafe0cf88cd027113c867e9e7c8.ctex"
+
+	redSoulTextureHurt.load_path = "res://.godot/imported/red_soul_hurt.png-5d5a25d9159157f8d767869f2fec4428.ctex"
+	greenSoulTextureHurt.load_path= "res://.godot/imported/green_soul_hurt.png-2055f311f0ed0817c57d6449da57be9e.ctex"
 
 	musicNode = get_node("Music")
 	musicNode.play()
@@ -209,12 +240,12 @@ func _ready() -> void:
 	undyneAnimationNode.play("undyne")
 	undyneEyeAnimationNode.play("eye")
 	
-	textNode = get_node("Box/MainText")
+	textNode = get_node("Box/Box/MainText")
 	
-	option0Node = get_node("Box/Options/0")
-	option1Node = get_node("Box/Options/1")
-	option2Node = get_node("Box/Options/2")
-	option3Node = get_node("Box/Options/3")
+	option0Node = get_node("Box/Box/Options/0")
+	option1Node = get_node("Box/Box/Options/1")
+	option2Node = get_node("Box/Box/Options/2")
+	option3Node = get_node("Box/Box/Options/3")
 	
 	hpBarNode = get_node("InfoBar/HPBar")
 	hpTextNode = get_node("InfoBar/HPText")
@@ -224,12 +255,12 @@ func _ready() -> void:
 	greenSoulPartsNode = get_node("Soul/GreenSoul")
 	greenSoulShield = get_node("Soul/GreenSoul/Shield")
 	
-	enemyHealthBar = get_node("Box/Options/0/HPBar")
+	enemyHealthBar = get_node("Box/Box/Options/0/HPBar")
 	enemyHealthBar.max_value = enemyMaxHealth
 	enemyHealthBar.value = enemyHealth
 	enemyHealthBar.visible = false
 
-	attackIndicBar = get_node("Box/AttackIndic")
+	attackIndicBar = get_node("Box/Box/AttackIndic")
 	attackIndicBar.play()
 	attackTargetAnimation = get_node("Box/Target/TargetAnimation")
 
@@ -244,9 +275,14 @@ func _ready() -> void:
 	arrowRightPos = Vector2(640 + 16, soulNode.position.y)
 	arrowDownPos = Vector2(soulNode.position.x, 480 + 16)
 
+	$Undyne/HealthBar/Bar.max_value = enemyMaxHealth
+	$Undyne/HealthBar/Bar.value = enemyMaxHealth
+
 	setBoxPosInsta(defaultPos)
 
 func endAttack() -> void:
+	for node in Bullets.get_children():
+		node.queue_free()
 	menuMode = MenuMode.OPTION_MODE;
 	currentText = ""
 	textNode.text = ""
@@ -313,15 +349,31 @@ func attackNoProceed(id) -> void:
 			await get_tree().create_timer(1).timeout
 			
 			endAttack()
-			
+		1:
+			spawnArrow(5, ArrowBullet.Direction.DOWN)
+			await get_tree().create_timer(0.5).timeout
+			spawnArrow(5, ArrowBullet.Direction.DOWN)
+			await get_tree().create_timer(0.5).timeout
+			spawnArrow(5, ArrowBullet.Direction.DOWN)
+			endAttack()
+var paused = false
 func _process(delta: float) -> void:
-	#print(menuMode)
+	if paused:
+		return
+	iframes -= 1;
 	greenSoulShield.rotation = lerp_angle(greenSoulShield.rotation, greenSoulRotate, 0.8)
-	match soulMode:
-		SoulMode.RED:
-			soulNode.texture = redSoulTexture
-		SoulMode.GREEN:
-			soulNode.texture = greenSoulTexture
+	if iframes > 0:
+		match soulMode:
+			SoulMode.RED:
+				soulNode.texture = redSoulTextureHurt
+			SoulMode.GREEN:
+				soulNode.texture = greenSoulTextureHurt
+	else:
+		match soulMode:
+			SoulMode.RED:
+				soulNode.texture = redSoulTexture
+			SoulMode.GREEN:
+				soulNode.texture = greenSoulTexture
 	hpBarNode.value = hp
 	hpTextNode.text = "%s / %s" % [hp, maxHp]
 	#print(selectedButton)
@@ -334,38 +386,53 @@ func _process(delta: float) -> void:
 		if not textNode.text.substr(textNode.text.length()-1, 1) == " ":
 			#print(textNode.text.substr(textNode.text.length()-1, 1))
 			textSndNode.play()
+	attackIndicBar.visible = menuMode == MenuMode.ATTACK
 	match menuMode:
 		MenuMode.ATTACK:
+			attackIndicBar.visible = true
 			greenSoulPartsNode.visible = false;
 			option0Node.visible = false
 			option1Node.visible = false
 			option2Node.visible = false
 			option3Node.visible = false
 			textNode.visible = false;
-			soulNode.visible = false;
+			#soulNode.visible = false;
 			if moveIndic:
 				attackIndicBar.position.x += 14
-			if attackIndicBar.position.x >= 480:
+			if attackIndicBar.position.x >= 400 && canAttack:
+				canAttack = false
 				attackIndicAnimations.play("out")
-				await get_tree().create_timer(1).timeout
+				attackTargetAnimation.play_backwards()
+				await get_tree().create_timer(0.8).timeout
+				
+				attackIndicAnimations.play("RESET")
 				attackProceed()
 				return;
 			
-			if Input.is_action_just_pressed("ui_select") && moveIndic :
+			if Input.is_action_just_pressed("ui_select") && canAttack :
 				moveIndic = false
+				canAttack = false
 				knifeAnimationNode.visible = true
 				knifeAnimationNode.play()
 				knifeSound.play()
-				await get_tree().create_timer(0.9).timeout
+				var random = randi_range(-20, 20)
+				var damage = 1200 + abs(320 - (attackIndicBar.position.x * 3)) + random
+				$Undyne/HealthBar/DamageNumbers.text = str(roundi(damage))
+				enemyHealth -= damage
+				var barTween = get_tree().create_tween()
+				barTween.tween_property($Undyne/HealthBar/Bar, "value", enemyHealth, 1).set_trans(Tween.TRANS_LINEAR)
+				await get_tree().create_timer(0.8).timeout
 				knifeAnimationNode.visible = false
 				enemyHitSound.play()
 				undyneAnimationNode.play("hurt")
-				await get_tree().create_timer(1).timeout
+				$Undyne/HealthBar.visible = true
+				barTween.play()
+				await get_tree().create_timer(.7).timeout
 				undyneAnimationNode.play("undyne")
 				await get_tree().create_timer(1).timeout
+				$Undyne/HealthBar.visible = false
 				attackTargetAnimation.play_backwards()
 				attackIndicBar.position.x = -99999
-				await get_tree().create_timer(0.5).timeout
 				attackProceed()
 				return
 			
@@ -529,9 +596,12 @@ func _process(delta: float) -> void:
 					attackNoProceed(0)
 				elif menuOptions[selectedButton] == "Undyne the Undying":
 					attackTargetAnimation.play("in")
+					canAttack = false
 					moveIndic = true
 					attackIndicBar.position.x = -85.0
 					menuMode = MenuMode.ATTACK
+					await get_tree().create_timer(0.3).timeout
+					canAttack = true
 				else:
 					showText("* Consumed the " + menuOptions[selectedButton])
 			soulNode.position = optionPoses[selectedButton]
