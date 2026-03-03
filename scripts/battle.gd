@@ -108,9 +108,7 @@ var greenSoulProtectLeft: Tween
 var greenSoulProtectRight: Tween
 var greenSoulRotate = deg_to_rad(90)
 
-var arrowUpPos = Vector2(320, -16)
-
-var checkText = """Undyne the Undying - ATK 99 DEF 99
+var checkText = """* Undyne the Undying - ATK 99 DEF 99
 * Heroine reformed by her own
   DETERMINATION to save Earth.
 """
@@ -121,6 +119,7 @@ var enemyHealthBar: ProgressBar
 
 var attackIndicBar: AnimatedSprite2D
 var attackTargetAnimation: AnimationPlayer
+@onready var attackIndicAnimations = $Box/AttackIndic/FadeOutAni
 var moveIndic = true
 
 var knifeAnimationNode: AnimatedSprite2D
@@ -128,6 +127,13 @@ var knifeSound: AudioStreamPlayer
 var enemyHitSound: AudioStreamPlayer
 
 var Bullets: Node
+
+var arrowUpPos:  Vector2
+var arrowLeftPos: Vector2
+var arrowRightPos: Vector2
+var arrowDownPos: Vector2
+
+
 
 func setBoxPosInsta(trans: Vector4) -> void:
 	boxNode.position = Vector2(trans.x, trans.y)
@@ -160,12 +166,25 @@ func showText(text: String) -> void:
 func selectOption() -> void:
 	menuMode = 0
 
-func spawnArrow(pos, speed: int, direction):
+func spawnArrow(speed: int, direction):
 	var bullet: Arrow = preload("res://scripts/bullets/bullet.tscn").instantiate()
 	bullet.speed = speed
+	bullet.battleManager = self
 	bullet.currentDirection = direction
-	bullet.position = pos
+	match direction:
+		ArrowBullet.Direction.UP:
+			bullet.position = arrowDownPos
+		ArrowBullet.Direction.DOWN:
+			bullet.position = arrowUpPos
+		ArrowBullet.Direction.RIGHT:
+			bullet.position = arrowRightPos
+		ArrowBullet.Direction.LEFT:
+			bullet.position = arrowLeftPos
 	Bullets.add_child(bullet)
+
+func damage(number: int) -> void:
+	hp -= number
+	$SndHurt1.play()
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -209,17 +228,22 @@ func _ready() -> void:
 	enemyHealthBar.max_value = enemyMaxHealth
 	enemyHealthBar.value = enemyHealth
 	enemyHealthBar.visible = false
-	
+
 	attackIndicBar = get_node("Box/AttackIndic")
 	attackIndicBar.play()
 	attackTargetAnimation = get_node("Box/Target/TargetAnimation")
-	
+
 	knifeAnimationNode = get_node("Undyne/KnifeAnimation")
 	knifeSound = get_node("Attack")
 	enemyHitSound = get_node("Damage")
-	
+
 	Bullets = get_node("Bullets")
-	
+
+	arrowUpPos = Vector2(soulNode.position.x, -16)
+	arrowLeftPos = Vector2(-16, soulNode.position.y)
+	arrowRightPos = Vector2(640 + 16, soulNode.position.y)
+	arrowDownPos = Vector2(soulNode.position.x, 480 + 16)
+
 	setBoxPosInsta(defaultPos)
 
 func endAttack() -> void:
@@ -246,13 +270,48 @@ func attackNoProceed(id) -> void:
 			soulMode = SoulMode.GREEN
 			soulNode.position = greenSoulPos
 			soulNode.visible = true
+			spawnArrow(5, ArrowBullet.Direction.DOWN)
+			await get_tree().create_timer(0.5).timeout
+			spawnArrow(5, ArrowBullet.Direction.DOWN)
+			await get_tree().create_timer(0.5).timeout
+			spawnArrow(5, ArrowBullet.Direction.DOWN)
+			await get_tree().create_timer(0.1).timeout
+			spawnArrow(5, ArrowBullet.Direction.DOWN)
+			await get_tree().create_timer(0.1).timeout
+			spawnArrow(5, ArrowBullet.Direction.UP)
+			await get_tree().create_timer(0.1).timeout
+			spawnArrow(5, ArrowBullet.Direction.LEFT)
+			await get_tree().create_timer(0.1).timeout
+			spawnArrow(5, ArrowBullet.Direction.RIGHT)
+			await get_tree().create_timer(0.1).timeout
+			spawnArrow(5, ArrowBullet.Direction.DOWN)
+			await get_tree().create_timer(0.1).timeout
+			spawnArrow(5, ArrowBullet.Direction.UP)
+			await get_tree().create_timer(0.1).timeout
+			spawnArrow(5, ArrowBullet.Direction.LEFT)
+			await get_tree().create_timer(0.1).timeout
+			spawnArrow(5, ArrowBullet.Direction.RIGHT)
+			await get_tree().create_timer(0.1).timeout
+			spawnArrow(5, ArrowBullet.Direction.DOWN)
+			await get_tree().create_timer(0.1).timeout
+			spawnArrow(5, ArrowBullet.Direction.UP)
+			await get_tree().create_timer(0.1).timeout
+			spawnArrow(5, ArrowBullet.Direction.LEFT)
+			await get_tree().create_timer(0.1).timeout
+			spawnArrow(5, ArrowBullet.Direction.RIGHT)
+			await get_tree().create_timer(0.1).timeout
+			spawnArrow(5, ArrowBullet.Direction.DOWN)
+			await get_tree().create_timer(0.1).timeout
+			spawnArrow(5, ArrowBullet.Direction.UP)
+			await get_tree().create_timer(0.1).timeout
+			spawnArrow(5, ArrowBullet.Direction.LEFT)
+			await get_tree().create_timer(0.1).timeout
+			spawnArrow(5, ArrowBullet.Direction.RIGHT)
+			for i in 100:
+				await get_tree().create_timer(0.01).timeout
+				spawnArrow(5, ArrowBullet.Direction.RIGHT)
+			await get_tree().create_timer(1).timeout
 			
-			spawnArrow(arrowUpPos, 5, ArrowBullet.Direction.DOWN)
-			await get_tree().create_timer(0.5).timeout
-			spawnArrow(arrowUpPos, 5, ArrowBullet.Direction.DOWN)
-			await get_tree().create_timer(0.5).timeout
-			spawnArrow(arrowUpPos, 5, ArrowBullet.Direction.DOWN)
-			await get_tree().create_timer(7).timeout
 			endAttack()
 			
 func _process(delta: float) -> void:
@@ -286,6 +345,11 @@ func _process(delta: float) -> void:
 			soulNode.visible = false;
 			if moveIndic:
 				attackIndicBar.position.x += 14
+			if attackIndicBar.position.x >= 480:
+				attackIndicAnimations.play("out")
+				await get_tree().create_timer(1).timeout
+				attackProceed()
+				return;
 			
 			if Input.is_action_just_pressed("ui_select") && moveIndic :
 				moveIndic = false
@@ -296,7 +360,7 @@ func _process(delta: float) -> void:
 				knifeAnimationNode.visible = false
 				enemyHitSound.play()
 				undyneAnimationNode.play("hurt")
-				await get_tree().create_timer(1.2).timeout
+				await get_tree().create_timer(1).timeout
 				undyneAnimationNode.play("undyne")
 				await get_tree().create_timer(1).timeout
 				attackTargetAnimation.play_backwards()
@@ -472,4 +536,3 @@ func _process(delta: float) -> void:
 					showText("* Consumed the " + menuOptions[selectedButton])
 			soulNode.position = optionPoses[selectedButton]
 			return
-				
