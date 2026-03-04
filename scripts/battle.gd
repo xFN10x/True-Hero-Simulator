@@ -207,6 +207,13 @@ func spawnArrow(speed: int, direction):
 			bullet.position = arrowLeftPos
 	Bullets.add_child(bullet)
 
+func heal(number: int) -> void:
+	var fakeHealth = hp + number
+	if fakeHealth > maxHp:
+		hp = maxHp
+	else:
+		hp = fakeHealth
+
 func damage(number: int) -> void:
 	if iframes > 0: return
 	iframes = maxIFrames
@@ -275,10 +282,10 @@ func _ready() -> void:
 
 	Bullets = get_node("Bullets")
 
-	arrowUpPos = Vector2(soulNode.position.x, -16)
+	arrowUpPos = Vector2(soulNode.position.x, -80)
 	arrowLeftPos = Vector2(-16, soulNode.position.y)
 	arrowRightPos = Vector2(640 + 16, soulNode.position.y)
-	arrowDownPos = Vector2(soulNode.position.x, 480 + 16)
+	arrowDownPos = Vector2(soulNode.position.x, 640 - 80)
 
 	$Undyne/HealthBar/Bar.max_value = enemyMaxHealth
 	$Undyne/HealthBar/Bar.value = enemyMaxHealth
@@ -294,13 +301,21 @@ func endAttack() -> void:
 	await setBoxPos(defaultPos)
 	showText(defaultText)
 
-var attacksHealthRange = {
-	
+var attackStage = 0
+var attacksInStage = {
+	0: [1],
+	1: [2]
 }
 func attackProceed() -> void:
-	attackNoProceed(0)
+	attackNoProceed()
+	attackStage += 1
 	
-func attackNoProceed(id) -> void:
+func attackNoProceed() -> void:
+	var availableAttacks = attacksInStage.get(attackStage, 1)
+	var random = randi_range(0, availableAttacks.size() - 1)
+	attack(availableAttacks[random])
+	
+func attack(id) -> void:
 	menuMode = MenuMode.ENEMY_TURN
 	var dur = 0.3
 
@@ -355,11 +370,91 @@ func attackNoProceed(id) -> void:
 			
 			endAttack()
 		1:
+			await setBoxPos(spearAtkPos)
+			soulMode = SoulMode.GREEN
+			soulNode.position = greenSoulPos
+			soulNode.visible = true
+			
 			spawnArrow(5, ArrowBullet.Direction.DOWN)
-			await get_tree().create_timer(0.5).timeout
+			await get_tree().create_timer(0.7).timeout
 			spawnArrow(5, ArrowBullet.Direction.DOWN)
-			await get_tree().create_timer(0.5).timeout
+			await get_tree().create_timer(0.7).timeout
 			spawnArrow(5, ArrowBullet.Direction.DOWN)
+			await get_tree().create_timer(2.4).timeout
+			var dur2 = 0.3
+			var spe = 15
+			
+			spawnArrow(spe, ArrowBullet.Direction.RIGHT)
+			await get_tree().create_timer(dur2).timeout
+			
+			spawnArrow(spe, ArrowBullet.Direction.UP)
+			await get_tree().create_timer(dur2).timeout
+			
+			spawnArrow(spe, ArrowBullet.Direction.LEFT)
+			await get_tree().create_timer(dur2).timeout
+			
+			spawnArrow(spe, ArrowBullet.Direction.DOWN)
+			await get_tree().create_timer(dur2).timeout
+			
+			spawnArrow(spe, ArrowBullet.Direction.LEFT)
+			await get_tree().create_timer(dur2).timeout
+			
+			spawnArrow(spe, ArrowBullet.Direction.UP)
+			await get_tree().create_timer(dur2).timeout
+			
+			spawnArrow(spe, ArrowBullet.Direction.RIGHT)
+			await get_tree().create_timer(dur2).timeout
+			
+			spawnArrow(spe, ArrowBullet.Direction.UP)
+			await get_tree().create_timer(dur2).timeout
+			
+			spawnArrow(spe, ArrowBullet.Direction.LEFT)
+			await get_tree().create_timer(dur2).timeout
+			
+			spawnArrow(spe, ArrowBullet.Direction.DOWN)
+			await get_tree().create_timer(dur2).timeout
+			
+			spawnArrow(spe, ArrowBullet.Direction.LEFT)
+			await get_tree().create_timer(2).timeout
+			
+			endAttack()
+		2:
+			await setBoxPos(spearAtkPos)
+			soulMode = SoulMode.GREEN
+			soulNode.position = greenSoulPos
+			soulNode.visible = true
+			
+			var dur2 = 0.1
+			var spe = 30
+			
+			for i in range(4):
+				spawnArrow(spe, ArrowBullet.Direction.DOWN)
+				await get_tree().create_timer(dur2).timeout
+			
+			spawnArrow(spe, ArrowBullet.Direction.RIGHT)
+			await get_tree().create_timer(dur2).timeout
+			
+			for i in range(4):
+				spawnArrow(spe, ArrowBullet.Direction.DOWN)
+				await get_tree().create_timer(dur2).timeout
+			
+			spawnArrow(spe, ArrowBullet.Direction.LEFT)
+			await get_tree().create_timer(dur2).timeout
+			
+			for i in range(4):
+				spawnArrow(spe, ArrowBullet.Direction.DOWN)
+				await get_tree().create_timer(dur2).timeout
+			
+			spawnArrow(spe, ArrowBullet.Direction.RIGHT)
+			await get_tree().create_timer(dur2).timeout
+			
+			for i in range(4):
+				spawnArrow(spe, ArrowBullet.Direction.DOWN)
+				await get_tree().create_timer(dur2).timeout
+			
+			spawnArrow(spe, ArrowBullet.Direction.LEFT)
+			await get_tree().create_timer(1).timeout
+			
 			endAttack()
 var paused = false
 func _process(delta: float) -> void:
@@ -407,10 +502,11 @@ func _process(delta: float) -> void:
 			if attackIndicBar.position.x >= 400 && canAttack:
 				canAttack = false
 				attackIndicAnimations.play("out")
-				attackTargetAnimation.play_backwards()
+				$Undyne/MissText.visible = true
 				await get_tree().create_timer(0.8).timeout
-				
+				attackTargetAnimation.play_backwards()
 				attackIndicAnimations.play("RESET")
+				$Undyne/MissText.visible = false
 				attackProceed()
 				return;
 			
@@ -468,7 +564,7 @@ func _process(delta: float) -> void:
 			soulNode.visible = false;
 			
 			if currentTextI >= currentText.length() && Input.is_action_just_pressed("ui_select") :
-				attackNoProceed(0)
+				attackNoProceed()
 		MenuMode.OPTION_MODE:
 			greenSoulPartsNode.visible = false;
 			option0Node.visible = false
@@ -488,6 +584,7 @@ func _process(delta: float) -> void:
 			if Input.is_action_just_pressed("ui_select") :
 				menuSelectNode.play()
 				lastOption = selectedButton
+				page = 0
 				match selectedButton:
 					0:
 						enemyHealthBar.visible = true
@@ -496,15 +593,18 @@ func _process(delta: float) -> void:
 						]
 						menuMode = MenuMode.ITEM
 					1:
+						enemyHealthBar.visible = false
 						menuOptions = [
 							"Check"
 						]
 						menuMode = MenuMode.ITEM
 					2:
 						if food.is_empty(): return
+						enemyHealthBar.visible = false
 						menuOptions = food
 						menuMode = MenuMode.ITEM
 					3:
+						enemyHealthBar.visible = false
 						menuOptions = [
 							"Spare"
 						]
@@ -606,7 +706,7 @@ func _process(delta: float) -> void:
 				if str(menuOptions[selectedButton + offset]) == "Check":
 					showText(checkText)
 				elif str(menuOptions[selectedButton + offset]) == "Spare":
-					attackNoProceed(0)
+					attackNoProceed()
 				elif str(menuOptions[selectedButton + offset]) == "Undyne the Undying":
 					attackTargetAnimation.play("in")
 					canAttack = false
@@ -619,7 +719,7 @@ func _process(delta: float) -> void:
 				else:
 					print(food)
 					$SndHealC.play()
-					hp += food[food.find(menuOptions[selectedButton + offset])].Health
+					heal(food[food.find(menuOptions[selectedButton + offset])].Health)
 					showText("* Consumed the " + str(menuOptions[selectedButton + offset]))
 					page = 0
 					food.remove_at(food.find(menuOptions[selectedButton + offset]))

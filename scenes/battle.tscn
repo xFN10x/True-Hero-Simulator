@@ -22,6 +22,7 @@
 [ext_resource type="FontFile" uid="uid://dn4ax5okqvoif" path="res://font/hachicro.TTF" id="14_dd63g"]
 [ext_resource type="Texture2D" uid="uid://bboo4o1o3hbbr" path="res://sprites/broken_sou;.png" id="17_dd63g"]
 [ext_resource type="Texture2D" uid="uid://db14pg1dcdwwr" path="res://sprites/parts_soul.png" id="18_fpf3k"]
+[ext_resource type="Texture2D" uid="uid://cbd81ycbe5ljf" path="res://icon.png" id="23_fpf3k"]
 
 [sub_resource type="GDScript" id="GDScript_66ngm"]
 script/source = "extends Node
@@ -639,6 +640,13 @@ particles_anim_h_frames = 4
 particles_anim_v_frames = 1
 particles_anim_loop = true
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jt4d8"]
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 1)
+
 [sub_resource type="Gradient" id="Gradient_djc8l"]
 offsets = PackedFloat32Array(0)
 colors = PackedColorArray(0, 0, 0, 1)
@@ -776,6 +784,7 @@ sprite_frames = SubResource("SpriteFrames_p0caf")
 
 [node name="HealthBar" type="Node2D" parent="Undyne" unique_id=1313075216]
 visible = false
+z_as_relative = false
 
 [node name="Bar" type="ProgressBar" parent="Undyne/HealthBar" unique_id=1142457642]
 offset_left = 210.0
@@ -801,6 +810,22 @@ theme_override_constants/shadow_outline_size = 10
 theme_override_fonts/font = ExtResource("14_dd63g")
 theme_override_font_sizes/font_size = 31
 text = "1753"
+horizontal_alignment = 1
+
+[node name="MissText" type="Label" parent="Undyne" unique_id=1500564585]
+visible = false
+offset_left = 208.0
+offset_top = 148.0
+offset_right = 409.0
+offset_bottom = 180.0
+theme_override_colors/font_color = Color(0.21960784, 0.21960784, 0.21960784, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_constants/shadow_outline_size = 10
+theme_override_fonts/font = ExtResource("14_dd63g")
+theme_override_font_sizes/font_size = 31
+text = "MISS"
 horizontal_alignment = 1
 
 [node name="Fight" type="Sprite2D" parent="." unique_id=742261727]
@@ -1035,6 +1060,33 @@ offset_bottom = 16.0
 text = "60"
 
 [node name="Bullets" type="Node" parent="." unique_id=837588476]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=454937900]
+visible = false
+position = Vector2(320, -79)
+texture = ExtResource("23_fpf3k")
+
+[node name="Sprite2D2" type="Sprite2D" parent="." unique_id=131553156]
+visible = false
+position = Vector2(-16, 242)
+texture = ExtResource("23_fpf3k")
+
+[node name="Box2" type="Panel" parent="." unique_id=612817259]
+visible = false
+offset_top = -80.0
+offset_right = 640.0
+offset_bottom = 560.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_jt4d8")
+
+[node name="Sprite2D3" type="Sprite2D" parent="." unique_id=1550157441]
+visible = false
+position = Vector2(656, 242)
+texture = ExtResource("23_fpf3k")
+
+[node name="Sprite2D4" type="Sprite2D" parent="." unique_id=1058634131]
+visible = false
+position = Vector2(317, 562)
+texture = ExtResource("23_fpf3k")
 
 [node name="BlackOut" type="Sprite2D" parent="." unique_id=1631318654]
 visible = false
