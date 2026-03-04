@@ -627,9 +627,8 @@ corner_radius_bottom_left = 32
 corner_detail = 20
 anti_aliasing = false
 
-[sub_resource type="SegmentShape2D" id="SegmentShape2D_vceff"]
-a = Vector2(-31, -29)
-b = Vector2(-31, 32)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fpf3k"]
+size = Vector2(23, 61)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_vceff"]
 radius = 6.0827627
@@ -1024,7 +1023,8 @@ sharp_limit = 1.0
 [node name="ShieldHB" type="Area2D" parent="Soul/GreenSoul/Shield" unique_id=1400805819]
 
 [node name="Shield" type="CollisionShape2D" parent="Soul/GreenSoul/Shield/ShieldHB" unique_id=1281278612]
-shape = SubResource("SegmentShape2D_vceff")
+position = Vector2(-21.5, 1.5)
+shape = SubResource("RectangleShape2D_fpf3k")
 
 [node name="SoulHB" type="Area2D" parent="Soul" unique_id=1238037424]
 
@@ -1062,8 +1062,7 @@ text = "60"
 [node name="Bullets" type="Node" parent="." unique_id=837588476]
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=454937900]
-visible = false
-position = Vector2(320, -79)
+position = Vector2(320, 0)
 texture = ExtResource("23_fpf3k")
 
 [node name="Sprite2D2" type="Sprite2D" parent="." unique_id=131553156]

@@ -143,7 +143,7 @@ var arrowDownPos: Vector2
 
 var canAttack = true
 
-var maxIFrames = 2
+var maxIFrames = 20
 var iframes = 0
 
 func setBoxPosInsta(trans: Vector4) -> void:
@@ -311,7 +311,7 @@ func attackProceed() -> void:
 	attackStage += 1
 	
 func attackNoProceed() -> void:
-	var availableAttacks = attacksInStage.get(attackStage, 1)
+	var availableAttacks = attacksInStage.get(attackStage, [2])
 	var random = randi_range(0, availableAttacks.size() - 1)
 	attack(availableAttacks[random])
 	
@@ -380,7 +380,7 @@ func attack(id) -> void:
 			spawnArrow(5, ArrowBullet.Direction.DOWN)
 			await get_tree().create_timer(0.7).timeout
 			spawnArrow(5, ArrowBullet.Direction.DOWN)
-			await get_tree().create_timer(2.4).timeout
+			await get_tree().create_timer(1.8).timeout
 			var dur2 = 0.3
 			var spe = 15
 			
@@ -424,12 +424,13 @@ func attack(id) -> void:
 			soulNode.position = greenSoulPos
 			soulNode.visible = true
 			
-			var dur2 = 0.1
-			var spe = 30
+			var dur2 = 0.15
+			var spe = 27
 			
 			for i in range(4):
 				spawnArrow(spe, ArrowBullet.Direction.DOWN)
 				await get_tree().create_timer(dur2).timeout
+			await get_tree().create_timer(dur2).timeout
 			
 			spawnArrow(spe, ArrowBullet.Direction.RIGHT)
 			await get_tree().create_timer(dur2).timeout
@@ -437,6 +438,7 @@ func attack(id) -> void:
 			for i in range(4):
 				spawnArrow(spe, ArrowBullet.Direction.DOWN)
 				await get_tree().create_timer(dur2).timeout
+			await get_tree().create_timer(dur2).timeout
 			
 			spawnArrow(spe, ArrowBullet.Direction.LEFT)
 			await get_tree().create_timer(dur2).timeout
@@ -444,6 +446,7 @@ func attack(id) -> void:
 			for i in range(4):
 				spawnArrow(spe, ArrowBullet.Direction.DOWN)
 				await get_tree().create_timer(dur2).timeout
+			await get_tree().create_timer(dur2).timeout
 			
 			spawnArrow(spe, ArrowBullet.Direction.RIGHT)
 			await get_tree().create_timer(dur2).timeout
@@ -451,6 +454,7 @@ func attack(id) -> void:
 			for i in range(4):
 				spawnArrow(spe, ArrowBullet.Direction.DOWN)
 				await get_tree().create_timer(dur2).timeout
+			await get_tree().create_timer(dur2).timeout
 			
 			spawnArrow(spe, ArrowBullet.Direction.LEFT)
 			await get_tree().create_timer(1).timeout

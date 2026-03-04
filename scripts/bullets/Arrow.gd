@@ -26,7 +26,7 @@ func _ready() -> void:
 			position.x += 9999
 			$Ding.finished.connect(remove)
 		elif area.name == "SoulHB":
-			battleManager.damage(5)
+			battleManager.damage(randi_range(8,14))
 			queue_free()
 		)
 
