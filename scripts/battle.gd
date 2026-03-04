@@ -48,6 +48,8 @@ var boxNode: MarginContainer
 var defaultPos = Vector4(32, 250, 575, 140)
 var spearAtkPos = Vector4(280, 204,85, 81)
 
+var page = 0
+
 enum MenuMode {
 	OPTION_MODE,
 	NO_MODE,
@@ -61,6 +63,9 @@ class Item :
 	var Health: int
 	var Name: String
 	var SName: String
+	
+	func _to_string() -> String:
+		return SName
 	
 	func _init(Health, Name, ShortName) -> void:
 		self.Health = Health
@@ -177,7 +182,7 @@ func death() -> void:
 	$Soul/CPUParticles2D.emitting = true
 	
 func canNavTo(optionArray: Array, selected: int) -> bool:
-	return selected >= 0 && selected < optionArray.size()
+	return selected >= 0 && selected + (page * 4) < optionArray.size()
 
 func showText(text: String) -> void:
 	currentText = text
@@ -496,12 +501,8 @@ func _process(delta: float) -> void:
 						]
 						menuMode = MenuMode.ITEM
 					2:
-						menuOptions = [
-							food[0].SName,
-							food[1].SName,
-							food[2].SName,
-							food[3].SName,
-						]
+						if food.is_empty(): return
+						menuOptions = food
 						menuMode = MenuMode.ITEM
 					3:
 						menuOptions = [
@@ -543,34 +544,45 @@ func _process(delta: float) -> void:
 					mercyNode.region_rect = Rect2(8, mercyVOffset + selectedVOffset, 110, 42)
 			pass
 		MenuMode.ITEM:
+			var offset = page * 4
 			greenSoulPartsNode.visible = false;
 			soulNode.visible = true;
 			option0Node.visible = true
 			if canNavTo(menuOptions, 0):
-				option0Node.text = "*  " + menuOptions[0]
+				option0Node.text = "*  " + str(menuOptions[0 + offset])
 			else :
 				option0Node.text = ""
 			option1Node.visible = true
 			if canNavTo(menuOptions, 1):
-				option1Node.text = "*  " + menuOptions[1]
+				option1Node.text = "*  " + str(menuOptions[1 + offset])
 			else :
 				option1Node.text = ""
 			option2Node.visible = true
 			if canNavTo(menuOptions, 2):
-				option2Node.text = "*  " + menuOptions[2]
+				option2Node.text = "*  " + str(menuOptions[2 + offset])
 			else :
 				option2Node.text = ""
 			option3Node.visible = true
 			if canNavTo(menuOptions, 3):
-				option3Node.text = "*  " + menuOptions[3]
+				option3Node.text = "*  " + str(menuOptions[3 + offset])
 			else :
 				option3Node.text = ""
 			textNode.visible = false;
-			if canNavTo(menuOptions, selectedButton + 1) && Input.is_action_just_pressed("ui_right") && (selectedButton != 1  && selectedButton != 3) :
+			if canNavTo(menuOptions, selectedButton + 1) && Input.is_action_just_pressed("ui_right") && ((selectedButton != 1  && selectedButton != 3) || menuOptions.size() > (4 + offset)) :
+				if (selectedButton + 1 == 2) || (selectedButton + 1 == 4):
+					selectedButton = 0
+					page += 1;
+					menuMoveNode.play()
+					return
 				selectedButton += 1
 				menuMoveNode.play()
 				
-			if canNavTo(menuOptions, selectedButton - 1) && Input.is_action_just_pressed("ui_left") && (selectedButton != 0 && selectedButton != 2) :
+			if Input.is_action_just_pressed("ui_left") && (page > 0 || (canNavTo(menuOptions, selectedButton - 1) && (selectedButton != 2  && selectedButton != 0))) :
+				if (selectedButton - 1 == -1) || (selectedButton - 1 == 1):
+					selectedButton = 0
+					page -= 1;
+					menuMoveNode.play()
+					return
 				selectedButton -= 1
 				menuMoveNode.play()
 				
@@ -586,15 +598,16 @@ func _process(delta: float) -> void:
 				menuMode = MenuMode.OPTION_MODE
 				selectedButton = lastOption
 				currentTextI = 0
+				return
 			if Input.is_action_just_pressed("ui_select") :
 				menuSelectNode.play()
 				menuMode = MenuMode.NO_MODE
 				soulNode.visible = false
-				if menuOptions[selectedButton] == "Check":
+				if str(menuOptions[selectedButton + offset]) == "Check":
 					showText(checkText)
-				elif menuOptions[selectedButton] == "Spare":
+				elif str(menuOptions[selectedButton + offset]) == "Spare":
 					attackNoProceed(0)
-				elif menuOptions[selectedButton] == "Undyne the Undying":
+				elif str(menuOptions[selectedButton + offset]) == "Undyne the Undying":
 					attackTargetAnimation.play("in")
 					canAttack = false
 					moveIndic = true
@@ -602,7 +615,14 @@ func _process(delta: float) -> void:
 					menuMode = MenuMode.ATTACK
 					await get_tree().create_timer(0.3).timeout
 					canAttack = true
+					enemyHealthBar.visible = false
 				else:
-					showText("* Consumed the " + menuOptions[selectedButton])
+					print(food)
+					$SndHealC.play()
+					hp += food[food.find(menuOptions[selectedButton + offset])].Health
+					showText("* Consumed the " + str(menuOptions[selectedButton + offset]))
+					page = 0
+					food.remove_at(food.find(menuOptions[selectedButton + offset]))
+					return
 			soulNode.position = optionPoses[selectedButton]
 			return

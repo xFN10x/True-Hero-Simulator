@@ -18,6 +18,7 @@
 [ext_resource type="AudioStream" uid="uid://cyxotkhxuh41b" path="res://audio/snd_break2.wav" id="10_saiin"]
 [ext_resource type="SpriteFrames" uid="uid://bfxowpro515br" path="res://sprites/attack_indic.tres" id="11_vceff"]
 [ext_resource type="Script" uid="uid://bnrvcdj0nfocy" path="res://scripts/global.gd" id="12_22uqi"]
+[ext_resource type="AudioStream" uid="uid://f4vp45e0xl7t" path="res://audio/snd_heal_c.wav" id="12_dd63g"]
 [ext_resource type="FontFile" uid="uid://dn4ax5okqvoif" path="res://font/hachicro.TTF" id="14_dd63g"]
 [ext_resource type="Texture2D" uid="uid://bboo4o1o3hbbr" path="res://sprites/broken_sou;.png" id="17_dd63g"]
 [ext_resource type="Texture2D" uid="uid://db14pg1dcdwwr" path="res://sprites/parts_soul.png" id="18_fpf3k"]
@@ -682,6 +683,9 @@ stream = ExtResource("9_61i1y")
 
 [node name="SndBreak2" type="AudioStreamPlayer" parent="." unique_id=539335572]
 stream = ExtResource("10_saiin")
+
+[node name="SndHealC" type="AudioStreamPlayer" parent="." unique_id=1315880190]
+stream = ExtResource("12_dd63g")
 
 [node name="Undyne" type="Node2D" parent="." unique_id=1203616874]
 script = SubResource("GDScript_66ngm")
