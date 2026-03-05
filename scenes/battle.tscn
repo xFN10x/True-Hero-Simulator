@@ -653,6 +653,67 @@ colors = PackedColorArray(0, 0, 0, 1)
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_h4dll"]
 gradient = SubResource("Gradient_djc8l")
 
+[sub_resource type="Animation" id="Animation_fpf3k"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Undyne:modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Box:modulate:a")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1.0]
+}
+
+[sub_resource type="Animation" id="Animation_bi5l8"]
+resource_name = "fade"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Undyne:modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.0, 0.5]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Box:modulate:a")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.0, 0.5]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jt4d8"]
+_data = {
+&"RESET": SubResource("Animation_fpf3k"),
+&"fade": SubResource("Animation_bi5l8")
+}
+
 [node name="Battle" type="Node2D" unique_id=2070806762]
 script = ExtResource("2_p1qf1")
 
@@ -1062,6 +1123,7 @@ text = "60"
 [node name="Bullets" type="Node" parent="." unique_id=837588476]
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=454937900]
+visible = false
 position = Vector2(320, 0)
 texture = ExtResource("23_fpf3k")
 
@@ -1092,3 +1154,6 @@ visible = false
 z_index = 90
 scale = Vector2(9999, 9999)
 texture = SubResource("GradientTexture1D_h4dll")
+
+[node name="GlobalAnimations" type="AnimationPlayer" parent="." unique_id=1225552228]
+libraries/ = SubResource("AnimationLibrary_jt4d8")

@@ -295,10 +295,10 @@ func _ready() -> void:
 func endAttack() -> void:
 	for node in Bullets.get_children():
 		node.queue_free()
-	menuMode = MenuMode.OPTION_MODE;
 	currentText = ""
 	textNode.text = ""
 	await setBoxPos(defaultPos)
+	menuMode = MenuMode.OPTION_MODE;
 	showText(defaultText)
 
 var attackStage = 0
@@ -370,6 +370,7 @@ func attack(id) -> void:
 			
 			endAttack()
 		1:
+			$GlobalAnimations.play("fade")
 			await setBoxPos(spearAtkPos)
 			soulMode = SoulMode.GREEN
 			soulNode.position = greenSoulPos
@@ -380,7 +381,7 @@ func attack(id) -> void:
 			spawnArrow(5, ArrowBullet.Direction.DOWN)
 			await get_tree().create_timer(0.7).timeout
 			spawnArrow(5, ArrowBullet.Direction.DOWN)
-			await get_tree().create_timer(1.8).timeout
+			await get_tree().create_timer(1.5).timeout
 			var dur2 = 0.3
 			var spe = 15
 			
@@ -411,52 +412,38 @@ func attack(id) -> void:
 			spawnArrow(spe, ArrowBullet.Direction.LEFT)
 			await get_tree().create_timer(dur2).timeout
 			
-			spawnArrow(spe, ArrowBullet.Direction.DOWN)
-			await get_tree().create_timer(dur2).timeout
+			spawnArrow(spe, ArrowBullet.Direction.DOWN)c
+			await get_tree().create_timer(1).timeout
 			
-			spawnArrow(spe, ArrowBullet.Direction.LEFT)
-			await get_tree().create_timer(2).timeout
-			
+			$GlobalAnimations.play_backwards("fade")
 			endAttack()
 		2:
 			await setBoxPos(spearAtkPos)
 			soulMode = SoulMode.GREEN
 			soulNode.position = greenSoulPos
 			soulNode.visible = true
+			$GlobalAnimations.play("fade")
 			
-			var dur2 = 0.15
+			var dur2 = 0.25
+			
+			
+			var dur3 = 0.15
 			var spe = 27
 			
-			for i in range(4):
-				spawnArrow(spe, ArrowBullet.Direction.DOWN)
+			for i2 in range(4):
+				for i in range(3):
+					spawnArrow(spe, ArrowBullet.Direction.DOWN)
+					await get_tree().create_timer(dur3).timeout
 				await get_tree().create_timer(dur2).timeout
-			await get_tree().create_timer(dur2).timeout
-			
-			spawnArrow(spe, ArrowBullet.Direction.RIGHT)
-			await get_tree().create_timer(dur2).timeout
-			
-			for i in range(4):
-				spawnArrow(spe, ArrowBullet.Direction.DOWN)
+				spawnArrow(spe + 3, ArrowBullet.Direction.RIGHT)
 				await get_tree().create_timer(dur2).timeout
-			await get_tree().create_timer(dur2).timeout
-			
-			spawnArrow(spe, ArrowBullet.Direction.LEFT)
-			await get_tree().create_timer(dur2).timeout
-			
-			for i in range(4):
-				spawnArrow(spe, ArrowBullet.Direction.DOWN)
+				for i in range(3):
+					spawnArrow(spe, ArrowBullet.Direction.DOWN)
+					await get_tree().create_timer(dur3).timeout
 				await get_tree().create_timer(dur2).timeout
-			await get_tree().create_timer(dur2).timeout
-			
-			spawnArrow(spe, ArrowBullet.Direction.RIGHT)
-			await get_tree().create_timer(dur2).timeout
-			
-			for i in range(4):
-				spawnArrow(spe, ArrowBullet.Direction.DOWN)
+				spawnArrow(spe + 3, ArrowBullet.Direction.LEFT)
 				await get_tree().create_timer(dur2).timeout
-			await get_tree().create_timer(dur2).timeout
-			
-			spawnArrow(spe, ArrowBullet.Direction.LEFT)
+			$GlobalAnimations.play_backwards("fade")
 			await get_tree().create_timer(1).timeout
 			
 			endAttack()
@@ -481,7 +468,7 @@ func _process(delta: float) -> void:
 	hpBarNode.value = hp
 	hpTextNode.text = "%s / %s" % [hp, maxHp]
 	#print(selectedButton)
-	if currentTextI < currentText.length() && (menuMode != MenuMode.ITEM):
+	if currentTextI < currentText.length() && (menuMode == MenuMode.OPTION_MODE):
 		if currentTextI != currentText.length() && menuMode == MenuMode.NO_MODE && Input.is_action_just_pressed("ui_cancel") :
 			currentTextI = currentText.length()
 				
@@ -521,7 +508,9 @@ func _process(delta: float) -> void:
 				knifeAnimationNode.play()
 				knifeSound.play()
 				var random = randi_range(-20, 20)
-				var damage = 1200 + abs(320 - (attackIndicBar.position.x * 3)) + random
+				var damage = 1800 + -abs((320 - attackIndicBar.position.x) * 3) + random
+				if (Input.is_action_pressed("secret1")):
+					damage += 10000
 				$Undyne/HealthBar/DamageNumbers.text = str(roundi(damage))
 				enemyHealth -= damage
 				var barTween = get_tree().create_tween()
