@@ -97,6 +97,8 @@ var currentTextI = 0
 
 var currentAttack = 0
 
+var actualNoMode = false 
+
 enum SoulMode {
 	GREEN,
 	RED,
@@ -157,14 +159,19 @@ func setBoxPos(trans: Vector4) -> Signal:
 	tweenSizeX.tween_property(boxNode, "size", Vector2(trans.z, boxNode.size.y), 0.5).set_trans(Tween.TRANS_LINEAR)
 	tweenSizeX.play()
 	tweenMoveX.play()
-	await tweenMoveX.finished
-	
+	if tweenMoveX.is_running():
+		await tweenMoveX.finished
+	if tweenSizeX.is_running():
+		await tweenSizeX.finished
+		
 	var tweenMoveY = get_tree().create_tween()
 	tweenMoveY.tween_property(boxNode, "position", Vector2(boxNode.position.x, trans.y), 0.1).set_trans(Tween.TRANS_LINEAR)
 	var tweenSizeY = get_tree().create_tween()
 	tweenSizeY.tween_property(boxNode, "size", Vector2(boxNode.size.x, trans.w), 0.1).set_trans(Tween.TRANS_LINEAR)
 	tweenSizeY.play()
 	tweenMoveY.play()
+	if tweenSizeY.is_running():
+		await tweenSizeY.finished
 	return tweenMoveY.finished
 	
 func death() -> void:
@@ -293,33 +300,80 @@ func _ready() -> void:
 	setBoxPosInsta(defaultPos)
 
 func endAttack() -> void:
+	actualNoMode = true
+	menuMode = MenuMode.NO_MODE;
 	for node in Bullets.get_children():
-		node.queue_free()
+		node.remove()
 	currentText = ""
 	textNode.text = ""
 	await setBoxPos(defaultPos)
 	menuMode = MenuMode.OPTION_MODE;
 	showText(defaultText)
+	actualNoMode = false
 
 var attackStage = 0
 var attacksInStage = {
 	0: [1],
-	1: [2]
+	1: [3]
 }
+var firstAttackHappened = false
 func attackProceed() -> void:
 	attackNoProceed()
-	attackStage += 1
+	var healthTaken = enemyMaxHealth - enemyHealth
+	if healthTaken <= 4000:
+		attackStage = 1
 	
 func attackNoProceed() -> void:
-	var availableAttacks = attacksInStage.get(attackStage, [2])
+	var availableAttacks = attacksInStage.get(attackStage, )
 	var random = randi_range(0, availableAttacks.size() - 1)
 	attack(availableAttacks[random])
-	
+	if not firstAttackHappened:
+		attackStage = 1
+		firstAttackHappened = true 
+
+func greensoul() -> void:
+	$GlobalAnimations.play("fade")
+	await setBoxPos(spearAtkPos)
+	soulMode = SoulMode.GREEN
+	soulNode.position = greenSoulPos
+	soulNode.visible = true
+
 func attack(id) -> void:
 	menuMode = MenuMode.ENEMY_TURN
-	var dur = 0.3
-
+	
 	currentAttack = id
+	"""
+		await setBoxPos(spearAtkPos)
+			soulMode = SoulMode.GREEN
+			soulNode.position = greenSoulPos
+			soulNode.visible = true
+			$GlobalAnimations.play("fade")
+			
+			var dur2 = 0.25
+			
+			
+			var dur3 = 0.15
+			var spe = 27
+			
+			for i2 in range(4):
+				for i in range(3):
+					spawnArrow(spe, ArrowBullet.Direction.DOWN)
+					await get_tree().create_timer(dur3).timeout
+				await get_tree().create_timer(dur2).timeout
+				spawnArrow(spe + 3, ArrowBullet.Direction.RIGHT)
+				await get_tree().create_timer(dur2).timeout
+				for i in range(3):
+					spawnArrow(spe, ArrowBullet.Direction.DOWN)
+					await get_tree().create_timer(dur3).timeout
+				await get_tree().create_timer(dur2).timeout
+				spawnArrow(spe + 3, ArrowBullet.Direction.LEFT)
+				await get_tree().create_timer(dur2).timeout
+			$GlobalAnimations.play_backwards("fade")
+			await get_tree().create_timer(1).timeout
+			
+			endAttack()
+	"""
+	await get_tree().create_timer(1).timeout
 	match currentAttack:
 		0:
 			await setBoxPos(spearAtkPos)
@@ -370,11 +424,7 @@ func attack(id) -> void:
 			
 			endAttack()
 		1:
-			$GlobalAnimations.play("fade")
-			await setBoxPos(spearAtkPos)
-			soulMode = SoulMode.GREEN
-			soulNode.position = greenSoulPos
-			soulNode.visible = true
+			greensoul()
 			
 			spawnArrow(5, ArrowBullet.Direction.DOWN)
 			await get_tree().create_timer(0.7).timeout
@@ -412,25 +462,14 @@ func attack(id) -> void:
 			spawnArrow(spe, ArrowBullet.Direction.LEFT)
 			await get_tree().create_timer(dur2).timeout
 			
-			spawnArrow(spe, ArrowBullet.Direction.DOWN)c
-			await get_tree().create_timer(1).timeout
-			
-			$GlobalAnimations.play_backwards("fade")
-			endAttack()
+			spawnArrow(spe, ArrowBullet.Direction.DOWN)
 		2:
-			await setBoxPos(spearAtkPos)
-			soulMode = SoulMode.GREEN
-			soulNode.position = greenSoulPos
-			soulNode.visible = true
-			$GlobalAnimations.play("fade")
-			
+			greensoul()
 			var dur2 = 0.25
-			
-			
 			var dur3 = 0.15
 			var spe = 27
 			
-			for i2 in range(4):
+			for i2 in range(3):
 				for i in range(3):
 					spawnArrow(spe, ArrowBullet.Direction.DOWN)
 					await get_tree().create_timer(dur3).timeout
@@ -443,10 +482,54 @@ func attack(id) -> void:
 				await get_tree().create_timer(dur2).timeout
 				spawnArrow(spe + 3, ArrowBullet.Direction.LEFT)
 				await get_tree().create_timer(dur2).timeout
-			$GlobalAnimations.play_backwards("fade")
+		3:
+			greensoul()
 			await get_tree().create_timer(1).timeout
 			
-			endAttack()
+			var dur = 0.25
+			var spe = 13
+			spawnArrow(spe, ArrowBullet.Direction.RIGHT)
+			await get_tree().create_timer(dur).timeout
+			
+			spawnArrow(spe, ArrowBullet.Direction.LEFT)
+			await get_tree().create_timer(dur).timeout
+			
+			for i in range(2):
+				spawnArrow(spe, ArrowBullet.Direction.RIGHT)
+				await get_tree().create_timer(dur - 0.1).timeout
+			
+			for i in range(2):
+				spawnArrow(spe, ArrowBullet.Direction.LEFT)
+				await get_tree().create_timer(dur).timeout
+				
+			spawnArrow(spe, ArrowBullet.Direction.RIGHT)
+			await get_tree().create_timer(dur).timeout
+			
+			for i in range(2):
+				spawnArrow(spe, ArrowBullet.Direction.LEFT)
+				await get_tree().create_timer(dur - 0.1).timeout
+			pass
+			
+			spawnArrow(spe, ArrowBullet.Direction.RIGHT)
+			await get_tree().create_timer(dur).timeout
+			
+			spawnArrow(spe, ArrowBullet.Direction.LEFT)
+			await get_tree().create_timer(dur).timeout
+			
+			spawnArrow(spe, ArrowBullet.Direction.RIGHT)
+			await get_tree().create_timer(dur).timeout
+			
+			spawnArrow(spe, ArrowBullet.Direction.LEFT)
+			await get_tree().create_timer(dur).timeout
+			
+			spawnArrow(spe, ArrowBullet.Direction.RIGHT)
+			await get_tree().create_timer(dur).timeout
+	await get_tree().create_timer(1).timeout
+			
+	$GlobalAnimations.play_backwards("fade")
+	endAttack()
+	return
+
 var paused = false
 func _process(delta: float) -> void:
 	if paused:
@@ -468,7 +551,7 @@ func _process(delta: float) -> void:
 	hpBarNode.value = hp
 	hpTextNode.text = "%s / %s" % [hp, maxHp]
 	#print(selectedButton)
-	if currentTextI < currentText.length() && (menuMode == MenuMode.OPTION_MODE):
+	if currentTextI < currentText.length() && (menuMode == MenuMode.OPTION_MODE || menuMode == MenuMode.NO_MODE):
 		if currentTextI != currentText.length() && menuMode == MenuMode.NO_MODE && Input.is_action_just_pressed("ui_cancel") :
 			currentTextI = currentText.length()
 				
@@ -529,7 +612,6 @@ func _process(delta: float) -> void:
 				attackIndicBar.position.x = -99999
 				attackProceed()
 				return
-			
 		MenuMode.ENEMY_TURN:
 			option0Node.visible = false
 			option1Node.visible = false
@@ -556,7 +638,7 @@ func _process(delta: float) -> void:
 			textNode.visible = true;
 			soulNode.visible = false;
 			
-			if currentTextI >= currentText.length() && Input.is_action_just_pressed("ui_select") :
+			if not actualNoMode && currentTextI >= currentText.length() && Input.is_action_just_pressed("ui_select") :
 				attackNoProceed()
 		MenuMode.OPTION_MODE:
 			greenSoulPartsNode.visible = false;

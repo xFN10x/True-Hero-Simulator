@@ -962,10 +962,10 @@ text = "56 / 56"
 label_settings = SubResource("LabelSettings_v7i3o")
 
 [node name="Box" type="MarginContainer" parent="." unique_id=1884231038]
-offset_left = 368.0
+offset_left = 32.0
 offset_top = 250.0
-offset_right = 930.0
-offset_bottom = 378.0
+offset_right = 607.0
+offset_bottom = 390.0
 theme_override_constants/margin_bottom = 0
 
 [node name="Box" type="Panel" parent="Box" unique_id=770708501]
@@ -1076,7 +1076,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_03edq")
 [node name="Shield" type="Line2D" parent="Soul/GreenSoul" unique_id=534361229]
 points = PackedVector2Array(-18.92, 10.995, -30.985, -28.63, -30.985, 30.685)
 width = 3.0
-default_color = Color(0, 0, 1, 1)
+default_color = Color(0.28627452, 0.30980393, 1, 1)
 begin_cap_mode = 1
 end_cap_mode = 1
 sharp_limit = 1.0
