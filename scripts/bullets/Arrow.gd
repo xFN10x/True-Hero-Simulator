@@ -2,7 +2,7 @@ extends Sprite2D
 class_name Arrow
 
 var battleManager;
-
+var canDamage = true
 
 enum Direction {
 	UP = 180,
@@ -25,10 +25,13 @@ func _ready() -> void:
 	rotation_degrees = currentDirection
 	CurrentArrows.append(self)
 	$Area2D.area_shape_entered.connect(func (area_rid: RID, area: Area2D, area_shape_index: int, local_shape_index: int):
+		if not canDamage: return
 		if area.name == "ShieldHB":
+			canDamage = false
 			$Ding.play()
 			remove()
 		elif area.name == "SoulHB":
+			canDamage = false
 			battleManager.damage(randi_range(8,14))
 			remove()
 		)
@@ -43,6 +46,8 @@ func remove() -> void:
 	queue_free()
 
 func _process(delta: float) -> void:
+	if BattleManager.paused:
+		return
 	if not isRed && CurrentArrows.find(self) == 0:
 		isRed = true
 		region_rect.position.y = 1030

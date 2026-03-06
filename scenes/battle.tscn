@@ -20,6 +20,8 @@
 [ext_resource type="Script" uid="uid://bnrvcdj0nfocy" path="res://scripts/global.gd" id="12_22uqi"]
 [ext_resource type="AudioStream" uid="uid://f4vp45e0xl7t" path="res://audio/snd_heal_c.wav" id="12_dd63g"]
 [ext_resource type="FontFile" uid="uid://dn4ax5okqvoif" path="res://font/hachicro.TTF" id="14_dd63g"]
+[ext_resource type="Texture2D" uid="uid://cy5kf75qp6kx8" path="res://sprites/spear_ani.png" id="16_jt4d8"]
+[ext_resource type="FontFile" uid="uid://bj7anrfh0o6qq" path="res://font/font1.ttf" id="17_bi5l8"]
 [ext_resource type="Texture2D" uid="uid://bboo4o1o3hbbr" path="res://sprites/broken_sou;.png" id="17_dd63g"]
 [ext_resource type="Texture2D" uid="uid://db14pg1dcdwwr" path="res://sprites/parts_soul.png" id="18_fpf3k"]
 [ext_resource type="Texture2D" uid="uid://cbd81ycbe5ljf" path="res://icon.png" id="23_fpf3k"]
@@ -86,7 +88,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [0.057551812]
+"values": [0.0]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -158,7 +160,7 @@ tracks/8/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(261, 168)]
+"values": [Vector2(268, 100)]
 }
 tracks/9/type = "value"
 tracks/9/imported = false
@@ -184,10 +186,70 @@ tracks/10/keys = {
 "update": 1,
 "values": [0.0]
 }
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("Head:region_rect")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Rect2(5, 2052, 40, 34)]
+}
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("RArm:rotation")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("RArm:z_index")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [-1]
+}
+tracks/14/type = "value"
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/path = NodePath("SpearParticle1:emitting")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/15/type = "value"
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/path = NodePath("SpearParticle1/SpearParticle2:emitting")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="Animation" id="Animation_vceff"]
 resource_name = "hurt"
-length = 0.6
+length = 0.66667336
 step = 0.06666667
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -208,10 +270,99 @@ tracks/1/path = NodePath(".:position:x")
 tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.06666667, 0.13333334, 0.2, 0.26666668, 0.33333334, 0.4, 0.46666667, 0.53333336),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.06666667, 0.13333334, 0.2, 0.26666668, 0.33333334, 0.4, 0.46666667, 0.53333336, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
-"values": [-8.0, 7.0, -6.0, 5.0, -4.0, 3.0, -4.0, -2.0, 1.0]
+"values": [-8.0, 7.0, -6.0, 5.0, -4.0, 3.0, -4.0, -2.0, 1.0, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_jt4d8"]
+resource_name = "spear_change"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Head:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.06666667, 0.13333334, 0.20000002, 0.26666668),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [Rect2(3, 2091, 40, 34), Rect2(45, 2092, 40, 34), Rect2(3, 2091, 40, 34), Rect2(45, 2092, 40, 34), Rect2(5, 2052, 40, 34)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("RArm:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.13333334, 0.26896465, 0.33333334, 0.6666667, 0.8333334),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 2.1205750411731104, 2.1205750411731104, -1.1397000015522973, -1.1397000015522973, 0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("RArm:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.13333334, 0.26666668, 0.33333334),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(268, 100), Vector2(257.325, 88.21), Vector2(257.325, 88.21), Vector2(275.77, 102.91)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("RArm:z_index")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.26666668),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [999]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("SpearParticle1:emitting")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.26165602, 0.33333334),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("SpearParticle1/SpearParticle2:emitting")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0.26165602, 0.33333334),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/6/type = "method"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("..")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0.33333334),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"changeSoul"
+}]
 }
 
 [sub_resource type="Animation" id="Animation_yahae"]
@@ -324,7 +475,7 @@ tracks/8/keys = {
 "times": PackedFloat32Array(0, 0.5),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(261, 168), Vector2(250, 158)]
+"values": [Vector2(272, 106), Vector2(262, 93)]
 }
 tracks/9/type = "value"
 tracks/9/imported = false
@@ -343,6 +494,7 @@ tracks/9/keys = {
 _data = {
 &"RESET": SubResource("Animation_f4pi3"),
 &"hurt": SubResource("Animation_vceff"),
+&"spear_change": SubResource("Animation_jt4d8"),
 &"undyne": SubResource("Animation_yahae")
 }
 
@@ -482,6 +634,15 @@ animations = [{
 "speed": 6.0
 }]
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_kl6ie"]
+particles_animation = true
+particles_anim_h_frames = 2
+particles_anim_v_frames = 1
+particles_anim_loop = true
+
+[sub_resource type="Gradient" id="Gradient_1m01a"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fpf3k"]
 bg_color = Color(0.21960784, 0.21960784, 0.21960784, 1)
 
@@ -496,6 +657,11 @@ bg_color = Color(0.95686275, 0, 0.007843138, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yahae"]
 bg_color = Color(1, 1, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_fpf3k"]
+font = ExtResource("17_bi5l8")
+font_size = 10
+font_color = Color(1, 1, 1, 0.2627451)
 
 [sub_resource type="LabelSettings" id="LabelSettings_v7i3o"]
 font_size = 24
@@ -777,9 +943,10 @@ region_rect = Rect2(267, 1840, 19, 44)
 
 [node name="RArm" type="Sprite2D" parent="Undyne" unique_id=566646253]
 z_index = -1
-position = Vector2(261, 168)
+position = Vector2(268, 100)
 scale = Vector2(2.000001, 2.000001)
 texture = ExtResource("7_4k1nj")
+offset = Vector2(-7.54, 34.005)
 region_enabled = true
 region_rect = Rect2(132, 1840, 46, 76)
 
@@ -796,7 +963,6 @@ region_rect = Rect2(105, 1840, 22, 34)
 [node name="Body" type="Sprite2D" parent="Undyne" unique_id=1000541810]
 z_index = -1
 position = Vector2(254, 89)
-rotation = 0.057551812
 scale = Vector2(2.000001, 2.000001)
 texture = ExtResource("7_4k1nj")
 offset = Vector2(28, 4)
@@ -858,6 +1024,41 @@ theme_override_fonts/font = ExtResource("14_dd63g")
 theme_override_font_sizes/font_size = 31
 text = "MISS"
 horizontal_alignment = 1
+
+[node name="SpearParticle1" type="CPUParticles2D" parent="Undyne" unique_id=703701483]
+material = SubResource("CanvasItemMaterial_kl6ie")
+position = Vector2(231, 184)
+emitting = false
+amount = 1
+texture = ExtResource("16_jt4d8")
+lifetime = 0.33
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 30
+direction = Vector2(0, 1)
+spread = 0.0
+gravity = Vector2(0, 0)
+color_ramp = SubResource("Gradient_1m01a")
+anim_speed_min = 128.0
+anim_speed_max = 128.0
+
+[node name="SpearParticle2" type="CPUParticles2D" parent="Undyne/SpearParticle1" unique_id=1950554026]
+material = SubResource("CanvasItemMaterial_kl6ie")
+emitting = false
+amount = 1
+texture = ExtResource("16_jt4d8")
+lifetime = 3.3299999999999996
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 30
+direction = Vector2(0, 1)
+spread = 0.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 900.0
+initial_velocity_max = 900.0
+color_ramp = SubResource("Gradient_1m01a")
+anim_speed_min = 128.0
+anim_speed_max = 128.0
 
 [node name="HealthBar" type="Node2D" parent="." unique_id=1313075216]
 visible = false
@@ -955,6 +1156,16 @@ step = 1.0
 value = 56.0
 show_percentage = false
 
+[node name="credit" type="Label" parent="InfoBar" unique_id=2088783582]
+offset_left = 464.0
+offset_top = 398.0
+offset_right = 605.0
+offset_bottom = 429.0
+text = "True Hero Sim
+by: xfn10x"
+label_settings = SubResource("LabelSettings_fpf3k")
+horizontal_alignment = 1
+
 [node name="HPText" type="Label" parent="InfoBar" unique_id=2139947506]
 offset_left = 357.0
 offset_top = 400.0
@@ -973,6 +1184,14 @@ theme_override_constants/margin_bottom = 0
 [node name="Box" type="Panel" parent="Box" unique_id=770708501]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_66ngm")
+
+[node name="TurnCounter" type="Label" parent="Box/Box" unique_id=253163476]
+layout_mode = 0
+offset_top = -27.0
+offset_right = 575.0
+text = "Turn: 0"
+label_settings = SubResource("LabelSettings_fpf3k")
+vertical_alignment = 2
 
 [node name="AttackIndic" type="AnimatedSprite2D" parent="Box/Box" unique_id=533911298]
 z_index = 1
@@ -1159,3 +1378,23 @@ texture = SubResource("GradientTexture1D_h4dll")
 
 [node name="GlobalAnimations" type="AnimationPlayer" parent="." unique_id=1225552228]
 libraries/ = SubResource("AnimationLibrary_jt4d8")
+
+[node name="credit" type="Label" parent="." unique_id=263940335]
+offset_left = 464.0
+offset_top = 398.0
+offset_right = 605.0
+offset_bottom = 429.0
+text = "True Hero Sim
+by: xfn10x"
+label_settings = SubResource("LabelSettings_fpf3k")
+horizontal_alignment = 1
+
+[node name="credit2" type="Label" parent="." unique_id=799571006]
+offset_left = 464.0
+offset_top = 398.0
+offset_right = 605.0
+offset_bottom = 429.0
+text = "True Hero Sim
+by: xfn10x"
+label_settings = SubResource("LabelSettings_fpf3k")
+horizontal_alignment = 1
