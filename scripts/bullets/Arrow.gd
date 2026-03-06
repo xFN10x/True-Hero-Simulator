@@ -3,6 +3,7 @@ class_name Arrow
 
 var battleManager;
 
+
 enum Direction {
 	UP = 180,
 	DOWN = 0,

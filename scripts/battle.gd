@@ -294,8 +294,8 @@ func _ready() -> void:
 	arrowRightPos = Vector2(640 + 16, soulNode.position.y)
 	arrowDownPos = Vector2(soulNode.position.x, 640 - 80)
 
-	$Undyne/HealthBar/Bar.max_value = enemyMaxHealth
-	$Undyne/HealthBar/Bar.value = enemyMaxHealth
+	$HealthBar/Bar.max_value = enemyMaxHealth
+	$HealthBar/Bar.value = enemyMaxHealth
 
 	setBoxPosInsta(defaultPos)
 
@@ -314,7 +314,7 @@ func endAttack() -> void:
 var attackStage = 0
 var attacksInStage = {
 	0: [1],
-	1: [3]
+	1: [3,4]
 }
 var firstAttackHappened = false
 func attackProceed() -> void:
@@ -524,6 +524,15 @@ func attack(id) -> void:
 			
 			spawnArrow(spe, ArrowBullet.Direction.RIGHT)
 			await get_tree().create_timer(dur).timeout
+		4:
+			greensoul()
+			
+			var spe = 2
+			for i in range(18):
+				var di = Arrow.Direction.values()[randi_range(0, Arrow.Direction.values().size() -1 )]
+				spawnArrow(spe, di)
+				await get_tree().create_timer(randf_range(0.3, 0.5)).timeout
+			await get_tree().create_timer(spe * (spe /2)).timeout
 	await get_tree().create_timer(1).timeout
 			
 	$GlobalAnimations.play_backwards("fade")
@@ -594,20 +603,20 @@ func _process(delta: float) -> void:
 				var damage = 1800 + -abs((320 - attackIndicBar.position.x) * 3) + random
 				if (Input.is_action_pressed("secret1")):
 					damage += 10000
-				$Undyne/HealthBar/DamageNumbers.text = str(roundi(damage))
+				$HealthBar/DamageNumbers.text = str(roundi(damage))
 				enemyHealth -= damage
 				var barTween = get_tree().create_tween()
-				barTween.tween_property($Undyne/HealthBar/Bar, "value", enemyHealth, 1).set_trans(Tween.TRANS_LINEAR)
+				barTween.tween_property($HealthBar/Bar, "value", enemyHealth, 1).set_trans(Tween.TRANS_LINEAR)
 				await get_tree().create_timer(0.8).timeout
 				knifeAnimationNode.visible = false
 				enemyHitSound.play()
 				undyneAnimationNode.play("hurt")
-				$Undyne/HealthBar.visible = true
+				$HealthBar.visible = true
 				barTween.play()
 				await get_tree().create_timer(.7).timeout
 				undyneAnimationNode.play("undyne")
 				await get_tree().create_timer(1).timeout
-				$Undyne/HealthBar.visible = false
+				$HealthBar.visible = false
 				attackTargetAnimation.play_backwards()
 				attackIndicBar.position.x = -99999
 				attackProceed()
@@ -622,13 +631,25 @@ func _process(delta: float) -> void:
 				greenSoulPartsNode.visible = true;
 				var dur = 0.1
 				if Input.is_action_just_pressed("ui_down") :
+					$Soul/GreenSoul/Shield/ShieldHB/Shield.disabled = true
 					greenSoulRotate = deg_to_rad(270)
+					await get_tree().create_timer(.1).timeout
+					$Soul/GreenSoul/Shield/ShieldHB/Shield.disabled = false
 				if Input.is_action_just_pressed("ui_up") :
+					$Soul/GreenSoul/Shield/ShieldHB/Shield.disabled = true
 					greenSoulRotate = deg_to_rad(90)
+					await get_tree().create_timer(.1).timeout
+					$Soul/GreenSoul/Shield/ShieldHB/Shield.disabled = false
 				if Input.is_action_just_pressed("ui_left") :
+					$Soul/GreenSoul/Shield/ShieldHB/Shield.disabled = true
 					greenSoulRotate = deg_to_rad(0)
+					await get_tree().create_timer(.1).timeout
+					$Soul/GreenSoul/Shield/ShieldHB/Shield.disabled = false
 				if Input.is_action_just_pressed("ui_right") :
+					$Soul/GreenSoul/Shield/ShieldHB/Shield.disabled = true
 					greenSoulRotate = deg_to_rad(180)
+					await get_tree().create_timer(.1).timeout
+					$Soul/GreenSoul/Shield/ShieldHB/Shield.disabled = false
 		MenuMode.NO_MODE:
 			greenSoulPartsNode.visible = false;
 			option0Node.visible = false
@@ -795,7 +816,7 @@ func _process(delta: float) -> void:
 					print(food)
 					$SndHealC.play()
 					heal(food[food.find(menuOptions[selectedButton + offset])].Health)
-					showText("* Consumed the " + str(menuOptions[selectedButton + offset]))
+					showText("* You ate the " + menuOptions[selectedButton + offset].Name)
 					page = 0
 					food.remove_at(food.find(menuOptions[selectedButton + offset]))
 					return

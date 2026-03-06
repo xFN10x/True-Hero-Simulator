@@ -28,6 +28,8 @@ func setFpsMode(mode) -> void:
 
 func _process(delta: float) -> void:
 	fpsNode.text = "%s / %s" % [round(Engine.get_frames_per_second()), fpsModes[fpsMode]]
+	if Input.is_action_just_pressed("secret1"):
+		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 	if Input.is_action_just_pressed("toggle_fps"):
 		fpsMode += 1
 		if fpsMode >= 5:
