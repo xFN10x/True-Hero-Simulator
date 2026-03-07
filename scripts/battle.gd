@@ -581,25 +581,63 @@ func attack() -> void:
 				await get_tree().create_timer(.5).timeout
 			spearChange()
 			await get_tree().create_timer(2).timeout
+		6:
+			await greensoul()
+			var vertSpeed = 8
+			var horiSpeed = 15
+			
+			spawnArrow(vertSpeed, Arrow.Direction.DOWN)
+			await get_tree().create_timer(.15).timeout
+			spawnArrow(horiSpeed, Arrow.Direction.LEFT)
+			await get_tree().create_timer(.4).timeout
+			spawnArrow(vertSpeed, Arrow.Direction.UP)
+			await get_tree().create_timer(.15).timeout
+			spawnArrow(horiSpeed, Arrow.Direction.RIGHT)
+			
+			await get_tree().create_timer(.6).timeout
+			spawnArrow(horiSpeed - 4, Arrow.Direction.LEFT)
+			spawnArrow(vertSpeed - 4, Arrow.Direction.DOWN)
+			await get_tree().create_timer(.3).timeout
+			spawnArrow(horiSpeed - 4, Arrow.Direction.RIGHT)
+			spawnArrow(vertSpeed - 4, Arrow.Direction.UP)
+			await get_tree().create_timer(.3).timeout
+			spawnArrow(horiSpeed - 6, Arrow.Direction.LEFT)
+			await get_tree().create_timer(1).timeout
 		7:
 			await greensoul()
-			var dur2 = 0.3
-			var dur3 = 0.2
-			var spe = 26
+			var dur2 = 0.2
+			var dur3 = 0.1
+			var spe = 32
 			
-			for i2 in range(2):
-				for i in range(4):
-					spawnArrow(spe, ArrowBullet.Direction.DOWN)
-					await get_tree().create_timer(dur3).timeout
-				await get_tree().create_timer(dur2).timeout
-				spawnArrow(spe + 3, ArrowBullet.Direction.RIGHT)
-				await get_tree().create_timer(dur2).timeout
-				for i in range(4):
-					spawnArrow(spe, ArrowBullet.Direction.DOWN)
-					await get_tree().create_timer(dur3).timeout
-				await get_tree().create_timer(dur2).timeout
-				spawnArrow(spe + 3, ArrowBullet.Direction.LEFT)
-				await get_tree().create_timer(dur2).timeout
+			spawnArrow(spe - 21, ArrowBullet.Direction.RIGHT)
+			for i in range(4):
+				spawnArrow(spe, ArrowBullet.Direction.DOWN)
+				await get_tree().create_timer(dur3).timeout
+			await get_tree().create_timer(dur2).timeout
+			
+			spawnArrow(spe - 21, ArrowBullet.Direction.LEFT)
+			for i in range(4):
+				spawnArrow(spe, ArrowBullet.Direction.DOWN)
+				await get_tree().create_timer(dur3).timeout
+			await get_tree().create_timer(dur2).timeout
+			
+			spawnArrow(spe - 18, ArrowBullet.Direction.RIGHT)
+			for i in range(3):
+				spawnArrow(spe, ArrowBullet.Direction.DOWN)
+				await get_tree().create_timer(dur3).timeout
+			await get_tree().create_timer(dur2).timeout
+			
+			spawnArrow(spe - 18, ArrowBullet.Direction.LEFT)
+			for i in range(3):
+				spawnArrow(spe, ArrowBullet.Direction.DOWN)
+				await get_tree().create_timer(dur3).timeout
+			await get_tree().create_timer(dur2).timeout
+			
+			for i in range(3):
+				spawnArrow(spe, ArrowBullet.Direction.DOWN)
+				await get_tree().create_timer(dur3).timeout
+			await get_tree().create_timer(dur2).timeout
+
 	await get_tree().create_timer(1).timeout
 	if paused: return
 	$GlobalAnimations.play_backwards("fade")
@@ -613,6 +651,9 @@ func _process(delta: float) -> void:
 		damage(9999)
 	if Input.is_action_just_pressed("skipturn") :
 		turn += 1
+	if Input.is_action_just_pressed("lastturn") :
+		if not turn <= -1:
+			turn -= 1
 	if Input.is_action_just_pressed("song1"):
 		musicNode.stream = AudioStreamMP3.load_from_file("res://audio/From_Now_On_Battle_2_KLICKAUD.mp3")
 		musicNode.stop()
@@ -709,22 +750,22 @@ func _process(delta: float) -> void:
 				if Input.is_action_just_pressed("ui_down") :
 					$Soul/GreenSoul/Shield/ShieldHB/Shield.disabled = true
 					greenSoulRotate = deg_to_rad(270)
-					await get_tree().create_timer(.1).timeout
+					await get_tree().create_timer(.06).timeout
 					$Soul/GreenSoul/Shield/ShieldHB/Shield.disabled = false
 				if Input.is_action_just_pressed("ui_up") :
 					$Soul/GreenSoul/Shield/ShieldHB/Shield.disabled = true
 					greenSoulRotate = deg_to_rad(90)
-					await get_tree().create_timer(.1).timeout
+					await get_tree().create_timer(.06).timeout
 					$Soul/GreenSoul/Shield/ShieldHB/Shield.disabled = false
 				if Input.is_action_just_pressed("ui_left") :
 					$Soul/GreenSoul/Shield/ShieldHB/Shield.disabled = true
 					greenSoulRotate = deg_to_rad(0)
-					await get_tree().create_timer(.1).timeout
+					await get_tree().create_timer(.06).timeout
 					$Soul/GreenSoul/Shield/ShieldHB/Shield.disabled = false
 				if Input.is_action_just_pressed("ui_right") :
 					$Soul/GreenSoul/Shield/ShieldHB/Shield.disabled = true
 					greenSoulRotate = deg_to_rad(180)
-					await get_tree().create_timer(.1).timeout
+					await get_tree().create_timer(.06).timeout
 					$Soul/GreenSoul/Shield/ShieldHB/Shield.disabled = false
 			else:
 				#greenSoulPartsNode.visible = false;

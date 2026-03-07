@@ -25,7 +25,6 @@
 [ext_resource type="Texture2D" uid="uid://db14pg1dcdwwr" path="res://sprites/parts_soul.png" id="18_fpf3k"]
 [ext_resource type="Texture2D" uid="uid://cbd81ycbe5ljf" path="res://icon.png" id="23_fpf3k"]
 [ext_resource type="Texture2D" uid="uid://dngdiqmt2xmjt" path="res://sprites/red_soul_normal.png" id="24_jt4d8"]
-[ext_resource type="PackedScene" uid="uid://b1wj78apgtmcv" path="res://scripts/bullets/ground_spear.tscn" id="25_1m01a"]
 [ext_resource type="AudioStream" uid="uid://bfka7ptfcwjcw" path="res://audio/mus_cymbal.ogg" id="25_jt4d8"]
 
 [sub_resource type="GDScript" id="GDScript_66ngm"]
@@ -1014,6 +1013,7 @@ bus = &"Main"
 [node name="TextSnd" type="AudioStreamPlayer" parent="." unique_id=1508845270]
 stream = ExtResource("4_v7i3o")
 bus = &"Main"
+playback_type = 1
 
 [node name="Attack" type="AudioStreamPlayer" parent="." unique_id=526779786]
 stream = ExtResource("6_vceff")
@@ -1472,15 +1472,6 @@ z_as_relative = false
 texture = ExtResource("24_jt4d8")
 
 [node name="Bullets" type="Node" parent="." unique_id=837588476]
-
-[node name="GroundSpear" parent="Bullets" unique_id=1144485252 instance=ExtResource("25_1m01a")]
-position = Vector2(299, 345)
-
-[node name="GroundSpear3" parent="Bullets" unique_id=162178361 instance=ExtResource("25_1m01a")]
-position = Vector2(321, 345)
-
-[node name="GroundSpear2" parent="Bullets" unique_id=795584147 instance=ExtResource("25_1m01a")]
-position = Vector2(344, 345)
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=454937900]
 visible = false
