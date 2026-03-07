@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://drg0i4fi152u7"]
 
 [ext_resource type="AudioStream" uid="uid://bmyubypm543pd" path="res://audio/song.mp3" id="1_th188"]
-[ext_resource type="Texture2D" uid="uid://cy6jqiqlcwap8" path="res://sprites/hintred1.jpg" id="2_kl6ie"]
+[ext_resource type="Texture2D" uid="uid://bc5wxq0jgpb8s" path="res://sprites/Screenshot 2026-03-07 124038.png" id="2_kl6ie"]
 [ext_resource type="Script" uid="uid://drjqoqevkyadl" path="res://scripts/battle.gd" id="2_p1qf1"]
 [ext_resource type="AudioStream" uid="uid://qjbwpmsfoouc" path="res://audio/snd_squeak.wav" id="3_6vh42"]
 [ext_resource type="Texture2D" uid="uid://bv3m4o5ij5hlb" path="res://sprites/battle.png" id="3_p1qf1"]
@@ -15,17 +15,18 @@
 [ext_resource type="AudioStream" uid="uid://bnpminwbqrfxd" path="res://audio/snd_hurt1.wav" id="8_ekamt"]
 [ext_resource type="AudioStream" uid="uid://bwhul0o0urd2m" path="res://audio/snd_break1.wav" id="9_61i1y"]
 [ext_resource type="Texture2D" uid="uid://b8ls7tn51yqsp" path="res://sprites/battle2.png" id="10_6ni85"]
-[ext_resource type="AudioStream" uid="uid://cyxotkhxuh41b" path="res://audio/snd_break2.wav" id="10_saiin"]
+[ext_resource type="AudioStream" uid="uid://cyxotkhxuh41b" path="res://audio/snd_break2.wav" id="11_kl6ie"]
 [ext_resource type="SpriteFrames" uid="uid://bfxowpro515br" path="res://sprites/attack_indic.tres" id="11_vceff"]
 [ext_resource type="Script" uid="uid://bnrvcdj0nfocy" path="res://scripts/global.gd" id="12_22uqi"]
 [ext_resource type="AudioStream" uid="uid://f4vp45e0xl7t" path="res://audio/snd_heal_c.wav" id="12_dd63g"]
 [ext_resource type="FontFile" uid="uid://dn4ax5okqvoif" path="res://font/hachicro.TTF" id="14_dd63g"]
 [ext_resource type="Texture2D" uid="uid://cy5kf75qp6kx8" path="res://sprites/spear_ani.png" id="16_jt4d8"]
 [ext_resource type="FontFile" uid="uid://bj7anrfh0o6qq" path="res://font/font1.ttf" id="17_bi5l8"]
-[ext_resource type="Texture2D" uid="uid://bboo4o1o3hbbr" path="res://sprites/broken_sou;.png" id="17_dd63g"]
 [ext_resource type="Texture2D" uid="uid://db14pg1dcdwwr" path="res://sprites/parts_soul.png" id="18_fpf3k"]
 [ext_resource type="Texture2D" uid="uid://cbd81ycbe5ljf" path="res://icon.png" id="23_fpf3k"]
-[ext_resource type="PackedScene" uid="uid://cc37gwi4lb3ku" path="res://scripts/bullets/homing_spear.tscn" id="23_kl6ie"]
+[ext_resource type="Texture2D" uid="uid://dngdiqmt2xmjt" path="res://sprites/red_soul_normal.png" id="24_jt4d8"]
+[ext_resource type="PackedScene" uid="uid://b1wj78apgtmcv" path="res://scripts/bullets/ground_spear.tscn" id="25_1m01a"]
+[ext_resource type="AudioStream" uid="uid://bfka7ptfcwjcw" path="res://audio/mus_cymbal.ogg" id="25_jt4d8"]
 
 [sub_resource type="GDScript" id="GDScript_66ngm"]
 script/source = "extends Node
@@ -675,6 +676,8 @@ border_width_right = 5
 border_width_bottom = 5
 border_color = Color(1, 1, 1, 1)
 
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_jt4d8"]
+
 [sub_resource type="Animation" id="Animation_h4dll"]
 length = 0.001
 tracks/0/type = "value"
@@ -739,6 +742,13 @@ _data = {
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_22uqi"]
 bg_color = Color(0, 1, 0, 1)
 
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_jt4d8"]
+vertices = PackedVector2Array(222.28906, -44.546875, 229.6875, 210.8125, 207.89844, 210.42188, 210.09375, -19.726563, -26.226563, -33.421875, -17.21875, -25.867188, -25.40625, 206.28906, -31.757813, 206.17188, -22.773438, -13.9765625, -15.1796875, -5.40625)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2), PackedInt32Array(0, 2, 3), PackedInt32Array(4, 0, 3), PackedInt32Array(4, 3, 5), PackedInt32Array(6, 7, 4), PackedInt32Array(4, 5, 8), PackedInt32Array(6, 4, 8), PackedInt32Array(6, 8, 9)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-36, -43, 232, -55, 240, 221, -42, 216, -36, -44, -5, -9, -15, 198, 198, 201, 200, -10, -22, -16)])
+sample_partition_type = 1
+parsed_geometry_type = 1
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_p0caf"]
 atlas = ExtResource("10_6ni85")
 region = Rect2(5, 23, 562, 128)
@@ -798,9 +808,6 @@ anti_aliasing = false
 custom_solver_bias = 1.0
 size = Vector2(3, 61)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_vceff"]
-radius = 6.0827627
-
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_bi5l8"]
 particles_animation = true
 particles_anim_h_frames = 4
@@ -814,12 +821,21 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color(1, 1, 1, 1)
 
+[sub_resource type="Gradient" id="Gradient_jt4d8"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_kl6ie"]
+gradient = SubResource("Gradient_jt4d8")
+width = 1
+
 [sub_resource type="Gradient" id="Gradient_djc8l"]
 offsets = PackedFloat32Array(0)
 colors = PackedColorArray(0, 0, 0, 1)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_h4dll"]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_1m01a"]
 gradient = SubResource("Gradient_djc8l")
+width = 1
 
 [sub_resource type="Animation" id="Animation_fpf3k"]
 length = 0.001
@@ -847,6 +863,87 @@ tracks/1/keys = {
 "update": 1,
 "values": [1.0]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("WhiteOut:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("WhiteOut:modulate:a")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1.0]
+}
+
+[sub_resource type="Animation" id="Animation_kl6ie"]
+resource_name = "death"
+length = 5.4
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(5.366667),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"restart"
+}]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("WhiteOut:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("WhiteOut:modulate:a")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 5.0333333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+tracks/3/type = "audio"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("AniSounds")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("25_jt4d8")
+}],
+"times": PackedFloat32Array(0)
+}
+tracks/3/use_blend = true
 
 [sub_resource type="Animation" id="Animation_bi5l8"]
 resource_name = "fade"
@@ -879,6 +976,7 @@ tracks/1/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_jt4d8"]
 _data = {
 &"RESET": SubResource("Animation_fpf3k"),
+&"death": SubResource("Animation_kl6ie"),
 &"fade": SubResource("Animation_bi5l8")
 }
 
@@ -888,47 +986,58 @@ size = Vector2(190, 639)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lv4so"]
 size = Vector2(1450, 67)
 
-[node name="Battle" type="Node2D" unique_id=2070806762]
+[node name="Battle" type="Node2D" unique_id=350733689]
 script = ExtResource("2_p1qf1")
+metadata/_custom_type_script = "uid://drjqoqevkyadl"
 
 [node name="Hint" type="Sprite2D" parent="." unique_id=1060318413]
 visible = false
 z_index = -99
 position = Vector2(319.885, 239.855)
-scale = Vector2(1.333, 1.333)
+scale = Vector2(0.444, 0.444)
 texture = ExtResource("2_kl6ie")
 
 [node name="Music" type="AudioStreamPlayer" parent="." unique_id=144461831]
 stream = ExtResource("1_th188")
 volume_db = -6.985
+bus = &"Main"
 parameters/looping = true
 
 [node name="MenuMove" type="AudioStreamPlayer" parent="." unique_id=1881623941]
 stream = ExtResource("3_6vh42")
+bus = &"Main"
 
 [node name="MenuSelect" type="AudioStreamPlayer" parent="." unique_id=1314629993]
 stream = ExtResource("4_66ngm")
+bus = &"Main"
 
 [node name="TextSnd" type="AudioStreamPlayer" parent="." unique_id=1508845270]
 stream = ExtResource("4_v7i3o")
+bus = &"Main"
 
 [node name="Attack" type="AudioStreamPlayer" parent="." unique_id=526779786]
 stream = ExtResource("6_vceff")
+bus = &"Main"
 
 [node name="Damage" type="AudioStreamPlayer" parent="." unique_id=1199619940]
 stream = ExtResource("7_ekamt")
+bus = &"Main"
 
 [node name="SndHurt1" type="AudioStreamPlayer" parent="." unique_id=1892050443]
 stream = ExtResource("8_ekamt")
+bus = &"Main"
 
 [node name="SndBreak1" type="AudioStreamPlayer" parent="." unique_id=398126098]
 stream = ExtResource("9_61i1y")
 
+[node name="AniSounds" type="AudioStreamPlayer" parent="." unique_id=1927379490]
+
 [node name="SndBreak2" type="AudioStreamPlayer" parent="." unique_id=539335572]
-stream = ExtResource("10_saiin")
+stream = ExtResource("11_kl6ie")
 
 [node name="SndHealC" type="AudioStreamPlayer" parent="." unique_id=1315880190]
 stream = ExtResource("12_dd63g")
+bus = &"Main"
 
 [node name="Undyne" type="Node2D" parent="." unique_id=1203616874]
 script = SubResource("GDScript_66ngm")
@@ -1183,15 +1292,22 @@ text = "56 / 56"
 label_settings = SubResource("LabelSettings_v7i3o")
 
 [node name="Box" type="MarginContainer" parent="." unique_id=1884231038]
-offset_left = 227.0
-offset_top = 200.0
-offset_right = 412.0
+offset_left = 285.0
+offset_top = 300.0
+offset_right = 360.0
 offset_bottom = 390.0
 theme_override_constants/margin_bottom = 0
 
 [node name="Box" type="Panel" parent="Box" unique_id=770708501]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_66ngm")
+
+[node name="Body" type="StaticBody2D" parent="Box/Box" unique_id=502716987]
+physics_material_override = SubResource("PhysicsMaterial_jt4d8")
+
+[node name="Shape" type="CollisionPolygon2D" parent="Box/Box/Body" unique_id=1581030355]
+build_mode = 1
+polygon = PackedVector2Array(5, 5, 180, 5, 180, 185, 5, 185)
 
 [node name="TurnCounter" type="Label" parent="Box/Box" unique_id=253163476]
 layout_mode = 0
@@ -1277,6 +1393,10 @@ theme_override_fonts/font = ExtResource("7_66ngm")
 text = "*   Mns"
 label_settings = ExtResource("8_03edq")
 
+[node name="RandomSpearRegion" type="NavigationRegion2D" parent="Box/Box" unique_id=2068849961]
+navigation_polygon = SubResource("NavigationPolygon_jt4d8")
+use_edge_connections = false
+
 [node name="Target" type="TextureRect" parent="Box" unique_id=2015301674]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 2
@@ -1286,11 +1406,22 @@ expand_mode = 1
 [node name="TargetAnimation" type="AnimationPlayer" parent="Box/Target" unique_id=744004878]
 libraries/ = SubResource("AnimationLibrary_h4dll")
 
-[node name="Soul" type="Sprite2D" parent="." unique_id=450798543]
-z_index = 99
-z_as_relative = false
+[node name="GlobalScript" type="Node" parent="." unique_id=1708905942]
+script = ExtResource("12_22uqi")
+
+[node name="FPSCounter" type="Label" parent="GlobalScript" unique_id=188658825]
+visible = false
+offset_right = 40.0
+offset_bottom = 16.0
+text = "60"
+
+[node name="Soul" type="CharacterBody2D" parent="." unique_id=1045820853]
 position = Vector2(320, 242)
-texture = ExtResource("17_dd63g")
+disable_mode = 1
+motion_mode = 1
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Soul" unique_id=1997969071]
+polygon = PackedVector2Array(-6, -8, -6, -7, -7, -7, -7, -6, -8, -6, -8, 2, -6, 2, -6, 4, -4, 4, -4, 6, -2, 6, -2, 8, 2, 8, 2, 6, 4, 6, 4, 4, 6, 4, 6, 2, 8, 2, 8, -6, 7, -6, 7, -7, 6, -7, 6, -8, 4, -8, 4, -7, 2, -7, 2, -6, 1, -6, 1, -4, -1, -4, -1, -6, -2, -6, -2, -7, -4, -7, -4, -8)
 
 [node name="GreenSoul" type="Node2D" parent="Soul" unique_id=1970917391]
 
@@ -1316,13 +1447,6 @@ sharp_limit = 1.0
 position = Vector2(-31.5, 1.5)
 shape = SubResource("RectangleShape2D_fpf3k")
 
-[node name="SoulHB" type="Area2D" parent="Soul" unique_id=1238037424]
-
-[node name="Soul" type="CollisionShape2D" parent="Soul/SoulHB" unique_id=873131175]
-shape = SubResource("CircleShape2D_vceff")
-
-[node name="HomingSpear" parent="Soul/SoulHB" unique_id=1565712583 instance=ExtResource("23_kl6ie")]
-
 [node name="CPUParticles2D" type="CPUParticles2D" parent="Soul" unique_id=659415671]
 z_index = 100
 z_as_relative = false
@@ -1342,19 +1466,21 @@ initial_velocity_max = 50.0
 anim_speed_min = 10.0
 anim_speed_max = 10.0
 
-[node name="CharacterBody2D" type="CharacterBody2D" parent="Soul" unique_id=1045820853]
-disable_mode = 1
-
-[node name="GlobalScript" type="Node" parent="." unique_id=1708905942]
-script = ExtResource("12_22uqi")
-
-[node name="FPSCounter" type="Label" parent="GlobalScript" unique_id=188658825]
-visible = false
-offset_right = 40.0
-offset_bottom = 16.0
-text = "60"
+[node name="SoulTex" type="Sprite2D" parent="Soul" unique_id=450798543]
+z_index = 99
+z_as_relative = false
+texture = ExtResource("24_jt4d8")
 
 [node name="Bullets" type="Node" parent="." unique_id=837588476]
+
+[node name="GroundSpear" parent="Bullets" unique_id=1144485252 instance=ExtResource("25_1m01a")]
+position = Vector2(299, 345)
+
+[node name="GroundSpear3" parent="Bullets" unique_id=162178361 instance=ExtResource("25_1m01a")]
+position = Vector2(321, 345)
+
+[node name="GroundSpear2" parent="Bullets" unique_id=795584147 instance=ExtResource("25_1m01a")]
+position = Vector2(344, 345)
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=454937900]
 visible = false
@@ -1383,11 +1509,17 @@ visible = false
 position = Vector2(317, 562)
 texture = ExtResource("23_fpf3k")
 
+[node name="WhiteOut" type="Sprite2D" parent="." unique_id=1684452743]
+visible = false
+z_index = 4096
+scale = Vector2(99980000, 99980000)
+texture = SubResource("GradientTexture1D_kl6ie")
+
 [node name="BlackOut" type="Sprite2D" parent="." unique_id=1631318654]
 visible = false
 z_index = 90
 scale = Vector2(9999, 9999)
-texture = SubResource("GradientTexture1D_h4dll")
+texture = SubResource("GradientTexture1D_1m01a")
 
 [node name="GlobalAnimations" type="AnimationPlayer" parent="." unique_id=1225552228]
 libraries/ = SubResource("AnimationLibrary_jt4d8")

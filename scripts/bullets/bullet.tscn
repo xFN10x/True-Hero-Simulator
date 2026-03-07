@@ -5,7 +5,7 @@
 [ext_resource type="AudioStream" uid="uid://bjdtg5p7mqd1m" path="res://audio/snd_tempbell.wav" id="3_iv11i"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0m10f"]
-size = Vector2(11.5, 45)
+size = Vector2(11.5, 50)
 
 [node name="Bullet" type="Sprite2D" unique_id=2080938906]
 texture = ExtResource("1_0m10f")
@@ -16,9 +16,10 @@ script = ExtResource("2_iv11i")
 [node name="Area2D" type="Area2D" parent="." unique_id=1700925488]
 
 [node name="arrow" type="CollisionShape2D" parent="Area2D" unique_id=903354892]
-position = Vector2(0, -10.5)
+position = Vector2(0, -13)
 shape = SubResource("RectangleShape2D_0m10f")
 
 [node name="Ding" type="AudioStreamPlayer" parent="." unique_id=1492048431]
 stream = ExtResource("3_iv11i")
 volume_db = -11.254
+bus = &"Main"

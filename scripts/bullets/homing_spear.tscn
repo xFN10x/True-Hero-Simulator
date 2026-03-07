@@ -110,7 +110,7 @@ _data = {
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_de08x"]
-size = Vector2(9, 39)
+size = Vector2(9, 14.576205)
 
 [node name="HomingSpear" type="Sprite2D" unique_id=1565712583]
 rotation = 4.6857247
@@ -122,12 +122,15 @@ metadata/_custom_type_script = "uid://geyyto6p24f6"
 libraries/ = SubResource("AnimationLibrary_3a38f")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1780325815]
+bus = &"Main"
 
 [node name="SndArrow" type="AudioStreamPlayer" parent="." unique_id=335889670]
 stream = ExtResource("4_de08x")
+bus = &"Main"
 
 [node name="Area" type="Area2D" parent="." unique_id=1659372443]
 
 [node name="HomingSpear" type="CollisionShape2D" parent="Area" unique_id=1851431850]
-position = Vector2(0.35675484, -6.0722914)
+position = Vector2(0.35675508, -18.284197)
+scale = Vector2(1.0000002, 1.0000002)
 shape = SubResource("RectangleShape2D_de08x")

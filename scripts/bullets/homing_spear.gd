@@ -5,7 +5,7 @@ var battleManager: BattleManager;
 var soul: Node2D
 var moving = false
 
-var vel = 4
+var vel = 3.5
 
 func remove() -> void:
 	queue_free()
@@ -20,11 +20,13 @@ func _ready() -> void:
 	rotation = position.angle_to_point(soul.global_position) + deg_to_rad(90)
 	moving = true
 	$SndArrow.play()
+	$Area.body_entered.connect(func (other: Node2D):
+		if other.name == "Soul":
+			battleManager.damage(randi_range(8,14))
+			remove()
+		)
 	$Area.area_shape_entered.connect(func (area_rid: RID, area: Area2D, area_shape_index: int, local_shape_index: int):
 		if area.name == "OutOfBounds":
-			remove()
-		elif area.name == "SoulHB":
-			battleManager.damage(randi_range(8, 14))
 			remove()
 		)
 

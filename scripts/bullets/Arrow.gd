@@ -24,15 +24,17 @@ func _init(dir: Direction = Direction.DOWN, speed: int = 1, manager = null) -> v
 func _ready() -> void:
 	rotation_degrees = currentDirection
 	CurrentArrows.append(self)
+	$Area2D.body_entered.connect(func (other: Node2D):
+		if other.name == "Soul":
+			canDamage = false
+			battleManager.damage(randi_range(8,14))
+			remove()
+		)
 	$Area2D.area_shape_entered.connect(func (area_rid: RID, area: Area2D, area_shape_index: int, local_shape_index: int):
 		if not canDamage: return
 		if area.name == "ShieldHB":
 			canDamage = false
 			$Ding.play()
-			remove()
-		elif area.name == "SoulHB":
-			canDamage = false
-			battleManager.damage(randi_range(8,14))
 			remove()
 		)
 

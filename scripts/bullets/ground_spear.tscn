@@ -1,0 +1,156 @@
+[gd_scene format=3 uid="uid://b1wj78apgtmcv"]
+
+[ext_resource type="Texture2D" uid="uid://dkpt6xeow6xue" path="res://sprites/20260301133135_1.jpg" id="1_mulma"]
+[ext_resource type="Texture2D" uid="uid://clycnxqh12qsn" path="res://sprites/undyne.png" id="2_f7qkb"]
+[ext_resource type="Script" uid="uid://yjpu6pdd1l10" path="res://scripts/bullets/ground_spear.gd" id="2_mjaqv"]
+[ext_resource type="AudioStream" uid="uid://cwngii4qfrvdb" path="res://audio/snd_spearappear.wav" id="3_mjaqv"]
+[ext_resource type="AudioStream" uid="uid://jkplwhfvlthd" path="res://audio/snd_spearrise.wav" id="4_2jhvj"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vveml"]
+atlas = ExtResource("1_mulma")
+region = Rect2(386, 167, 20, 79)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_le4ip"]
+atlas = ExtResource("2_f7qkb")
+region = Rect2(32, 1095, 20, 60)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ecow7"]
+size = Vector2(8.33, 46.629997)
+
+[sub_resource type="Animation" id="Animation_73lcp"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Spear:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [69.999985]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Spear:modulate:a")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Spear/Area/Hitbox:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_eblr3"]
+resource_name = "spearrise"
+length = 1.6666701
+tracks/0/type = "audio"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sfx")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("3_mjaqv")
+}, {
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("4_2jhvj")
+}],
+"times": PackedFloat32Array(0, 1.0000001)
+}
+tracks/0/use_blend = true
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Spear:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.6, 1.0000001, 1.1666667),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [69.999985, 52.0, 52.0, -11.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Spear:modulate:a")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1.2333335, 1.6000001),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [1.0, 1.0, 0.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Spear/Area/Hitbox:disabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1.2333335),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(1.6666667),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kmr6m"]
+_data = {
+&"RESET": SubResource("Animation_73lcp"),
+&"spearrise": SubResource("Animation_eblr3")
+}
+
+[node name="GroundSpear" type="Sprite2D" unique_id=1144485252]
+clip_children = 1
+texture = SubResource("AtlasTexture_vveml")
+script = ExtResource("2_mjaqv")
+
+[node name="Spear" type="Sprite2D" parent="." unique_id=1858531375]
+position = Vector2(0, 69.999985)
+texture = SubResource("AtlasTexture_le4ip")
+
+[node name="Area" type="Area2D" parent="Spear" unique_id=1004317895]
+
+[node name="Hitbox" type="CollisionShape2D" parent="Spear/Area" unique_id=806020814]
+position = Vector2(0, -0.31500244)
+shape = SubResource("RectangleShape2D_ecow7")
+
+[node name="Animation" type="AnimationPlayer" parent="." unique_id=491512562]
+libraries/ = SubResource("AnimationLibrary_kmr6m")
+
+[node name="Sfx" type="AudioStreamPlayer" parent="." unique_id=649308498]

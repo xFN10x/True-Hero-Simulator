@@ -30,7 +30,8 @@ var mercyNode: Sprite2D
 
 var selectedButton = 0;
 
-var soulNode: Sprite2D
+var soulNode: CharacterBody2D
+var soulTexNode: Sprite2D
 
 var musicNode: AudioStreamPlayer
 var menuMoveNode: AudioStreamPlayer
@@ -50,6 +51,7 @@ var boxNode: MarginContainer
 var defaultPos = Vector4(32, 250, 575, 140)
 var spearAtkPos = Vector4(280, 204,85, 81)
 var redAttack1AtkPos = Vector4(185, 190, 227, 200)
+var redAttack2AtkPos = Vector4(285, 300, 75, 90)
 
 var page = 0
 
@@ -151,11 +153,31 @@ var canAttack = true
 var maxIFrames = 20
 var iframes = 0
 
+var groundSpearPoses = [
+	Vector2(299, 345),
+	Vector2(321, 345),
+	Vector2(344, 345),
+]
+
+func setBoxHitBox(size: Vector2) -> void:
+	var array = PackedVector2Array()
+	var first = Vector2(5, 5)
+	var second  = Vector2(size.x - 5, 5)
+	var third = Vector2(size.x - 5, size.y - 5)
+	var fourth = Vector2(5, size.y - 5)
+	array.append(first)
+	array.append(second)
+	array.append(third)
+	array.append(fourth)
+	$Box/Box/Body/Shape.polygon = array
+
 func setBoxPosInsta(trans: Vector4) -> void:
+	setBoxHitBox(Vector2(trans.z, trans.w))
 	boxNode.position = Vector2(trans.x, trans.y)
 	boxNode.size = Vector2(trans.z, trans.w)
 
 func setBoxPos(trans: Vector4) -> Signal:
+	setBoxHitBox(Vector2(trans.z, trans.w))
 	var tweenMoveX = get_tree().create_tween()
 	tweenMoveX.tween_property(boxNode, "position", Vector2(trans.x, boxNode.position.y), 0.5).set_trans(Tween.TRANS_LINEAR)
 	var tweenSizeX = get_tree().create_tween()
@@ -179,17 +201,19 @@ func setBoxPos(trans: Vector4) -> Signal:
 	
 func death() -> void:
 	paused = true
-	$Music.stop()
+	AudioServer.set_bus_mute(1, true)
 	$BlackOut.visible = true
 	$Soul/GreenSoul.visible = false
-	soulNode.texture = redSoulTexture
+	soulTexNode.texture = redSoulTexture
 	await get_tree().create_timer(0.6).timeout
-	soulNode.texture = redSoulSplit
+	soulTexNode.texture = redSoulSplit
 	$SndBreak1.play()
 	await get_tree().create_timer(1).timeout
-	soulNode.texture = null
+	soulTexNode.texture = null
 	$SndBreak2.play()
 	$Soul/CPUParticles2D.emitting = true
+	await get_tree().create_timer(2).timeout
+	$GlobalAnimations.play("death")
 	
 func canNavTo(optionArray: Array, selected: int) -> bool:
 	return selected >= 0 && selected + (page * 4) < optionArray.size()
@@ -200,11 +224,30 @@ func showText(text: String) -> void:
 
 func selectOption() -> void:
 	menuMode = 0
-	
+
+func restart() -> void:
+	get_tree().reload_current_scene()
+	_ready()
+	paused = false
+	AudioServer.set_bus_mute(1, false)
+
 func spawnHomingArrow():
 	var bullet: HomingSpear = preload("res://scripts/bullets/homing_spear.tscn").instantiate()
 	bullet.battleManager = self
+	bullet.position = NavigationServer2D.region_get_random_point($Box/Box/RandomSpearRegion.get_rid(), 1, true)
 	Bullets.add_child(bullet)
+
+var lastGroundArrow: int
+func spawnGroundArrow():
+	var bullet: GroundSpear = preload("res://scripts/bullets/ground_spear.tscn").instantiate()
+	bullet.battleManager = self
+	var rand = randi_range(0,2)
+	if rand == lastGroundArrow:
+		while rand == lastGroundArrow:
+			rand = randi_range(0,2)
+	bullet.position = groundSpearPoses[rand]
+	Bullets.add_child(bullet)
+	lastGroundArrow = rand
 
 func spawnArrow(speed: int, direction):
 	var bullet: Arrow = preload("res://scripts/bullets/bullet.tscn").instantiate()
@@ -248,14 +291,14 @@ func _ready() -> void:
 
 	redSoulTextureHurt.load_path = "res://.godot/imported/red_soul_hurt.png-5d5a25d9159157f8d767869f2fec4428.ctex"
 	greenSoulTextureHurt.load_path= "res://.godot/imported/green_soul_hurt.png-2055f311f0ed0817c57d6449da57be9e.ctex"
-
+	
 	musicNode = get_node("Music")
-	musicNode.play()
 	menuMoveNode = get_node("MenuMove")
 	menuSelectNode = get_node("MenuSelect")
 	textSndNode = get_node("TextSnd")
 	
 	soulNode = get_node("Soul")
+	soulTexNode = $Soul/SoulTex
 	
 	fightNode = get_node("Fight")
 	actNode = get_node("Act")
@@ -306,6 +349,7 @@ func _ready() -> void:
 	$HealthBar/Bar.value = enemyMaxHealth
 
 	setBoxPosInsta(defaultPos)
+	musicNode.play()
 
 func endAttack() -> void:
 	actualNoMode = true
@@ -320,12 +364,12 @@ func endAttack() -> void:
 	actualNoMode = false
 	
 func redsoul(boxPos: Vector4i) -> void:
-	await setBoxPos(boxPos)
 	soulMode = SoulMode.RED
-	soulNode.position = Vector2(boxPos.x, boxPos.y)
+	soulNode.position = Vector2(boxPos.x + (boxPos.z / 2), boxPos.y + (boxPos.w / 2))
 	soulNode.visible = true
 
 func greensoul() -> void:
+	if paused: return
 	$GlobalAnimations.play("fade")
 	await setBoxPos(spearAtkPos)
 	soulMode = SoulMode.GREEN
@@ -339,6 +383,7 @@ func changeSoul() -> void:
 		soulMode = SoulMode.RED
 	else:
 		soulMode = SoulMode.GREEN
+
 func spearChange() -> void:
 	undyneAnimationNode.play("spear_change")
 	await undyneAnimationNode.animation_finished
@@ -522,7 +567,20 @@ func attack() -> void:
 			await get_tree().create_timer(spe * (spe /2)).timeout
 			spearChange()
 		4:
-			redsoul(redAttack1AtkPos)
+			redsoul(redAttack1AtkPos) 
+			await setBoxPos(redAttack1AtkPos) 
+			for i in range(3*8):
+				spawnHomingArrow()
+				await get_tree().create_timer(.33333).timeout
+			await get_tree().create_timer(1).timeout
+		5:
+			await setBoxPos(redAttack2AtkPos) 
+			redsoul(redAttack2AtkPos)
+			for i in range(6*2):
+				spawnGroundArrow()
+				await get_tree().create_timer(.5).timeout
+			spearChange()
+			await get_tree().create_timer(2).timeout
 		7:
 			await greensoul()
 			var dur2 = 0.3
@@ -543,33 +601,37 @@ func attack() -> void:
 				spawnArrow(spe + 3, ArrowBullet.Direction.LEFT)
 				await get_tree().create_timer(dur2).timeout
 	await get_tree().create_timer(1).timeout
-			
+	if paused: return
 	$GlobalAnimations.play_backwards("fade")
 	endAttack()
 	return
 
 func _process(delta: float) -> void:
+	if paused:
+		return
+	if Input.is_action_just_pressed("kill") :
+		damage(9999)
+	if Input.is_action_just_pressed("skipturn") :
+		turn += 1
 	if Input.is_action_just_pressed("song1"):
 		musicNode.stream = AudioStreamMP3.load_from_file("res://audio/From_Now_On_Battle_2_KLICKAUD.mp3")
 		musicNode.stop()
 		musicNode.play()
-	if paused:
-		return
 	$Box/Box/TurnCounter.text = "Turn %s" % turn 
 	iframes -= 1;
 	greenSoulShield.rotation = lerp_angle(greenSoulShield.rotation, greenSoulRotate, 0.8)
 	if iframes > 0:
 		match soulMode:
 			SoulMode.RED:
-				soulNode.texture = redSoulTextureHurt
+				soulTexNode.texture = redSoulTextureHurt
 			SoulMode.GREEN:
-				soulNode.texture = greenSoulTextureHurt
+				soulTexNode.texture = greenSoulTextureHurt
 	else:
 		match soulMode:
 			SoulMode.RED:
-				soulNode.texture = redSoulTexture
+				soulTexNode.texture = redSoulTexture
 			SoulMode.GREEN:
-				soulNode.texture = greenSoulTexture
+				soulTexNode.texture = greenSoulTexture
 	hpBarNode.value = hp
 	hpTextNode.text = "%s / %s" % [hp, maxHp]
 	#print(selectedButton)
@@ -664,6 +726,11 @@ func _process(delta: float) -> void:
 					greenSoulRotate = deg_to_rad(180)
 					await get_tree().create_timer(.1).timeout
 					$Soul/GreenSoul/Shield/ShieldHB/Shield.disabled = false
+			else:
+				#greenSoulPartsNode.visible = false;
+				var normal = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down") 
+				var incorrect = Vector2(sign(normal.x), sign(normal.y)) * 4
+				soulNode.move_and_collide(incorrect)
 		MenuMode.NO_MODE:
 			greenSoulPartsNode.visible = false;
 			option0Node.visible = false
