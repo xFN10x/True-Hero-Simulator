@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://drg0i4fi152u7"]
 
 [ext_resource type="AudioStream" uid="uid://bmyubypm543pd" path="res://audio/song.mp3" id="1_th188"]
+[ext_resource type="Texture2D" uid="uid://cy6jqiqlcwap8" path="res://sprites/hintred1.jpg" id="2_kl6ie"]
 [ext_resource type="Script" uid="uid://drjqoqevkyadl" path="res://scripts/battle.gd" id="2_p1qf1"]
-[ext_resource type="Texture2D" uid="uid://dkpt6xeow6xue" path="res://sprites/20260301133135_1.jpg" id="2_saiin"]
 [ext_resource type="AudioStream" uid="uid://qjbwpmsfoouc" path="res://audio/snd_squeak.wav" id="3_6vh42"]
 [ext_resource type="Texture2D" uid="uid://bv3m4o5ij5hlb" path="res://sprites/battle.png" id="3_p1qf1"]
 [ext_resource type="AudioStream" uid="uid://bmgnpm5puewpo" path="res://audio/snd_select.wav" id="4_66ngm"]
@@ -25,6 +25,7 @@
 [ext_resource type="Texture2D" uid="uid://bboo4o1o3hbbr" path="res://sprites/broken_sou;.png" id="17_dd63g"]
 [ext_resource type="Texture2D" uid="uid://db14pg1dcdwwr" path="res://sprites/parts_soul.png" id="18_fpf3k"]
 [ext_resource type="Texture2D" uid="uid://cbd81ycbe5ljf" path="res://icon.png" id="23_fpf3k"]
+[ext_resource type="PackedScene" uid="uid://cc37gwi4lb3ku" path="res://scripts/bullets/homing_spear.tscn" id="23_kl6ie"]
 
 [sub_resource type="GDScript" id="GDScript_66ngm"]
 script/source = "extends Node
@@ -300,7 +301,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.13333334, 0.26896465, 0.33333334, 0.6666667, 0.8333334),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 0,
-"values": [0.0, 2.1205750411731104, 2.1205750411731104, -1.1397000015522973, -1.1397000015522973, 0.0]
+"values": [0.0, 2.1205750411731104, 2.1205750411731104, -1.1397000015522971, -1.1397000015522971, 0.0]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -321,10 +322,10 @@ tracks/3/path = NodePath("RArm:z_index")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0.26666668),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0.26666668, 1),
+"transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [999]
+"values": [999, -1]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -881,14 +882,21 @@ _data = {
 &"fade": SubResource("Animation_bi5l8")
 }
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1m01a"]
+size = Vector2(190, 639)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lv4so"]
+size = Vector2(1450, 67)
+
 [node name="Battle" type="Node2D" unique_id=2070806762]
 script = ExtResource("2_p1qf1")
 
 [node name="Hint" type="Sprite2D" parent="." unique_id=1060318413]
 visible = false
 z_index = -99
-position = Vector2(321, 241)
-texture = ExtResource("2_saiin")
+position = Vector2(319.885, 239.855)
+scale = Vector2(1.333, 1.333)
+texture = ExtResource("2_kl6ie")
 
 [node name="Music" type="AudioStreamPlayer" parent="." unique_id=144461831]
 stream = ExtResource("1_th188")
@@ -1175,9 +1183,9 @@ text = "56 / 56"
 label_settings = SubResource("LabelSettings_v7i3o")
 
 [node name="Box" type="MarginContainer" parent="." unique_id=1884231038]
-offset_left = 32.0
-offset_top = 250.0
-offset_right = 607.0
+offset_left = 227.0
+offset_top = 200.0
+offset_right = 412.0
 offset_bottom = 390.0
 theme_override_constants/margin_bottom = 0
 
@@ -1313,6 +1321,8 @@ shape = SubResource("RectangleShape2D_fpf3k")
 [node name="Soul" type="CollisionShape2D" parent="Soul/SoulHB" unique_id=873131175]
 shape = SubResource("CircleShape2D_vceff")
 
+[node name="HomingSpear" parent="Soul/SoulHB" unique_id=1565712583 instance=ExtResource("23_kl6ie")]
+
 [node name="CPUParticles2D" type="CPUParticles2D" parent="Soul" unique_id=659415671]
 z_index = 100
 z_as_relative = false
@@ -1331,6 +1341,9 @@ initial_velocity_min = 50.0
 initial_velocity_max = 50.0
 anim_speed_min = 10.0
 anim_speed_max = 10.0
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="Soul" unique_id=1045820853]
+disable_mode = 1
 
 [node name="GlobalScript" type="Node" parent="." unique_id=1708905942]
 script = ExtResource("12_22uqi")
@@ -1398,3 +1411,21 @@ text = "True Hero Sim
 by: xfn10x"
 label_settings = SubResource("LabelSettings_fpf3k")
 horizontal_alignment = 1
+
+[node name="OutOfBounds" type="Area2D" parent="." unique_id=2018750097]
+
+[node name="L" type="CollisionShape2D" parent="OutOfBounds" unique_id=295136590]
+position = Vector2(-422, 237)
+shape = SubResource("RectangleShape2D_1m01a")
+
+[node name="R" type="CollisionShape2D" parent="OutOfBounds" unique_id=1843147317]
+position = Vector2(968, 246)
+shape = SubResource("RectangleShape2D_1m01a")
+
+[node name="D" type="CollisionShape2D" parent="OutOfBounds" unique_id=502188824]
+position = Vector2(322, 593)
+shape = SubResource("RectangleShape2D_lv4so")
+
+[node name="U" type="CollisionShape2D" parent="OutOfBounds" unique_id=1638819402]
+position = Vector2(322, -81)
+shape = SubResource("RectangleShape2D_lv4so")

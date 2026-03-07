@@ -49,6 +49,7 @@ var boxNode: MarginContainer
 # Box Positions Vec4(x,y, width, height)
 var defaultPos = Vector4(32, 250, 575, 140)
 var spearAtkPos = Vector4(280, 204,85, 81)
+var redAttack1AtkPos = Vector4(185, 190, 227, 200)
 
 var page = 0
 
@@ -199,6 +200,11 @@ func showText(text: String) -> void:
 
 func selectOption() -> void:
 	menuMode = 0
+	
+func spawnHomingArrow():
+	var bullet: HomingSpear = preload("res://scripts/bullets/homing_spear.tscn").instantiate()
+	bullet.battleManager = self
+	Bullets.add_child(bullet)
 
 func spawnArrow(speed: int, direction):
 	var bullet: Arrow = preload("res://scripts/bullets/bullet.tscn").instantiate()
@@ -312,6 +318,12 @@ func endAttack() -> void:
 	menuMode = MenuMode.OPTION_MODE;
 	showText(defaultText)
 	actualNoMode = false
+	
+func redsoul(boxPos: Vector4i) -> void:
+	await setBoxPos(boxPos)
+	soulMode = SoulMode.RED
+	soulNode.position = Vector2(boxPos.x, boxPos.y)
+	soulNode.visible = true
 
 func greensoul() -> void:
 	$GlobalAnimations.play("fade")
@@ -332,6 +344,7 @@ func spearChange() -> void:
 	await undyneAnimationNode.animation_finished
 	undyneAnimationNode.play("undyne")
 
+# https://jcoxeye.neocities.org/utu-guide
 func attack() -> void:
 	menuMode = MenuMode.ENEMY_TURN
 	turn += 1
@@ -508,6 +521,8 @@ func attack() -> void:
 				await get_tree().create_timer(randf_range(0.3, 0.5)).timeout
 			await get_tree().create_timer(spe * (spe /2)).timeout
 			spearChange()
+		4:
+			redsoul(redAttack1AtkPos)
 		7:
 			await greensoul()
 			var dur2 = 0.3
@@ -534,6 +549,10 @@ func attack() -> void:
 	return
 
 func _process(delta: float) -> void:
+	if Input.is_action_just_pressed("song1"):
+		musicNode.stream = AudioStreamMP3.load_from_file("res://audio/From_Now_On_Battle_2_KLICKAUD.mp3")
+		musicNode.stop()
+		musicNode.play()
 	if paused:
 		return
 	$Box/Box/TurnCounter.text = "Turn %s" % turn 
@@ -595,7 +614,7 @@ func _process(delta: float) -> void:
 				knifeAnimationNode.play()
 				knifeSound.play()
 				var random = randi_range(-20, 20)
-				var damage = 1800 + -abs((320 - attackIndicBar.position.x) * 3) + random
+				var damage = 1800 + -abs((320 - attackIndicBar.position.x) * 5) + random
 				if (Input.is_action_pressed("secret1")):
 					damage += 10000
 				$HealthBar/DamageNumbers.text = str(roundi(damage))

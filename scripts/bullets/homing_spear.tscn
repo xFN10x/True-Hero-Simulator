@@ -1,0 +1,133 @@
+[gd_scene format=3 uid="uid://cc37gwi4lb3ku"]
+
+[ext_resource type="Texture2D" uid="uid://clycnxqh12qsn" path="res://sprites/undyne.png" id="1_nleqf"]
+[ext_resource type="Script" uid="uid://geyyto6p24f6" path="res://scripts/bullets/homing_spear.gd" id="2_de08x"]
+[ext_resource type="AudioStream" uid="uid://cwngii4qfrvdb" path="res://audio/snd_spearappear.wav" id="3_jwbdq"]
+[ext_resource type="AudioStream" uid="uid://incgksf0gv52" path="res://audio/snd_arrow.wav" id="4_de08x"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i062b"]
+atlas = ExtResource("1_nleqf")
+region = Rect2(32, 1095, 20, 60)
+
+[sub_resource type="Animation" id="Animation_k0hfq"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 4
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-1.5974604]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:self_modulate:a")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Area/HomingSpear:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_mw48w"]
+resource_name = "spawn"
+length = 1.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.9),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [6.283185307179586, -1.4643312424232422]
+}
+tracks/1/type = "audio"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AudioStreamPlayer")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("3_jwbdq")
+}],
+"times": PackedFloat32Array(0)
+}
+tracks/1/use_blend = false
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:self_modulate:a")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.9),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Area/HomingSpear:disabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3a38f"]
+_data = {
+&"RESET": SubResource("Animation_k0hfq"),
+&"spawn": SubResource("Animation_mw48w")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_de08x"]
+size = Vector2(9, 39)
+
+[node name="HomingSpear" type="Sprite2D" unique_id=1565712583]
+rotation = 4.6857247
+texture = SubResource("AtlasTexture_i062b")
+script = ExtResource("2_de08x")
+metadata/_custom_type_script = "uid://geyyto6p24f6"
+
+[node name="Animations" type="AnimationPlayer" parent="." unique_id=443985661]
+libraries/ = SubResource("AnimationLibrary_3a38f")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1780325815]
+
+[node name="SndArrow" type="AudioStreamPlayer" parent="." unique_id=335889670]
+stream = ExtResource("4_de08x")
+
+[node name="Area" type="Area2D" parent="." unique_id=1659372443]
+
+[node name="HomingSpear" type="CollisionShape2D" parent="Area" unique_id=1851431850]
+position = Vector2(0.35675484, -6.0722914)
+shape = SubResource("RectangleShape2D_de08x")
