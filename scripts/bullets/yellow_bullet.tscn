@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://nada6nyav2dt"]
+
+[ext_resource type="Texture2D" uid="uid://clycnxqh12qsn" path="res://sprites/undyne.png" id="1_uuvpu"]
+[ext_resource type="Script" uid="uid://dmskd4aga2f7g" path="res://scripts/bullets/yellow_arrow.gd" id="2_uuvpu"]
+[ext_resource type="AudioStream" uid="uid://bjdtg5p7mqd1m" path="res://audio/snd_tempbell.wav" id="3_pij8e"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uuvpu"]
+atlas = ExtResource("1_uuvpu")
+region = Rect2(46, 1063, 12, 22)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0m10f"]
+size = Vector2(11.5, 20)
+
+[node name="Bullet" type="Sprite2D" unique_id=504030026]
+texture = SubResource("AtlasTexture_uuvpu")
+script = ExtResource("2_uuvpu")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1521336809]
+
+[node name="arrow" type="CollisionShape2D" parent="Area2D" unique_id=105669543]
+shape = SubResource("RectangleShape2D_0m10f")
+
+[node name="Ding" type="AudioStreamPlayer" parent="." unique_id=1492048431]
+stream = ExtResource("3_pij8e")
+volume_db = -11.254
+bus = &"Main"

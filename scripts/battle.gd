@@ -49,7 +49,7 @@ var hpTextNode: Label
 var boxNode: MarginContainer
 # Box Positions Vec4(x,y, width, height)
 var defaultPos = Vector4(32, 250, 575, 140)
-var spearAtkPos = Vector4(280, 204,85, 81)
+var spearAtkPos = Vector4(277.5, 201.5, 85, 81)
 var redAttack1AtkPos = Vector4(185, 190, 227, 200)
 var redAttack2AtkPos = Vector4(285, 300, 75, 90)
 
@@ -249,6 +249,22 @@ func spawnGroundArrow():
 	Bullets.add_child(bullet)
 	lastGroundArrow = rand
 
+func spawnYellowArrow(speed: int, direction):
+	var bullet: YellowArrow = preload("res://scripts/bullets/yellow_bullet.tscn").instantiate()
+	bullet.speed = speed
+	bullet.battleManager = self
+	bullet.currentDirection = direction
+	match direction:
+		ArrowBullet.Direction.UP:
+			bullet.position = arrowDownPos
+		ArrowBullet.Direction.DOWN:
+			bullet.position = arrowUpPos
+		ArrowBullet.Direction.RIGHT:
+			bullet.position = arrowRightPos
+		ArrowBullet.Direction.LEFT:
+			bullet.position = arrowLeftPos
+	Bullets.add_child(bullet)
+
 func spawnArrow(speed: int, direction):
 	var bullet: Arrow = preload("res://scripts/bullets/bullet.tscn").instantiate()
 	bullet.speed = speed
@@ -309,6 +325,7 @@ func _ready() -> void:
 	undyneEyeAnimationNode = get_node("Undyne/EyeGlintAnimation")
 	undyneAnimationNode.play("undyne")
 	undyneEyeAnimationNode.play("eye")
+	$Undyne/OtherAnimations.play("undyne")
 	
 	textNode = get_node("Box/Box/MainText")
 	
@@ -350,6 +367,11 @@ func _ready() -> void:
 
 	setBoxPosInsta(defaultPos)
 	musicNode.play()
+	
+	YellowArrow.DUPath = $"Box/D>U"
+	YellowArrow.UDPath = $"Box/U>D"
+	YellowArrow.RLPath = $"Box/R>L"
+	YellowArrow.LRPath = $"Box/L>R"
 
 func endAttack() -> void:
 	actualNoMode = true
@@ -363,10 +385,13 @@ func endAttack() -> void:
 	showText(defaultText)
 	actualNoMode = false
 	
+var mainSoulMode
+
 func redsoul(boxPos: Vector4i) -> void:
 	soulMode = SoulMode.RED
 	soulNode.position = Vector2(boxPos.x + (boxPos.z / 2), boxPos.y + (boxPos.w / 2))
 	soulNode.visible = true
+	mainSoulMode = SoulMode.RED
 
 func greensoul() -> void:
 	if paused: return
@@ -375,6 +400,7 @@ func greensoul() -> void:
 	soulMode = SoulMode.GREEN
 	soulNode.position = greenSoulPos
 	soulNode.visible = true
+	mainSoulMode = SoulMode.GREEN
 
 var turn = 0
 
@@ -385,9 +411,10 @@ func changeSoul() -> void:
 		soulMode = SoulMode.GREEN
 
 func spearChange() -> void:
-	undyneAnimationNode.play("spear_change")
-	await undyneAnimationNode.animation_finished
-	undyneAnimationNode.play("undyne")
+	$Undyne/OtherAnimations.play("spear_change")
+	await $Undyne/OtherAnimations.animation_finished
+	$Undyne/OtherAnimations.play("undyne")
+	$Undyne/OtherAnimations.seek(undyneAnimationNode.current_animation_position)
 
 # https://jcoxeye.neocities.org/utu-guide
 func attack() -> void:
@@ -637,10 +664,27 @@ func attack() -> void:
 				spawnArrow(spe, ArrowBullet.Direction.DOWN)
 				await get_tree().create_timer(dur3).timeout
 			await get_tree().create_timer(dur2).timeout
-
+		8:
+			await greensoul()
+			var speed = 10
+			for i in range(4):
+				spawnArrow(speed, Arrow.Direction.LEFT)
+				await get_tree().create_timer(.3).timeout
+				spawnArrow(speed, Arrow.Direction.DOWN)
+				await get_tree().create_timer(.3).timeout
+				
+			for i in range(4):
+				spawnYellowArrow(speed, Arrow.Direction.LEFT)
+				await get_tree().create_timer(.3).timeout
+				spawnYellowArrow(speed, Arrow.Direction.DOWN)
+				await get_tree().create_timer(.3).timeout
+			await get_tree().create_timer(1).timeout
+			spearChange()
+			await get_tree().create_timer(2).timeout
+	
 	await get_tree().create_timer(1).timeout
 	if paused: return
-	$GlobalAnimations.play_backwards("fade")
+	if mainSoulMode == SoulMode.GREEN: $GlobalAnimations.play_backwards("fade")
 	endAttack()
 	return
 
@@ -728,10 +772,12 @@ func _process(delta: float) -> void:
 				knifeAnimationNode.visible = false
 				enemyHitSound.play()
 				undyneAnimationNode.play("hurt")
+				$Undyne/OtherAnimations.stop()
 				$HealthBar.visible = true
 				barTween.play()
 				await get_tree().create_timer(.7).timeout
 				undyneAnimationNode.play("undyne")
+				$Undyne/OtherAnimations.play("undyne")
 				await get_tree().create_timer(1).timeout
 				$HealthBar.visible = false
 				attackTargetAnimation.play_backwards()
