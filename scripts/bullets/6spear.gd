@@ -43,14 +43,13 @@ func _draw() -> void:
 		draw_circle(Vector2(0,0), 3, Color.AQUA, true)
 		for i in range(spears):
 			draw_circle(Vector2.from_angle(deg_to_rad(angles * i) + angleOffset) * initRadius, 12, Color.RED)
+		queue_redraw()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
 	var chilren = get_children()
-	if not Engine.is_editor_hint():
-		angleOffset += 1
 	for v in chilren:
 		if v is StaticSpear:
 			var i = chilren.find(v)
-			v.position = Vector2.from_angle(deg_to_rad(angles * i) + angleOffset) * initRadius
+			v.position = Vector2.from_angle(deg_to_rad((angles * i) + angleOffset)) * initRadius
 			v.look_at(global_position)

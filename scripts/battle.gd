@@ -257,9 +257,22 @@ func spawnGroundArrow():
 	Bullets.add_child(bullet)
 	lastGroundArrow = rand
 	
+func spawnShooterSpears():
+	var bullet: ShootingSpearSpawner = preload("res://scripts/bullets/shooting_spear_spawner.tscn").instantiate()
+	bullet.battleManager = self
+	bullet.position = soulNode.position
+	Bullets.add_child(bullet)
+	
 func spawn6Spears():
 	var bullet: SixSpear = preload("res://scripts/bullets/6spear.tscn").instantiate()
 	bullet.battleManager = self
+	bullet.position = soulNode.position
+	Bullets.add_child(bullet)
+	
+func spawn8Spears():
+	var bullet: SixSpear = preload("res://scripts/bullets/6spear.tscn").instantiate()
+	bullet.battleManager = self
+	bullet.spears = 8
 	bullet.position = soulNode.position
 	Bullets.add_child(bullet)
 
@@ -759,6 +772,52 @@ func attack() -> void:
 			
 			
 			await get_tree().create_timer(1).timeout
+		14:
+			await greensoul()
+			
+			var spe = 3
+			for i in range(22):
+				var di = Arrow.Direction.values()[randi_range(0, Arrow.Direction.values().size() -1 )]
+				spawnArrow(spe, di)
+				await get_tree().create_timer(randf_range(0.3, 0.5)).timeout
+			await get_tree().create_timer(spe * (spe /2)).timeout
+			spearChange()
+		15:
+			await setBoxPos(redAttack3AtkPos) 
+			redsoul(redAttack3AtkPos)
+			var time = .8
+			for i in range(12):
+				spawnShooterSpears()
+				time -= 0.03
+				await get_tree().create_timer(time).timeout
+			for i in range(20):
+				spawnShooterSpears()
+				await get_tree().create_timer(time).timeout
+		16:
+			await setBoxPos(redAttack3AtkPos) 
+			redsoul(redAttack3AtkPos)
+			for i in range(8):
+				spawn8Spears()
+				await get_tree().create_timer(1).timeout
+			
+			await get_tree().create_timer(1).timeout
+			if turn == 10:
+				spearChange()
+				await get_tree().create_timer(2).timeout
+		17:
+			redsoul(redAttack1AtkPos) 
+			await setBoxPos(redAttack1AtkPos) 
+			for i in range(3*8):
+				spawnHomingArrow()
+				await get_tree().create_timer(.33333 / 1.25).timeout
+			await get_tree().create_timer(1).timeout
+		18:
+			turn = 14
+			await setBoxPos(redAttack2AtkPos) 
+			redsoul(redAttack2AtkPos)
+			for i in range(6*2):
+				spawnGroundArrow()
+				await get_tree().create_timer(.4).timeout
 	await get_tree().create_timer(1).timeout
 	if paused: return
 	if mainSoulMode == SoulMode.GREEN: $GlobalAnimations.play_backwards("fade")
@@ -778,7 +837,8 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("kill") :
 		damage(9999)
 	if Input.is_action_just_pressed("skipturn") :
-		turn += 1
+		if not turn >= 17:
+			turn += 1
 	if Input.is_action_just_pressed("lastturn") :
 		if not turn <= -1:
 			turn -= 1

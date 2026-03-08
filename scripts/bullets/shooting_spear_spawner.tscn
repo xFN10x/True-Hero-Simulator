@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://cpa0iqjbefot5"]
+
+[ext_resource type="Script" uid="uid://4j75h5u6212m" path="res://scripts/bullets/shooting_spear_spawner.gd" id="1_fas0k"]
+[ext_resource type="PackedScene" uid="uid://cmuu38diw85ye" path="res://scripts/bullets/shooting_spear.tscn" id="2_fas0k"]
+
+[node name="6Spear" type="Node2D" unique_id=574913156]
+script = ExtResource("1_fas0k")
+initRadius = 200
+spearScene = ExtResource("2_fas0k")
+metadata/_custom_type_script = "uid://4j75h5u6212m"

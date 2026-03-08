@@ -12,9 +12,5 @@ func _ready() -> void:
 		soul = battleManager.soulNode
 	body_shape_entered.connect(func (body_rid: RID, body: Node2D, body_shape_index: int, local_shape_index: int):
 		if body.name == "Soul":
-			print('hit')
-			modulate = Color.RED
-			print(body.position)
-			print(local_shape_index)
 			battleManager.damage(randi_range(8,14))
 		)

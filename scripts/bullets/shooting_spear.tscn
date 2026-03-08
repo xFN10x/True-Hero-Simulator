@@ -1,0 +1,153 @@
+[gd_scene format=3 uid="uid://cmuu38diw85ye"]
+
+[ext_resource type="Texture2D" uid="uid://clycnxqh12qsn" path="res://sprites/undyne.png" id="1_jrfce"]
+[ext_resource type="Script" uid="uid://bcqd5l17dn8at" path="res://scripts/bullets/shooting_spear.gd" id="2_ntiel"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i062b"]
+atlas = ExtResource("1_jrfce")
+region = Rect2(59, 1115, 60, 20)
+
+[sub_resource type="Animation" id="Animation_k0hfq"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 4
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [3.2986722862692828]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:self_modulate:a")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(-0.033333335),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Area/HomingSpear:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:position:y")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_mw48w"]
+resource_name = "spawn"
+length = 1.36667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5666667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [3.141592653589793, 9.42477796076938]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:self_modulate:a")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5666667, 1.0000001, 1.3666668),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 1.0, 1.0, 0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Area/HomingSpear:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.50000006, 1.0333334),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [true, false, true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:position:y")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.6666667, 1.3666668),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 232.0]
+}
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(1.3666667),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"remove"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3a38f"]
+_data = {
+&"RESET": SubResource("Animation_k0hfq"),
+&"spawn": SubResource("Animation_mw48w")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_de08x"]
+size = Vector2(9, 14.576205)
+
+[node name="ShootingSpear" type="Sprite2D" unique_id=1876655088]
+self_modulate = Color(1, 1, 1, 0)
+position = Vector2(112.000015, 0)
+rotation = 3.2986722
+texture = SubResource("AtlasTexture_i062b")
+script = ExtResource("2_ntiel")
+metadata/_custom_type_script = "uid://bcqd5l17dn8at"
+
+[node name="Animations" type="AnimationPlayer" parent="." unique_id=443985661]
+libraries/ = SubResource("AnimationLibrary_3a38f")
+
+[node name="Area" type="Area2D" parent="." unique_id=1659372443]
+
+[node name="HomingSpear" type="CollisionShape2D" parent="Area" unique_id=1851431850]
+position = Vector2(15.997971, 0.25577486)
+rotation = 1.5707964
+scale = Vector2(1.0000002, 1.0000002)
+shape = SubResource("RectangleShape2D_de08x")

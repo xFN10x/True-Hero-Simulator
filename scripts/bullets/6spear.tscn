@@ -81,6 +81,20 @@ tracks/2/keys = {
 "update": 0,
 "values": [200, 0]
 }
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(2.3),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"remove"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_iksj5"]
 resource_name = "main"
@@ -132,6 +146,7 @@ _data = {
 [node name="6Spear" type="Node2D" unique_id=356698069]
 modulate = Color(1, 1, 1, 0)
 script = ExtResource("1_x84kl")
+drawWireframe = true
 initRadius = 200
 spearScene = ExtResource("2_x84kl")
 angleOffset = -1
