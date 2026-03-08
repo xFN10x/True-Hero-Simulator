@@ -662,6 +662,103 @@ func attack() -> void:
 			if turn == 10:
 				spearChange()
 				await get_tree().create_timer(2).timeout
+		11:
+			await greensoul()
+			var speed = 18
+			var dur = .4
+			spawnYellowArrow(speed, Arrow.Direction.RIGHT)
+			await get_tree().create_timer(dur).timeout
+			spawnYellowArrow(speed, Arrow.Direction.UP)
+			await get_tree().create_timer(dur).timeout
+			spawnYellowArrow(speed, Arrow.Direction.LEFT)
+			await get_tree().create_timer(dur).timeout
+			spawnYellowArrow(speed, Arrow.Direction.DOWN)
+			await get_tree().create_timer(dur).timeout
+			
+			spawnArrow(speed, Arrow.Direction.DOWN)
+			await get_tree().create_timer(dur).timeout
+			spawnArrow(speed, Arrow.Direction.LEFT)
+			await get_tree().create_timer(dur).timeout
+			spawnArrow(speed, Arrow.Direction.UP)
+			await get_tree().create_timer(dur).timeout
+			spawnArrow(speed, Arrow.Direction.RIGHT)
+			await get_tree().create_timer(dur).timeout
+			
+			spawnYellowArrow(speed, Arrow.Direction.DOWN)
+			await get_tree().create_timer(dur).timeout
+			spawnYellowArrow(speed, Arrow.Direction.LEFT)
+			await get_tree().create_timer(dur).timeout
+			spawnYellowArrow(speed, Arrow.Direction.RIGHT)
+			await get_tree().create_timer(dur).timeout
+			spawnYellowArrow(speed, Arrow.Direction.UP)
+			await get_tree().create_timer(dur).timeout
+			
+			await get_tree().create_timer(1).timeout
+		12:
+			await greensoul()
+			var speed = 20
+			var dur = .4
+			
+			for i in range(2):
+				spawnArrow(speed, Arrow.Direction.LEFT)
+				await get_tree().create_timer(dur).timeout
+				spawnArrow(speed, Arrow.Direction.RIGHT)
+				await get_tree().create_timer(dur).timeout
+				spawnArrow(speed, Arrow.Direction.DOWN)
+				await get_tree().create_timer(dur - 0.15).timeout
+				spawnYellowArrow(speed, Arrow.Direction.UP)
+				await get_tree().create_timer(dur + .15).timeout
+				
+				spawnArrow(speed, Arrow.Direction.LEFT)
+				await get_tree().create_timer(dur).timeout
+				spawnArrow(speed, Arrow.Direction.RIGHT)
+				await get_tree().create_timer(dur).timeout
+				spawnArrow(speed, Arrow.Direction.UP)
+				await get_tree().create_timer(dur - 0.15).timeout
+				spawnYellowArrow(speed, Arrow.Direction.DOWN)
+				await get_tree().create_timer(dur + .15).timeout
+		13:
+			await greensoul()
+			var speed = 18
+			var dur = .25
+			
+			spawnArrow(speed, Arrow.Direction.LEFT)
+			await get_tree().create_timer(dur).timeout
+			spawnYellowArrow(speed, Arrow.Direction.LEFT)
+			await get_tree().create_timer(dur + .25).timeout
+			
+			spawnArrow(speed, Arrow.Direction.UP)
+			await get_tree().create_timer(dur).timeout
+			spawnYellowArrow(speed, Arrow.Direction.UP)
+			await get_tree().create_timer(dur + .25).timeout
+			
+			spawnArrow(speed, Arrow.Direction.RIGHT)
+			await get_tree().create_timer(dur).timeout
+			spawnYellowArrow(speed, Arrow.Direction.RIGHT)
+			await get_tree().create_timer(dur + .25).timeout
+			
+			spawnArrow(speed, Arrow.Direction.DOWN)
+			await get_tree().create_timer(dur).timeout
+			spawnYellowArrow(speed, Arrow.Direction.DOWN)
+			await get_tree().create_timer(dur + .25).timeout
+			
+			spawnArrow(speed, Arrow.Direction.LEFT)
+			await get_tree().create_timer(dur).timeout
+			spawnYellowArrow(speed, Arrow.Direction.LEFT)
+			await get_tree().create_timer(dur + .25).timeout
+			
+			spawnArrow(speed, Arrow.Direction.UP)
+			await get_tree().create_timer(dur).timeout
+			spawnYellowArrow(speed, Arrow.Direction.UP)
+			await get_tree().create_timer(dur + .25).timeout
+			
+			spawnArrow(speed, Arrow.Direction.RIGHT)
+			await get_tree().create_timer(dur).timeout
+			spawnYellowArrow(speed, Arrow.Direction.RIGHT)
+			await get_tree().create_timer(dur + .25).timeout
+			
+			
+			await get_tree().create_timer(1).timeout
 	await get_tree().create_timer(1).timeout
 	if paused: return
 	if mainSoulMode == SoulMode.GREEN: $GlobalAnimations.play_backwards("fade")

@@ -58,7 +58,7 @@ func _process(delta: float) -> void:
 	if BattleManager.paused:
 		return
 	if onPath:
-		following.progress += speed * 3
+		following.progress += speed * 2
 		if following.progress_ratio >= 1:
 			$Area2D/arrow.disabled = false
 			inverted = true
@@ -91,7 +91,7 @@ func _process(delta: float) -> void:
 					followingRemote.remote_path = get_path()
 				position.y += speed
 			Arrow.Direction.RIGHT:
-				if !inverted && position.x <= (LRPath.curve.get_point_position(0).x + LRPath.global_position.x):
+				if !inverted && position.x <= (RLPath.curve.get_point_position(0).x + RLPath.global_position.x):
 					onPath = true
 					following = PathFollow2D.new()
 					var followingRemote = RemoteTransform2D.new()
@@ -99,7 +99,7 @@ func _process(delta: float) -> void:
 					followingRemote.update_scale = false
 					following.add_child(followingRemote)
 					following.loop = false
-					LRPath.add_child(following)
+					RLPath.add_child(following)
 					followingRemote.remote_path = get_path()
 				position.x += -speed
 			Arrow.Direction.LEFT:
