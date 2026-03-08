@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b1wj78apgtmcv"]
 
-[ext_resource type="Texture2D" uid="uid://dkpt6xeow6xue" path="res://sprites/20260301133135_1.jpg" id="1_mulma"]
+[ext_resource type="Texture2D" uid="uid://dkpt6xeow6xue" path="res://sprites/hints/20260301133135_1.jpg" id="1_mulma"]
 [ext_resource type="Texture2D" uid="uid://clycnxqh12qsn" path="res://sprites/undyne.png" id="2_f7qkb"]
 [ext_resource type="Script" uid="uid://yjpu6pdd1l10" path="res://scripts/bullets/ground_spear.gd" id="2_mjaqv"]
 [ext_resource type="AudioStream" uid="uid://cwngii4qfrvdb" path="res://audio/snd_spearappear.wav" id="3_mjaqv"]

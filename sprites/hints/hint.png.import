@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cy6jqiqlcwap8"
-path="res://.godot/imported/hintred1.jpg-312d36fd4b6dda1ee87b1bd5aa748d08.ctex"
+uid="uid://c0uwiru0bv3dq"
+path="res://.godot/imported/hint.png-024251666579ee452cbca33e3d007202.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/hintred1.jpg"
-dest_files=["res://.godot/imported/hintred1.jpg-312d36fd4b6dda1ee87b1bd5aa748d08.ctex"]
+source_file="res://sprites/hints/hint.png"
+dest_files=["res://.godot/imported/hint.png-024251666579ee452cbca33e3d007202.ctex"]
 
 [params]
 

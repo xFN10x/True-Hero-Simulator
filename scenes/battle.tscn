@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://drg0i4fi152u7"]
 
 [ext_resource type="AudioStream" uid="uid://bmyubypm543pd" path="res://audio/song.mp3" id="1_th188"]
-[ext_resource type="Texture2D" uid="uid://bc5wxq0jgpb8s" path="res://sprites/Screenshot 2026-03-07 124038.png" id="2_kl6ie"]
+[ext_resource type="Texture2D" uid="uid://c2o3n6buvd22i" path="res://sprites/hints/Screenshot 2026-03-08 114524.png" id="2_kl6ie"]
 [ext_resource type="Script" uid="uid://drjqoqevkyadl" path="res://scripts/battle.gd" id="2_p1qf1"]
 [ext_resource type="AudioStream" uid="uid://qjbwpmsfoouc" path="res://audio/snd_squeak.wav" id="3_6vh42"]
 [ext_resource type="Texture2D" uid="uid://bv3m4o5ij5hlb" path="res://sprites/battle.png" id="3_p1qf1"]
@@ -19,7 +19,9 @@
 [ext_resource type="SpriteFrames" uid="uid://bfxowpro515br" path="res://sprites/attack_indic.tres" id="11_vceff"]
 [ext_resource type="Script" uid="uid://bnrvcdj0nfocy" path="res://scripts/global.gd" id="12_22uqi"]
 [ext_resource type="AudioStream" uid="uid://f4vp45e0xl7t" path="res://audio/snd_heal_c.wav" id="12_dd63g"]
+[ext_resource type="AudioStream" uid="uid://bbxb7xq63bnth" path="res://audio/mus_ohyes.ogg" id="13_1m01a"]
 [ext_resource type="FontFile" uid="uid://dn4ax5okqvoif" path="res://font/hachicro.TTF" id="14_dd63g"]
+[ext_resource type="AudioStream" uid="uid://cw25tw083rrl4" path="res://audio/snd_saber3.wav" id="14_lv4so"]
 [ext_resource type="Texture2D" uid="uid://cy5kf75qp6kx8" path="res://sprites/spear_ani.png" id="16_jt4d8"]
 [ext_resource type="FontFile" uid="uid://bj7anrfh0o6qq" path="res://font/font1.ttf" id="17_bi5l8"]
 [ext_resource type="Texture2D" uid="uid://db14pg1dcdwwr" path="res://sprites/parts_soul.png" id="18_fpf3k"]
@@ -984,8 +986,8 @@ metadata/_custom_type_script = "uid://drjqoqevkyadl"
 [node name="Hint" type="Sprite2D" parent="." unique_id=1060318413]
 visible = false
 z_index = -99
-position = Vector2(319.885, 239.855)
-scale = Vector2(0.444, 0.444)
+position = Vector2(339.00003, 262.41953)
+scale = Vector2(1.5236366, 1.5584178)
 texture = ExtResource("2_kl6ie")
 
 [node name="Music" type="AudioStreamPlayer" parent="." unique_id=144461831]
@@ -1029,6 +1031,14 @@ stream = ExtResource("11_kl6ie")
 
 [node name="SndHealC" type="AudioStreamPlayer" parent="." unique_id=1315880190]
 stream = ExtResource("12_dd63g")
+bus = &"Main"
+
+[node name="MusOhyes" type="AudioStreamPlayer" parent="." unique_id=1990365841]
+stream = ExtResource("13_1m01a")
+bus = &"Main"
+
+[node name="SndSaber3" type="AudioStreamPlayer" parent="." unique_id=1146027971]
+stream = ExtResource("14_lv4so")
 bus = &"Main"
 
 [node name="Undyne" type="Node2D" parent="." unique_id=1203616874]
@@ -1287,10 +1297,10 @@ text = "56 / 56"
 label_settings = SubResource("LabelSettings_v7i3o")
 
 [node name="Box" type="MarginContainer" parent="." unique_id=1884231038]
-offset_left = 277.5
-offset_top = 201.5
-offset_right = 362.5
-offset_bottom = 282.5
+offset_left = 32.0
+offset_top = 90.0
+offset_right = 608.0
+offset_bottom = 389.0
 pivot_offset_ratio = Vector2(0.5, 0.5)
 theme_override_constants/margin_bottom = 0
 

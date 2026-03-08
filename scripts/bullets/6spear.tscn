@@ -1,0 +1,141 @@
+[gd_scene format=3 uid="uid://64qstssf23bm"]
+
+[ext_resource type="Script" uid="uid://g7fxrjuw7kib" path="res://scripts/bullets/6spear.gd" id="1_x84kl"]
+[ext_resource type="PackedScene" uid="uid://oexajvk3c6a3" path="res://scripts/bullets/static_spear.tscn" id="2_x84kl"]
+
+[sub_resource type="Animation" id="Animation_x84kl"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:angleOffset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [-1]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate:a")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:initRadius")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [200]
+}
+
+[sub_resource type="Animation" id="Animation_yg4nu"]
+resource_name = "alt"
+length = 2.3333368
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:angleOffset")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.0000001, 2.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0, 50, 70]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate:a")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.16666667, 1.6, 2.3000002),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 1.0, 1.0, 0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:initRadius")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 2.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [200, 0]
+}
+
+[sub_resource type="Animation" id="Animation_iksj5"]
+resource_name = "main"
+length = 2.3333368
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:angleOffset")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.0000001, 2.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0, -50, -70]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate:a")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.16666667, 1.6, 2.3000002),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 1.0, 1.0, 0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:initRadius")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 2.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [200, 0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_28eh4"]
+_data = {
+&"RESET": SubResource("Animation_x84kl"),
+&"alt": SubResource("Animation_yg4nu"),
+&"main": SubResource("Animation_iksj5")
+}
+
+[node name="6Spear" type="Node2D" unique_id=356698069]
+modulate = Color(1, 1, 1, 0)
+script = ExtResource("1_x84kl")
+initRadius = 200
+spearScene = ExtResource("2_x84kl")
+angleOffset = -1
+metadata/_custom_type_script = "uid://g7fxrjuw7kib"
+
+[node name="Animation" type="AnimationPlayer" parent="." unique_id=849356317]
+libraries/ = SubResource("AnimationLibrary_28eh4")

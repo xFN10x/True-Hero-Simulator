@@ -52,6 +52,7 @@ var defaultPos = Vector4(32, 250, 575, 140)
 var spearAtkPos = Vector4(277.5, 201.5, 85, 81)
 var redAttack1AtkPos = Vector4(185, 190, 227, 200)
 var redAttack2AtkPos = Vector4(285, 300, 75, 90)
+var redAttack3AtkPos = Vector4(32, 90, 575, 300)
 
 var page = 0
 
@@ -148,10 +149,11 @@ var arrowLeftPos: Vector2
 var arrowRightPos: Vector2
 var arrowDownPos: Vector2
 
-var canAttack = true
+var canAttack := true
 
-var maxIFrames = 20
-var iframes = 0
+var maxIFrames := 20
+var iframes := 0
+var godmode := false
 
 var groundSpearPoses = [
 	Vector2(299, 345),
@@ -182,8 +184,12 @@ func setBoxPos(trans: Vector4) -> Signal:
 	tweenMoveX.tween_property(boxNode, "position", Vector2(trans.x, boxNode.position.y), 0.5).set_trans(Tween.TRANS_LINEAR)
 	var tweenSizeX = get_tree().create_tween()
 	tweenSizeX.tween_property(boxNode, "size", Vector2(trans.z, boxNode.size.y), 0.5).set_trans(Tween.TRANS_LINEAR)
-	tweenSizeX.play()
-	tweenMoveX.play()
+	
+	if trans.z != boxNode.size.x:
+		tweenSizeX.play()
+	if trans.x != boxNode.position.x:
+		tweenMoveX.play()
+		
 	if tweenMoveX.is_running():
 		await tweenMoveX.finished
 	if tweenSizeX.is_running():
@@ -193,8 +199,10 @@ func setBoxPos(trans: Vector4) -> Signal:
 	tweenMoveY.tween_property(boxNode, "position", Vector2(boxNode.position.x, trans.y), 0.1).set_trans(Tween.TRANS_LINEAR)
 	var tweenSizeY = get_tree().create_tween()
 	tweenSizeY.tween_property(boxNode, "size", Vector2(boxNode.size.x, trans.w), 0.1).set_trans(Tween.TRANS_LINEAR)
-	tweenSizeY.play()
-	tweenMoveY.play()
+	if trans.w != boxNode.size.y:
+		tweenSizeY.play()
+	if trans.y != boxNode.position.y:
+		tweenMoveY.play()
 	if tweenSizeY.is_running():
 		await tweenSizeY.finished
 	return tweenMoveY.finished
@@ -248,6 +256,12 @@ func spawnGroundArrow():
 	bullet.position = groundSpearPoses[rand]
 	Bullets.add_child(bullet)
 	lastGroundArrow = rand
+	
+func spawn6Spears():
+	var bullet: SixSpear = preload("res://scripts/bullets/6spear.tscn").instantiate()
+	bullet.battleManager = self
+	bullet.position = soulNode.position
+	Bullets.add_child(bullet)
 
 func spawnYellowArrow(speed: int, direction):
 	var bullet: YellowArrow = preload("res://scripts/bullets/yellow_bullet.tscn").instantiate()
@@ -289,13 +303,14 @@ func heal(number: int) -> void:
 		hp = fakeHealth
 
 func damage(number: int) -> void:
-	if iframes > 0: return
+	if  iframes > 0: return
 	iframes = maxIFrames
 	if (hp - number) <= 0:
 		iframes = 100
 		death();
 		return
-	hp -= number
+	if not godmode:
+		hp -= number
 	$SndHurt1.play()
 	$Soul/GreenSoul.visible = false
 
@@ -454,53 +469,8 @@ func attack() -> void:
 	match turn:
 		# test attack
 		0:
-			await setBoxPos(spearAtkPos)
-			soulMode = SoulMode.GREEN
-			soulNode.position = greenSoulPos
-			soulNode.visible = true
-			spawnArrow(5, ArrowBullet.Direction.DOWN)
-			await get_tree().create_timer(0.5).timeout
-			spawnArrow(5, ArrowBullet.Direction.DOWN)
-			await get_tree().create_timer(0.5).timeout
-			spawnArrow(5, ArrowBullet.Direction.DOWN)
-			await get_tree().create_timer(0.1).timeout
-			spawnArrow(5, ArrowBullet.Direction.DOWN)
-			await get_tree().create_timer(0.1).timeout
-			spawnArrow(5, ArrowBullet.Direction.UP)
-			await get_tree().create_timer(0.1).timeout
-			spawnArrow(5, ArrowBullet.Direction.LEFT)
-			await get_tree().create_timer(0.1).timeout
-			spawnArrow(5, ArrowBullet.Direction.RIGHT)
-			await get_tree().create_timer(0.1).timeout
-			spawnArrow(5, ArrowBullet.Direction.DOWN)
-			await get_tree().create_timer(0.1).timeout
-			spawnArrow(5, ArrowBullet.Direction.UP)
-			await get_tree().create_timer(0.1).timeout
-			spawnArrow(5, ArrowBullet.Direction.LEFT)
-			await get_tree().create_timer(0.1).timeout
-			spawnArrow(5, ArrowBullet.Direction.RIGHT)
-			await get_tree().create_timer(0.1).timeout
-			spawnArrow(5, ArrowBullet.Direction.DOWN)
-			await get_tree().create_timer(0.1).timeout
-			spawnArrow(5, ArrowBullet.Direction.UP)
-			await get_tree().create_timer(0.1).timeout
-			spawnArrow(5, ArrowBullet.Direction.LEFT)
-			await get_tree().create_timer(0.1).timeout
-			spawnArrow(5, ArrowBullet.Direction.RIGHT)
-			await get_tree().create_timer(0.1).timeout
-			spawnArrow(5, ArrowBullet.Direction.DOWN)
-			await get_tree().create_timer(0.1).timeout
-			spawnArrow(5, ArrowBullet.Direction.UP)
-			await get_tree().create_timer(0.1).timeout
-			spawnArrow(5, ArrowBullet.Direction.LEFT)
-			await get_tree().create_timer(0.1).timeout
-			spawnArrow(5, ArrowBullet.Direction.RIGHT)
-			for i in 100:
-				await get_tree().create_timer(0.01).timeout
-				spawnArrow(5, ArrowBullet.Direction.RIGHT)
-			await get_tree().create_timer(1).timeout
-			
-			endAttack()
+			await setBoxPos(redAttack3AtkPos) 
+			redsoul(redAttack3AtkPos)
 		1:
 			await greensoul()
 			
@@ -681,7 +651,17 @@ func attack() -> void:
 			await get_tree().create_timer(1).timeout
 			spearChange()
 			await get_tree().create_timer(2).timeout
-	
+		9, 10:
+			await setBoxPos(redAttack3AtkPos) 
+			redsoul(redAttack3AtkPos)
+			for i in range(8):
+				spawn6Spears()
+				await get_tree().create_timer(1).timeout
+			
+			await get_tree().create_timer(1).timeout
+		10:
+			spearChange()
+			await get_tree().create_timer(2).timeout
 	await get_tree().create_timer(1).timeout
 	if paused: return
 	if mainSoulMode == SoulMode.GREEN: $GlobalAnimations.play_backwards("fade")
@@ -691,6 +671,13 @@ func attack() -> void:
 func _process(delta: float) -> void:
 	if paused:
 		return
+	if Input.is_action_just_pressed("godmod"):
+		if not godmode:
+			godmode = true
+			$MusOhyes.play()
+		else:
+			godmode = false
+			$SndSaber3.play()
 	if Input.is_action_just_pressed("kill") :
 		damage(9999)
 	if Input.is_action_just_pressed("skipturn") :

@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://oexajvk3c6a3"]
+
+[ext_resource type="Texture2D" uid="uid://clycnxqh12qsn" path="res://sprites/undyne.png" id="1_aak3w"]
+[ext_resource type="Script" uid="uid://cgk5xjc14i8y5" path="res://scripts/bullets/static_spear.gd" id="2_q8xm8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_de08x"]
+size = Vector2(14.999996, 8.999998)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ovhhm"]
+atlas = ExtResource("1_aak3w")
+region = Rect2(59, 1115, 60, 20)
+
+[node name="Spear" type="Area2D" unique_id=396810163]
+script = ExtResource("2_q8xm8")
+metadata/_custom_type_script = "uid://cgk5xjc14i8y5"
+
+[node name="HomingSpear" type="CollisionShape2D" parent="." unique_id=1851431850]
+position = Vector2(13.499999, 0.49999994)
+scale = Vector2(1.0000002, 1.0000002)
+shape = SubResource("RectangleShape2D_de08x")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1988343428]
+texture = SubResource("AtlasTexture_ovhhm")
