@@ -498,6 +498,7 @@ colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
 [sub_resource type="Animation" id="Animation_1m01a"]
 resource_name = "spear_change"
+length = 0.8333367
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -517,7 +518,7 @@ tracks/1/path = NodePath("RArm:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.13333334, 0.26896465, 0.33333334, 0.6666667, 0.8333334),
+"times": PackedFloat32Array(0, 0.13333334, 0.26896465, 0.33333334, 0.6666667, 0.8333),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 0,
 "values": [0.0, 2.1205750411731104, 2.1205750411731104, -1.1397000015522971, -1.1397000015522971, 0.0]
@@ -541,7 +542,7 @@ tracks/3/path = NodePath("RArm:z_index")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0.26666668, 1),
+"times": PackedFloat32Array(0.26666668, 0.8333334),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [999, -1]
@@ -1062,7 +1063,7 @@ region_rect = Rect2(267, 1840, 19, 44)
 
 [node name="RArm" type="Sprite2D" parent="Undyne" unique_id=566646253]
 z_index = -1
-position = Vector2(268, 100)
+position = Vector2(272, 106)
 scale = Vector2(2.000001, 2.000001)
 texture = ExtResource("7_4k1nj")
 offset = Vector2(-7.54, 34.005)
@@ -1100,7 +1101,7 @@ region_rect = Rect2(291, 1840, 41, 28)
 
 [node name="Head" type="Sprite2D" parent="Undyne" unique_id=258279776]
 z_index = -1
-position = Vector2(310, 47.610657)
+position = Vector2(310, 49)
 scale = Vector2(2.000001, 2.000001)
 texture = ExtResource("7_4k1nj")
 region_enabled = true
@@ -1298,7 +1299,7 @@ label_settings = SubResource("LabelSettings_v7i3o")
 
 [node name="Box" type="MarginContainer" parent="." unique_id=1884231038]
 offset_left = 32.0
-offset_top = 90.0
+offset_top = 259.0
 offset_right = 608.0
 offset_bottom = 389.0
 pivot_offset_ratio = Vector2(0.5, 0.5)

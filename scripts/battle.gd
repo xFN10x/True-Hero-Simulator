@@ -659,9 +659,9 @@ func attack() -> void:
 				await get_tree().create_timer(1).timeout
 			
 			await get_tree().create_timer(1).timeout
-		10:
-			spearChange()
-			await get_tree().create_timer(2).timeout
+			if turn == 10:
+				spearChange()
+				await get_tree().create_timer(2).timeout
 	await get_tree().create_timer(1).timeout
 	if paused: return
 	if mainSoulMode == SoulMode.GREEN: $GlobalAnimations.play_backwards("fade")
