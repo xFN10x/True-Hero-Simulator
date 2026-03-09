@@ -4,6 +4,8 @@ class_name SixSpear
 
 var battleManager;
 
+static var turnCounter = 0
+
 @export var spears = 6
 @export var drawWireframe = false
 @export var initRadius = 12
@@ -17,10 +19,12 @@ func remove() -> void:
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	addSpears()
-	if randi_range(0, 1) == 0:
+	if turnCounter == 0:
 		$Animation.play("main")
+		turnCounter += 1
 	else:
 		$Animation.play("alt")
+		turnCounter = 0
 	
 func addSpears() -> void:
 	angles = 360 / spears

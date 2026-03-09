@@ -848,7 +848,7 @@ func _process(delta: float) -> void:
 		if not turn <= -1:
 			turn -= 1
 	if Input.is_action_just_pressed("song1"):
-		musicNode.stream = AudioStreamMP3.load_from_file("res://audio/From_Now_On_Battle_2_KLICKAUD.mp3")
+		musicNode.stream = AudioStreamMP3.load_from_file("res://song2.mp3")
 		musicNode.stop()
 		musicNode.play()
 	$Box/Box/TurnCounter.text = "Turn %s" % turn 

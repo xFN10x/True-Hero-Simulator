@@ -16,10 +16,13 @@ config/features=PackedStringArray("4.6", "GL Compatibility")
 run/max_fps=30
 boot_splash/show_image=false
 boot_splash/stretch_mode=0
+boot_splash/use_filter=false
+config/icon="uid://cvqtotlwc7b0i"
 
 [audio]
 
 buses/default_bus_layout="uid://icu8rrky6wga"
+general/default_playback_type.web=0
 
 [display]
 
@@ -105,7 +108,6 @@ godmod={
 
 [physics]
 
-2d/physics_engine="GodotPhysics2D"
 3d/physics_engine="Jolt Physics"
 
 [rendering]

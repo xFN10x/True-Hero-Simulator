@@ -1321,6 +1321,7 @@ texture = ExtResource("2_kl6ie")
 stream = ExtResource("1_th188")
 volume_db = -6.985
 bus = &"Main"
+playback_type = 1
 parameters/looping = true
 
 [node name="MenuMove" type="AudioStreamPlayer" parent="." unique_id=1881623941]
