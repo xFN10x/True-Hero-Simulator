@@ -12,6 +12,9 @@ You can play this on <https://ths.xplate.dev>
 <br/>
 <br/>
 <sup>*True Hero Simulator created by xFN10x (Xplate)
+<br/>
 All art, sounds, and other assets are created by Toby Fox
+<br/>
 UNDERTALE © Toby Fox 2013-2026. All rights reserved.
+<br/>
 True Hero Simulator is not affiliated with UNDERTALE, or Toby Fox.*</sub>
