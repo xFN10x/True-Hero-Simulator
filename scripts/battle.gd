@@ -5,6 +5,9 @@ static var paused = false
 
 var ArrowBullet = preload("res://scripts/bullets/Arrow.gd")
 
+var totalDamageTaken := 0
+var totalDamageHealed := 0
+
 var selectedVOffset = 47
 var fightVOffset = 111
 var actVOffset = 9
@@ -310,10 +313,9 @@ func spawnArrow(speed: int, direction):
 
 func heal(number: int) -> void:
 	var fakeHealth = hp + number
-	if fakeHealth > maxHp:
-		hp = maxHp
-	else:
-		hp = fakeHealth
+	var setHealth = min(fakeHealth, maxHp)
+	totalDamageHealed += setHealth - hp
+	hp = setHealth
 
 func damage(number: int) -> void:
 	if  iframes > 0: return
@@ -322,6 +324,7 @@ func damage(number: int) -> void:
 		iframes = 100
 		death();
 		return
+	totalDamageTaken += number
 	if not godmode:
 		hp -= number
 	$SndHurt1.play()
@@ -444,8 +447,10 @@ func spearChange() -> void:
 	$Undyne/OtherAnimations.play("undyne")
 	$Undyne/OtherAnimations.seek(undyneAnimationNode.current_animation_position)
 
+var totalTurns := 0
 # https://jcoxeye.neocities.org/utu-guide
 func attack() -> void:
+	totalTurns += 1
 	menuMode = MenuMode.ENEMY_TURN
 	turn += 1
 	"""
@@ -847,6 +852,13 @@ func _process(delta: float) -> void:
 		musicNode.stop()
 		musicNode.play()
 	$Box/Box/TurnCounter.text = "Turn %s" % turn 
+	$EndingText/By/Stats.text = """Stats:
+		Damage Taken: %s
+		Health Healed: %s
+		Turns: %s
+		
+		Reload page to restart.
+	""" % [totalDamageTaken, totalDamageHealed, totalTurns]
 	iframes -= 1;
 	greenSoulShield.rotation = lerp_angle(greenSoulShield.rotation, greenSoulRotate, 0.8)
 	if iframes > 0:
@@ -904,12 +916,18 @@ func _process(delta: float) -> void:
 				knifeAnimationNode.visible = true
 				knifeAnimationNode.play()
 				knifeSound.play()
-				var random = randi_range(-20, 20)
-				var damage = 1800 + -abs((320 - attackIndicBar.position.x) * 5) + random
+				var random = randi_range(-20, 100)
+				var damage = 1600 + -abs((320 - attackIndicBar.position.x) * 5) + random
 				if (Input.is_action_pressed("secret1")):
-					damage += 10000
+					damage *= 20000
 				$HealthBar/DamageNumbers.text = str(roundi(damage))
 				enemyHealth -= damage
+				if enemyHealth <= 0:
+					$Undyne/OtherAnimations.stop()
+					$Undyne/BodyAnimation.play("ohno")
+					AudioServer.set_bus_mute(1, true)
+					$GlobalAnimations.play("end")
+					return
 				var barTween = get_tree().create_tween()
 				barTween.tween_property($HealthBar/Bar, "value", enemyHealth, 1).set_trans(Tween.TRANS_LINEAR)
 				await get_tree().create_timer(0.8).timeout

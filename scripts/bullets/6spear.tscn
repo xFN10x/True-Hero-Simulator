@@ -146,7 +146,6 @@ _data = {
 [node name="6Spear" type="Node2D" unique_id=356698069]
 modulate = Color(1, 1, 1, 0)
 script = ExtResource("1_x84kl")
-drawWireframe = true
 initRadius = 200
 spearScene = ExtResource("2_x84kl")
 angleOffset = -1
